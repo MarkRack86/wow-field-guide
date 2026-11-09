@@ -1,0 +1,186 @@
+{
+  "at": "2026-11-09T07:16:24Z",
+  "cls": "Shaman",
+  "faction": "Horde",
+  "gear": {
+    "lvl": 14,
+    "slots": {
+      "BACK": {
+        "cur": [[1733,"Worn Cloak","P",15,0.3]],
+        "up": [
+          [2308,"Fine Leather Cloak","U",10,300,0.7,"+2 Sta, 14 armor"],
+          [6466,"Deviate Scale Cloak","U",13,500,1.7,"+2 Agi, +2 Sta, 16 armor"]
+        ]
+      },
+      "CHEST": {
+        "cur": [[4929,"Light Scorpid Armor","C",9,1]],
+        "up": [
+          [2300,"Embossed Leather Vest","U",7,200,0.9,"+2 Sta, 62 armor"],
+          [4243,"Fine Leather Tunic","U",12,600,3.5,"+4 Agi, +3 Sta, 73 armor"],
+          [5781,"Murloc Scale Breastplate","U",14,4000,7,"+5 Str, +3 Agi, 76 armor"]
+        ]
+      },
+      "FEET": {
+        "cur": [[4942,"Tiger Hide Boots","C",12,0.8]],
+        "up": [[2307,"Fine Leather Boots","U",13,300,2.4,"+3 Agi, +2 Sta, 51 armor"]]
+      },
+      "FINGER": {"cur":[[281268,"Depleted Ritual Band","C",9,0]],"up":[]},
+      "HANDS": {
+        "cur": [[4940,"Veiled Grips","C",10,0.7]],
+        "up": [
+          [4239,"Embossed Leather Gloves","U",8,100,1,"+1 Agi, +1 Sta, 41 armor"],
+          [6467,"Deviate Scale Gloves","U",16,2000,2.8,"+3 Agi, +3 Sta, 49 armor"]
+        ]
+      },
+      "LEGS": {
+        "cur": [[4921,"Dust-covered Leggings","C",5,0.6]],
+        "up": [
+          [10047,"Simple Kilt","U",10,200,1.2,"+3 Sta, +2 spell power, 24 armor"],
+          [4242,"Embossed Leather Pants","U",10,400,1.8,"+2 Sta, +3 spell power, 61 armor"],
+          [7282,"Light Leather Pants","U",14,600,4.3,"+5 Agi, +3 Sta, 66 armor"]
+        ]
+      },
+      "MAIN_HAND": {
+        "cur": [[281274,"Makeshift Stormcaller","U",11,29.3]],
+        "up": [
+          [1812,"Short-handled Battle Axe","P",12,500,3.7,"6.6 DPS"],
+          [6214,"Heavy Copper Maul","U",11,1500,28.7,"10.8 DPS, +4 Str"],
+          [4778,"Heavy Spiked Mace","U",14,9400,39.2,"12.5 DPS, +6 Str"]
+        ]
+      },
+      "RANGED": {"cur":[[263412,"Totem of Charged Flames","U",10,0]],"up":[]},
+      "SHOULDER": {"cur":[],"up":[[1793,"Patched Leather Shoulderpads","P",15,1100,1,"52 armor"]]},
+      "WAIST": {
+        "cur": [[1502,"Warped Leather Belt","P",14,0.7]],
+        "up": [
+          [4246,"Fine Leather Belt","U",11,200,1.8,"+2 Agi, +2 Sta, 40 armor"],
+          [5780,"Murloc Scale Belt","U",13,1700,3.6,"+2 Str, +3 Agi, 42 armor"]
+        ]
+      },
+      "WRIST": {
+        "cur": [[281270,"Thra's Friendship Bracelet","U",10,0.6]],
+        "up": [[7281,"Light Leather Bracers","U",9,200,1.5,"+1 Str, +1 Agi, 30 armor"]]
+      }
+    },
+    "spec": "str"
+  },
+  "guild": null,
+  "ilvl": 4,
+  "level": 14,
+  "login": 1794205400000,
+  "name": "Brakka",
+  "profs": [
+    ["Alchemy",77,150,[1832,1378,1379,1380,1382,4178,52646,54453,54456,54655,54210,54211]],
+    ["Herbalism",101,150,[1419,54115,52642]],
+    ["Cooking",52,75,[1535,1536,1537,3927,3930,4354,4391,4786,52640]],
+    ["Fishing",75,150,[4345,52639]],
+    ["First Aid",65,75,[1838,1839,52641,54191,54192]]
+  ],
+  "qdone": [
+    "A Missing Hand",
+    "A Peon's Burden",
+    "A Simmering Storm",
+    "A Solvent Spirit",
+    "Ak'Zeloth",
+    "Bloodtalon Matriarch",
+    "Break a Few Eggs",
+    "Burning Blade Medallion",
+    "Call of Earth",
+    "Call of Fire",
+    "Camping 101: Alchemy",
+    "Camping 101: Cooking",
+    "Camping 101: First Aid",
+    "Camping 101: Fishing",
+    "Carry Your Weight",
+    "Conscript of the Horde",
+    "Crossroads Conscription",
+    "Cutting Teeth",
+    "Dark Storms",
+    "Disrupt the Attacks",
+    "Doras the Wind Rider Master",
+    "Encroachment",
+    "Favorite Food",
+    "For Honor",
+    "Forgotten Loa Idols",
+    "From The Wreckage....",
+    "Galgar's Cactus Apple Surprise",
+    "Hidden Enemies",
+    "Lazy Peons",
+    "Legging It",
+    "Margoz",
+    "Meal Appeal",
+    "Meats to Orgrimmar",
+    "Minshina's Skull",
+    "Need for a Cure",
+    "Neeru Fireblade",
+    "Plainstrider Menace",
+    "Practical Prey",
+    "Report to Orgnil",
+    "Report to Sen'jin Village",
+    "Return to the Crossroads",
+    "Ride to Orgrimmar",
+    "Rocks to Rests",
+    "Rune-Inscribed Parchment",
+    "Sarkoth",
+    "Securing the Lines",
+    "Skull Rock",
+    "Sting of the Scorpid",
+    "Stormy Potential",
+    "Thazz'ril's Pick",
+    "The Admiral's Orders",
+    "The Adventurer",
+    "The Demon Seed",
+    "The Great Outdoors",
+    "The Last Element",
+    "This Fruit Could Bite Back",
+    "Threat from Below",
+    "Thwarting Kolkar Aggression",
+    "Vanquish the Betrayers",
+    "Vile Familiars",
+    "Wayward Weapons",
+    "Wharfmaster Dizzywig",
+    "Whuut's the Rush",
+    "Winds in the Desert",
+    "Yelmak's Medley",
+    "Your Place in the World",
+    "Zalazane"
+  ],
+  "qnow": [
+    "Battle of Warsong Gulch",
+    "Consumed by Hatred",
+    "Fungal Spores",
+    "Harpy Raiders",
+    "Hidden Enemies",
+    "Lost in Battle",
+    "Miner's Fortune",
+    "Parts and Pieces",
+    "Raptor Horns",
+    "Raptor Thieves",
+    "Root Samples",
+    "Samophlange",
+    "Slaying the Beast",
+    "Supplies for the Crossroads",
+    "The Disruption Ends",
+    "The Forgotten Pools",
+    "The Guns of Northwatch",
+    "The Spirits of Stonetalon",
+    "The Zhevra",
+    "WANTED: Baron Longshore"
+  ],
+  "race": "Orc",
+  "reps": [
+    ["Everlook","Neutral",525,3000],
+    ["Thunder Bluff","Friendly",237,6000],
+    ["Ratchet","Neutral",950,3000],
+    ["Orgrimmar","Honored",70,12000],
+    ["Darkspear Trolls","Friendly",4482,6000],
+    ["Booty Bay","Neutral",525,3000],
+    ["Gadgetzan","Neutral",525,3000],
+    ["Undercity","Neutral",637,3000],
+    ["Powderfuse","Neutral",525,3000]
+  ],
+  "ruleset": "Normal",
+  "surname": "Keltorra",
+  "talents": [["Enhancement",3,[["Thundering Strikes",3]]],["Restoration",2,[["Tidal Focus",2]]]],
+  "xp": 8986
+}

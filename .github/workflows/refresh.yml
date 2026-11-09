@@ -1,0 +1,35 @@
+name: Refresh prices and character
+
+on:
+  schedule:
+    - cron: '7 4,18 * * *'   # 04:07 and 18:07 UTC: UK time in winter, an hour later in summer
+  workflow_dispatch:          # "Run workflow" button on the Actions tab
+  push:                       # a change to the refresh itself runs it straight away
+    branches: [main]
+    paths:
+      - '.github/workflows/refresh.yml'
+      - 'refresh.py'
+      - 'tools/ci_refresh.py'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: refresh
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 110
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Refresh prices and character, then the sell-speed sample
+        env:
+          BNET_ID: ${{ secrets.BNET_ID }}
+          BNET_SECRET: ${{ secrets.BNET_SECRET }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          python3 tools/ci_refresh.py

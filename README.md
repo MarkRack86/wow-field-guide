@@ -8,7 +8,7 @@ It also runs as a private Claude artifact, published from this repo.
 ## How it works
 
 - **Refresh.** `.github/workflows/refresh.yml` runs at 04:07 and 18:07 UTC (UK time in winter, an hour later in summer). It runs `refresh.py` with the Blizzard API keys from this repo's encrypted Actions secrets (`BNET_ID`, `BNET_SECRET`). It then saves prices, price history, the character (with a gear check) and a sell-speed sample under `data/`, and commits to main. To run it now, open the **Actions** tab, pick **Refresh prices and character**, and choose **Run workflow**.
-- **Data.** `data/latest.json` is the one file the page loads. `data/status.json` says how the last run went.
+- **Data.** `data/latest.json` holds the prices, character and settings the page loads. `data/updates.json` holds the Updates tab's notes. `data/status.json` says how the last refresh went.
 - **Site.** GitHub Pages serves `index.html` and `market.js` straight from main.
 - **Settings.** The watchlist, gear stat and quest ticks are saved in the Claude artifact's database, and Claude copies them into `config/`. On the GitHub site, setting changes stay in your browser.
 - **Claude.** This repo is the master copy. Claude makes changes here first, then publishes them to the artifact.
@@ -26,6 +26,8 @@ It also runs as a private Claude artifact, published from this repo.
 | `data/stats/recent.json` | The price history each refresh builds on |
 | `data/char/current.json` | Level, gear and upgrades, professions, quests, reputations, talents |
 | `data/speed/` | Sell-speed samples |
+| `data/updates.json` | The Updates tab's hotfix and patch notes, written by Claude's daily check (format in `CLAUDE.md`) |
+| `tools/check_updates.py` | Checks `data/updates.json` before it's committed |
 | `config/` | Settings |
 
 ## Run the refresh yourself

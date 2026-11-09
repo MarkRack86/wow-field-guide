@@ -1269,6 +1269,8 @@
   var MON = { jan: 0, feb: 1, mar: 2, apr: 3, may: 4, jun: 5, jul: 6, aug: 7, sep: 8, oct: 9, nov: 10, dec: 11 };
   function hotfixAt() {
     var p = document.getElementById('panel-updates');
+    var iso = p && p.getAttribute('data-checked');  /* set when data/updates.json has loaded */
+    if (iso && !isNaN(Date.parse(iso))) return Date.parse(iso);
     var m = p ? /Snapshot taken on (?:[A-Za-z]+,? )?(\d{1,2}) ([A-Za-z]{3})[a-z]*(?: (\d{4}))?(?:,? at (\d{1,2})(?:[:.](\d{2}))? ?([ap]m))?/i.exec(p.textContent) : null;
     if (!m) return null;
     var nowD = new Date(), mo = MON[m[2].toLowerCase()];
@@ -1520,6 +1522,7 @@
   /* The page's class, faction and level can change while this runs: re-read them for the herb zones and skill-up rows. */
   document.addEventListener('wowf:char-changed', function () { renderZones(); renderSkill(); renderCraftList(); renderGoldStrips(); renderToday(); });
   document.addEventListener('wowf:tab', function (e) { if (e && e.detail && e.detail.token === 'today') renderToday(); });
+  document.addEventListener('wowf:updates', function () { renderFresh(); renderToday(); });
 
   /* ---------- Data ---------- */
   function fail(msg) { loaded = true; clearTimeout(timer); renderAll(); statusEl.textContent = msg; }

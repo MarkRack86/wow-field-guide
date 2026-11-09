@@ -1,0 +1,257 @@
+{
+  "checked": "2026-11-09T04:00:00Z",
+  "entries": [
+    {
+      "date": "2026-11-08",
+      "label": "Sun 8 Nov",
+      "chips": ["Hotfix"],
+      "state": "new",
+      "title": "More XP from dungeon monsters",
+      "blocks": [
+        {
+          "items": ["Monsters in dungeons now give 50% more XP. The change went live on Sunday evening."]
+        }
+      ]
+    },
+    {
+      "date": "2026-11-06",
+      "label": "Fri 6 Nov",
+      "chips": ["Hotfixes"],
+      "state": "new",
+      "title": "Second round of hotfixes, and class tuning on the way",
+      "blocks": [
+        {
+          "heading": "Classes",
+          "items": [
+            "Druid: Bloom now heals its target. Tooltips for Bear Form, Ravage and Swiftmend are corrected.",
+            "Mage: You no longer learn Research and lose it when you log out. Arcane Blast lasts 18 seconds.",
+            "Rogue: Shank tooltips now show the right rank and combo points.",
+            "Warlock: Your Voidwalker has about 40 more health. Soul Siphon no longer makes Wrack boost itself. Orc Command no longer over-boosts some pet abilities.",
+            "Warrior: The Reckless Swings tooltip now says it triggers Gore Drinker.",
+            "Quick and the Dead, a Legacy talent, now works every time.",
+            "Other players and their targets are easier to see from far away."
+          ]
+        },
+        {
+          "heading": "Monsters and quests",
+          "items": [
+            "Dun Morogh: troggs in Grol'bolar Quarry no longer respawn too fast.",
+            "Durotar: Ridgeshade Lurkers now drop loot.",
+            "Teldrassil: lashers are no longer immune to Nature damage.",
+            "\"The Sleeper Has Awakened\": Kerlonian falls asleep less, and you start with the Horn of Awakening.",
+            "\"Never Saddle on Quality\" has more spawns and drops. The Damp Note drops more often.",
+            "\"Rediscovering the Light\" lets you heal the NPCs again. \"Vorsha the Lasher\" no longer hits everyone in the zone.",
+            "Horde can pick up \"Unending Torment\" in the Ruins of Lordaeron at level 15, not 16.",
+            "Some Riverglades quest items are now shared with your group."
+          ]
+        },
+        {
+          "heading": "Professions and dungeons",
+          "items": [
+            "Leatherworking: the Tanning Rack now needs skill 125, down from 140.",
+            "Maraudon: Zaetar's Spirit appears after Princess Theradras. The Drowned City portal works again."
+          ]
+        },
+        {
+          "heading": "Coming on Tue 10 Nov",
+          "items": [
+            "Hunter: Pets will get tougher, so they can hold monsters like in Classic.",
+            "Warlock: Voidwalkers will get tougher too. Affliction's damage over time spells will be worth casting next to Wrack.",
+            "Shaman: Enhancement will be changed so Strength is its best stat. If you level as Enhancement, keep Strength and Attack Power gear."
+          ]
+        }
+      ]
+    },
+    {
+      "date": null,
+      "label": "Fri 6 Nov",
+      "chips": ["Announced"],
+      "state": "",
+      "title": "Fixes Blizzard said were coming",
+      "blocks": [
+        {
+          "items": [
+            "A proper fix for boats and zeppelins getting lost. Until it lands, temporary portals stand near the docks and zeppelin towers, and they'll be removed afterwards.",
+            "Population tuning for cities and other areas that feel emptier than intended."
+          ]
+        }
+      ]
+    },
+    {
+      "date": "2026-11-05",
+      "label": "Thu 5 Nov",
+      "chips": ["Hotfixes"],
+      "state": "",
+      "title": "First hotfixes",
+      "blocks": [
+        {
+          "heading": "Monsters and quests",
+          "items": [
+            "Durotar: Yarrog Baneshadow respawns at the intended speed.",
+            "Dustwallow Marsh: some murlocs no longer respawn too quickly.",
+            "Swamp of Sorrows: Pelluk now spawns reliably.",
+            "Deathstalker Erland respawns much faster for \"Escorting Erland\".",
+            "Text fixed in \"The Sisterhood of Elune\"."
+          ]
+        },
+        {
+          "heading": "Zephras Isle and items",
+          "items": [
+            "Lotheluum Starbreeze now trains Druids.",
+            "Trade supply vendors sell apprentice tradeskill bags.",
+            "Mild Spices sell to vendors for 1 copper."
+          ]
+        },
+        {
+          "heading": "Also on 4 and 5 Nov",
+          "items": [
+            "Invite-a-Friend players can chat, level past 10, join guilds and parties, and trade again. Log out and back in if you were affected.",
+            "If chat or other players look wrong, check your language and social settings, then log out and back in.",
+            "Battlegrounds: Plainsrunning no longer stacks, and stacks are cancelled when you carry a flag.",
+            "Launch-week Twitch drop: watch 4 hours of eligible WoW streams for the Pouch of Violet Dust, a toy that colours campfires."
+          ]
+        }
+      ]
+    },
+    {
+      "date": "2026-11-04",
+      "label": "Wed 4 Nov",
+      "chips": ["Launch build"],
+      "state": "",
+      "title": "Launch notes: what affects your play",
+      "blocks": [
+        {
+          "heading": "Questing and interface",
+          "items": [
+            "Learning a spell no longer puts it on your action bars, and new bags no longer equip themselves.",
+            "Quest objectives have tooltips and map markers.",
+            "Quest XP was adjusted. Monsters respawn faster in low-level zones, fastest in starting zones, and Blizzard plans to slow low-level zones to more typical rates once the launch rush settles.",
+            "Ruins of Lordaeron quests need level 15. \"Holy Diver\" now gives XP, and \"Carnage\" is fixed.",
+            "Some satyrs now count as demons.",
+            "Class training for every rank from 1 to 60 costs about 206 gold in total.",
+            "Gamepad support works, but Blizzard still calls it a beta and is updating its interface."
+          ]
+        },
+        {
+          "heading": "Combat",
+          "items": [
+            "Every class deals more damage, and higher-level monsters have more health.",
+            "Low spell ranks no longer lose their chance to trigger talents. The exception is the Mage spell Blizzard: ranks learned more than 12 levels below you still trigger Arcane Concentration, Frostbite and Fingers of Frost less often.",
+            "Racials: Orc Command is back, Blood Fury has a 2-minute cooldown, Berserking lasts 15 seconds, Touch of the Grave can trigger every 15 seconds, and racial weapon specializations are gone."
+          ]
+        },
+        {
+          "heading": "By class",
+          "byClass": [
+            [
+              "Druid",
+              "Berserk is gone. The new Feral capstones are Primal Bite and Shifting Power. Bear threat is 115%, Shred does 200% weapon damage, and Starfire hits 40% harder."
+            ],
+            [
+              "Hunter",
+              "Aimed Shot’s bonus damage is up about 110%, Sniper Shot’s 100%, and Arcane Shot’s base damage about 30%. All traps share a 30-second cooldown."
+            ],
+            [
+              "Mage",
+              "Critical Mass gives 6% for 3 points. Ice Lance does 300% more to frozen targets on an 8-second cooldown. Ice Barrier also raises Frost damage. Frost Blast is gone."
+            ],
+            [
+              "Paladin",
+              "Righteous Fury comes at level 10. Salvation, Mass Salvation, Revoke and Blessing of Light are gone. The new capstones are Unsealed Wrath and Shieldsworn."
+            ],
+            ["Priest","Holy Binding replaces Binding Heal. Shadow Word: Death backlash is 30%."],
+            [
+              "Rogue",
+              "Shank arrives at 24 and Poised at 18. Poisons scale twice as much with attack power. Mutilate is the Assassination capstone and Death Mark the Subtlety one."
+            ],
+            [
+              "Shaman",
+              "Call of Thunder replaces Lava Burst. Top-rank Lightning Bolt hits 80% harder. Stormstrike does 150% weapon damage on a 6-second cooldown. Riptide is now a heal over time only."
+            ],
+            [
+              "Warlock",
+              "Demons get 2 health per point of your Stamina, down from 7.5, so they're easier to lose. Wrack deals 86 damage a second at 60."
+            ],
+            [
+              "Warrior",
+              "Defensive Stance threat is 80%. Slam has a 15-second cooldown. Reckless Swings and Improved Whirlwind are new talents."
+            ]
+          ]
+        },
+        {
+          "heading": "Known issues at launch",
+          "items": [
+            "\"No realms are currently available\" (WOW51900309).",
+            "Faction locks, and some problems on the Roleplay and Roleplay PvP rulesets."
+          ]
+        }
+      ]
+    },
+    {
+      "date": "2026-12-09",
+      "label": "Wed 9 Dec",
+      "chips": ["Coming"],
+      "state": "",
+      "title": "First raids open",
+      "blocks": [
+        {
+          "note": "Barrow Deeps, Hyjal Summit and Onyxia's Lair for level 60 characters. The World tab counts down to it."
+        }
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "title": "Blizzard: WoW: Forever Hotfixes, 6 Nov 2026",
+      "url": "https://worldofwarcraft.blizzard.com/en-us/news/24315281/wow-forever-hotfixes-november-5-2026"
+    },
+    {
+      "title": "The Forever Era: Blizzard blue posts on class tuning (6 Nov) and dungeon XP (8 Nov)",
+      "url": "https://theforeverera.com/en/blue/"
+    },
+    {
+      "title": "Blizzard: WoW: Forever Hotfixes, 5 Nov 2026 (via Bluetracker)",
+      "url": "https://www.bluetracker.gg/wow/topic/eu-en/639885-wow-forever-hotfixes-november-5-2026/"
+    },
+    {
+      "title": "The Forever Era: Blizzard blue posts, 4–5 Nov",
+      "url": "https://theforeverera.com/en/blue/"
+    },
+    {
+      "title": "Timesaver: WoW Forever launch patch notes",
+      "url": "https://timesaver.gg/blog/wow-forever-launch-patch-notes"
+    },
+    {
+      "title": "Blizzard: Forever development notes, updated 2–3 Nov (via Bluetracker)",
+      "url": "https://www.bluetracker.gg/wow/topic/us-en/2360696-wow-forever-beta-development-notes-updated-november-2/"
+    },
+    {
+      "title": "Blizzard: World of Warcraft: Forever Now Live",
+      "url": "https://worldofwarcraft.blizzard.com/news/24315820/world-of-warcraft-forever-now-live"
+    },
+    {
+      "title": "Blizzard: Pouch of Violet Dust Twitch drop",
+      "url": "https://worldofwarcraft.blizzard.com/news/24317678/set-your-campfire-ablaze-with-the-pouch-of-violet-dust"
+    },
+    {
+      "title": "Wowhead (November 2022): EU weekly reset moved to 05:00 CET",
+      "url": "https://www.wowhead.com/news/eu-weekly-reset-time-moving-3-hours-earlier-on-november-16th-329651"
+    },
+    {
+      "title": "warcraft.wiki.gg: EU weekly reset at 04:00 UTC in summer too",
+      "url": "https://warcraft.wiki.gg/wiki/API_C_DateAndTime.GetWeeklyResetStartTime"
+    },
+    {
+      "title": "Blizzard: Forever raid overview (raids reset weekly)",
+      "url": "https://worldofwarcraft.blizzard.com/news/24303009"
+    },
+    {
+      "title": "Blizzard: Class Tuning Incoming, 10 November",
+      "url": "https://eu.forums.blizzard.com/en/wow/t/class-tuning-incoming-10-november/640100"
+    },
+    {
+      "title": "Blizzard: The Darkmoon Faire in WoW Classic",
+      "url": "https://worldofwarcraft.blizzard.com/en-gb/news/23302786"
+    }
+  ]
+}

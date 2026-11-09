@@ -1,10 +1,12 @@
 {
-  "at": "2026-11-09T07:16:24Z",
+  "at": "2026-11-09T14:35:53Z",
   "cls": "Shaman",
   "faction": "Horde",
   "gear": {
+    "spec": "str",
     "lvl": 14,
     "slots": {
+      "SHOULDER": {"cur":[],"up":[[1793,"Patched Leather Shoulderpads","P",15,1100,1.0,"52 armor"]]},
       "BACK": {
         "cur": [[1733,"Worn Cloak","P",15,0.3]],
         "up": [
@@ -13,23 +15,29 @@
         ]
       },
       "CHEST": {
-        "cur": [[4929,"Light Scorpid Armor","C",9,1]],
+        "cur": [[4929,"Light Scorpid Armor","C",9,1.0]],
         "up": [
           [2300,"Embossed Leather Vest","U",7,200,0.9,"+2 Sta, 62 armor"],
-          [4243,"Fine Leather Tunic","U",12,600,3.5,"+4 Agi, +3 Sta, 73 armor"],
-          [5781,"Murloc Scale Breastplate","U",14,4000,7,"+5 Str, +3 Agi, 76 armor"]
+          [4243,"Fine Leather Tunic","U",12,500,3.5,"+4 Agi, +3 Sta, 73 armor"],
+          [5781,"Murloc Scale Breastplate","U",14,3000,7.0,"+5 Str, +3 Agi, 76 armor"]
         ]
       },
-      "FEET": {
-        "cur": [[4942,"Tiger Hide Boots","C",12,0.8]],
-        "up": [[2307,"Fine Leather Boots","U",13,300,2.4,"+3 Agi, +2 Sta, 51 armor"]]
+      "WRIST": {
+        "cur": [[281270,"Thra's Friendship Bracelet","U",10,0.6]],
+        "up": [[7281,"Light Leather Bracers","U",9,200,1.5,"+1 Str, +1 Agi, 30 armor"]]
       },
-      "FINGER": {"cur":[[281268,"Depleted Ritual Band","C",9,0]],"up":[]},
       "HANDS": {
         "cur": [[4940,"Veiled Grips","C",10,0.7]],
         "up": [
-          [4239,"Embossed Leather Gloves","U",8,100,1,"+1 Agi, +1 Sta, 41 armor"],
+          [4239,"Embossed Leather Gloves","U",8,200,1.0,"+1 Agi, +1 Sta, 41 armor"],
           [6467,"Deviate Scale Gloves","U",16,2000,2.8,"+3 Agi, +3 Sta, 49 armor"]
+        ]
+      },
+      "WAIST": {
+        "cur": [[1502,"Warped Leather Belt","P",14,0.7]],
+        "up": [
+          [4246,"Fine Leather Belt","U",11,200,1.8,"+2 Agi, +2 Sta, 40 armor"],
+          [5780,"Murloc Scale Belt","U",13,1200,3.6,"+2 Str, +3 Agi, 42 armor"]
         ]
       },
       "LEGS": {
@@ -40,6 +48,11 @@
           [7282,"Light Leather Pants","U",14,600,4.3,"+5 Agi, +3 Sta, 66 armor"]
         ]
       },
+      "FEET": {
+        "cur": [[4942,"Tiger Hide Boots","C",12,0.8]],
+        "up": [[2307,"Fine Leather Boots","U",13,300,2.4,"+3 Agi, +2 Sta, 51 armor"]]
+      },
+      "FINGER": {"cur":[[281268,"Depleted Ritual Band","C",9,0.0]],"up":[]},
       "MAIN_HAND": {
         "cur": [[281274,"Makeshift Stormcaller","U",11,29.3]],
         "up": [
@@ -48,21 +61,8 @@
           [4778,"Heavy Spiked Mace","U",14,9400,39.2,"12.5 DPS, +6 Str"]
         ]
       },
-      "RANGED": {"cur":[[263412,"Totem of Charged Flames","U",10,0]],"up":[]},
-      "SHOULDER": {"cur":[],"up":[[1793,"Patched Leather Shoulderpads","P",15,1100,1,"52 armor"]]},
-      "WAIST": {
-        "cur": [[1502,"Warped Leather Belt","P",14,0.7]],
-        "up": [
-          [4246,"Fine Leather Belt","U",11,200,1.8,"+2 Agi, +2 Sta, 40 armor"],
-          [5780,"Murloc Scale Belt","U",13,1700,3.6,"+2 Str, +3 Agi, 42 armor"]
-        ]
-      },
-      "WRIST": {
-        "cur": [[281270,"Thra's Friendship Bracelet","U",10,0.6]],
-        "up": [[7281,"Light Leather Bracers","U",9,200,1.5,"+1 Str, +1 Agi, 30 armor"]]
-      }
-    },
-    "spec": "str"
+      "RANGED": {"cur":[[263412,"Totem of Charged Flames","U",10,0]],"up":[]}
+    }
   },
   "guild": null,
   "ilvl": 4,

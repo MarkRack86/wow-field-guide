@@ -9,5 +9,12 @@
   "character": "synced",
   "level": 14,
   "notes": []
+ },
+ "speed": {
+  "at": "2026-11-09T15:12:24Z",
+  "ok": true,
+  "id": "2026-11-09T15",
+  "units": 28441,
+  "minutes": 60
  }
 }

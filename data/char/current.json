@@ -1,12 +1,12 @@
 {
-  "at": "2026-11-10T01:28:30Z",
+  "at": "2026-11-10T09:36:35Z",
   "cls": "Shaman",
   "faction": "Horde",
   "gear": {
     "spec": "str",
     "lvl": 14,
     "slots": {
-      "SHOULDER": {"cur":[],"up":[[15019,"Lupine Mantle","C",16,1400,1.1,"56 armor"]]},
+      "SHOULDER": {"cur":[],"up":[[1793,"Patched Leather Shoulderpads","P",15,1100,1.0,"52 armor"]]},
       "BACK": {
         "cur": [[1733,"Worn Cloak","P",15,0.3]],
         "up": [
@@ -17,8 +17,8 @@
       "CHEST": {
         "cur": [[4929,"Light Scorpid Armor","C",9,1.0]],
         "up": [
-          [2300,"Embossed Leather Vest","U",7,200,0.9,"+2 Sta, 62 armor"],
-          [4243,"Fine Leather Tunic","U",12,500,3.5,"+4 Agi, +3 Sta, 73 armor"],
+          [5957,"Handstitched Leather Vest","U",3,100,0.6,"+1 Agi, 55 armor"],
+          [4243,"Fine Leather Tunic","U",12,600,3.5,"+4 Agi, +3 Sta, 73 armor"],
           [5781,"Murloc Scale Breastplate","U",14,2900,7.0,"+5 Str, +3 Agi, 76 armor"]
         ]
       },
@@ -28,13 +28,16 @@
       },
       "HANDS": {
         "cur": [[4940,"Veiled Grips","C",10,0.7]],
-        "up": [[4239,"Embossed Leather Gloves","U",8,200,1.0,"+1 Agi, +1 Sta, 41 armor"]]
+        "up": [
+          [4239,"Embossed Leather Gloves","U",8,200,1.0,"+1 Agi, +1 Sta, 41 armor"],
+          [6467,"Deviate Scale Gloves","U",16,3500,2.8,"+3 Agi, +3 Sta, 49 armor"]
+        ]
       },
       "WAIST": {
         "cur": [[1502,"Warped Leather Belt","P",14,0.7]],
         "up": [
           [4246,"Fine Leather Belt","U",11,200,1.8,"+2 Agi, +2 Sta, 40 armor"],
-          [5780,"Murloc Scale Belt","U",13,3000,3.6,"+2 Str, +3 Agi, 42 armor"]
+          [5780,"Murloc Scale Belt","U",13,2300,3.6,"+2 Str, +3 Agi, 42 armor"]
         ]
       },
       "LEGS": {
@@ -54,7 +57,7 @@
         "cur": [[281274,"Makeshift Stormcaller","U",11,29.3]],
         "up": [
           [1812,"Short-handled Battle Axe","P",12,500,3.7,"6.6 DPS"],
-          [6214,"Heavy Copper Maul","U",11,1500,28.7,"10.8 DPS, +4 Str"],
+          [3488,"Copper Battle Axe","U",8,1000,16.7,"9.0 DPS, +3 Sta"],
           [4778,"Heavy Spiked Mace","U",14,12000,39.2,"12.5 DPS, +6 Str"]
         ]
       },

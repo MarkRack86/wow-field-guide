@@ -1,12 +1,12 @@
 {
-  "at": "2026-11-10T09:36:35Z",
+  "at": "2026-11-10T22:25:49Z",
   "cls": "Shaman",
   "faction": "Horde",
   "gear": {
     "spec": "str",
     "lvl": 14,
     "slots": {
-      "SHOULDER": {"cur":[],"up":[[1793,"Patched Leather Shoulderpads","P",15,1100,1.0,"52 armor"]]},
+      "SHOULDER": {"cur":[],"up":[[1793,"Patched Leather Shoulderpads","P",15,1300,1.0,"52 armor"]]},
       "BACK": {
         "cur": [[1733,"Worn Cloak","P",15,0.3]],
         "up": [
@@ -17,9 +17,9 @@
       "CHEST": {
         "cur": [[4929,"Light Scorpid Armor","C",9,1.0]],
         "up": [
-          [5957,"Handstitched Leather Vest","U",3,100,0.6,"+1 Agi, 55 armor"],
-          [4243,"Fine Leather Tunic","U",12,600,3.5,"+4 Agi, +3 Sta, 73 armor"],
-          [5781,"Murloc Scale Breastplate","U",14,2900,7.0,"+5 Str, +3 Agi, 76 armor"]
+          [2300,"Embossed Leather Vest","U",7,200,0.9,"+2 Sta, 62 armor"],
+          [4243,"Fine Leather Tunic","U",12,500,3.5,"+4 Agi, +3 Sta, 73 armor"],
+          [5781,"Murloc Scale Breastplate","U",14,2500,7.0,"+5 Str, +3 Agi, 76 armor"]
         ]
       },
       "WRIST": {
@@ -29,15 +29,16 @@
       "HANDS": {
         "cur": [[4940,"Veiled Grips","C",10,0.7]],
         "up": [
-          [4239,"Embossed Leather Gloves","U",8,200,1.0,"+1 Agi, +1 Sta, 41 armor"],
-          [6467,"Deviate Scale Gloves","U",16,3500,2.8,"+3 Agi, +3 Sta, 49 armor"]
+          [4239,"Embossed Leather Gloves","U",8,100,1.0,"+1 Agi, +1 Sta, 41 armor"],
+          [6467,"Deviate Scale Gloves","U",16,2700,2.8,"+3 Agi, +3 Sta, 49 armor"]
         ]
       },
       "WAIST": {
         "cur": [[1502,"Warped Leather Belt","P",14,0.7]],
         "up": [
-          [4246,"Fine Leather Belt","U",11,200,1.8,"+2 Agi, +2 Sta, 40 armor"],
-          [5780,"Murloc Scale Belt","U",13,2300,3.6,"+2 Str, +3 Agi, 42 armor"]
+          [4237,"Handstitched Leather Belt","U",5,200,0.9,"+1 Str, 31 armor"],
+          [4246,"Fine Leather Belt","U",11,400,1.8,"+2 Agi, +2 Sta, 40 armor"],
+          [5780,"Murloc Scale Belt","U",13,1900,3.6,"+2 Str, +3 Agi, 42 armor"]
         ]
       },
       "LEGS": {
@@ -57,8 +58,8 @@
         "cur": [[281274,"Makeshift Stormcaller","U",11,29.3]],
         "up": [
           [1812,"Short-handled Battle Axe","P",12,500,3.7,"6.6 DPS"],
-          [3488,"Copper Battle Axe","U",8,1000,16.7,"9.0 DPS, +3 Sta"],
-          [4778,"Heavy Spiked Mace","U",14,12000,39.2,"12.5 DPS, +6 Str"]
+          [3488,"Copper Battle Axe","U",8,1200,16.7,"9.0 DPS, +3 Sta"],
+          [4778,"Heavy Spiked Mace","U",14,10200,39.2,"12.5 DPS, +6 Str"]
         ]
       },
       "RANGED": {"cur":[[263412,"Totem of Charged Flames","U",10,0]],"up":[]}
@@ -67,14 +68,14 @@
   "guild": null,
   "ilvl": 4,
   "level": 14,
-  "login": 1794268398000,
+  "login": 1794342832000,
   "name": "Brakka",
   "profs": [
-    ["Alchemy",77,150,[1832,1378,1379,1380,1382,4178,52646,54453,54456,54655,54210,54211]],
+    ["Alchemy",77,150,[54211,1378,1379,4178,1380,54655,1382,54210,54456,1832,54453,52646]],
     ["Herbalism",106,150,[1419,54115,52642]],
-    ["Cooking",72,75,[1535,1536,1537,3927,3930,4354,4355,4391,4786,52640]],
-    ["Fishing",75,150,[4345,52639]],
-    ["First Aid",65,75,[1838,1839,52641,54191,54192]]
+    ["Cooking",72,75,[4786,52640,4355,1536,4391,3927,3930,1537,1535,4354]],
+    ["Fishing",75,150,[52639,4345]],
+    ["First Aid",65,75,[1839,54192,54191,52641,1838]]
   ],
   "qdone": [
     "A Missing Hand",
@@ -176,6 +177,7 @@
     ["Orgrimmar","Honored",70,12000],
     ["Darkspear Trolls","Friendly",4482,6000],
     ["Booty Bay","Neutral",525,3000],
+    ["Durotar Supply and Logistics","Neutral",0,3000],
     ["Gadgetzan","Neutral",525,3000],
     ["Undercity","Neutral",637,3000],
     ["Powderfuse","Neutral",525,3000]
@@ -183,5 +185,5 @@
   "ruleset": "Normal",
   "surname": "Keltorra",
   "talents": [["Enhancement",3,[["Thundering Strikes",3]]],["Restoration",2,[["Tidal Focus",2]]]],
-  "xp": 10331
+  "xp": 10681
 }

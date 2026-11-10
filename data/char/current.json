@@ -1,12 +1,12 @@
 {
-  "at": "2026-11-09T14:35:53Z",
+  "at": "2026-11-10T01:28:30Z",
   "cls": "Shaman",
   "faction": "Horde",
   "gear": {
     "spec": "str",
     "lvl": 14,
     "slots": {
-      "SHOULDER": {"cur":[],"up":[[1793,"Patched Leather Shoulderpads","P",15,1100,1.0,"52 armor"]]},
+      "SHOULDER": {"cur":[],"up":[[15019,"Lupine Mantle","C",16,1400,1.1,"56 armor"]]},
       "BACK": {
         "cur": [[1733,"Worn Cloak","P",15,0.3]],
         "up": [
@@ -19,7 +19,7 @@
         "up": [
           [2300,"Embossed Leather Vest","U",7,200,0.9,"+2 Sta, 62 armor"],
           [4243,"Fine Leather Tunic","U",12,500,3.5,"+4 Agi, +3 Sta, 73 armor"],
-          [5781,"Murloc Scale Breastplate","U",14,3000,7.0,"+5 Str, +3 Agi, 76 armor"]
+          [5781,"Murloc Scale Breastplate","U",14,2900,7.0,"+5 Str, +3 Agi, 76 armor"]
         ]
       },
       "WRIST": {
@@ -28,16 +28,13 @@
       },
       "HANDS": {
         "cur": [[4940,"Veiled Grips","C",10,0.7]],
-        "up": [
-          [4239,"Embossed Leather Gloves","U",8,200,1.0,"+1 Agi, +1 Sta, 41 armor"],
-          [6467,"Deviate Scale Gloves","U",16,2000,2.8,"+3 Agi, +3 Sta, 49 armor"]
-        ]
+        "up": [[4239,"Embossed Leather Gloves","U",8,200,1.0,"+1 Agi, +1 Sta, 41 armor"]]
       },
       "WAIST": {
         "cur": [[1502,"Warped Leather Belt","P",14,0.7]],
         "up": [
           [4246,"Fine Leather Belt","U",11,200,1.8,"+2 Agi, +2 Sta, 40 armor"],
-          [5780,"Murloc Scale Belt","U",13,1200,3.6,"+2 Str, +3 Agi, 42 armor"]
+          [5780,"Murloc Scale Belt","U",13,3000,3.6,"+2 Str, +3 Agi, 42 armor"]
         ]
       },
       "LEGS": {
@@ -58,7 +55,7 @@
         "up": [
           [1812,"Short-handled Battle Axe","P",12,500,3.7,"6.6 DPS"],
           [6214,"Heavy Copper Maul","U",11,1500,28.7,"10.8 DPS, +4 Str"],
-          [4778,"Heavy Spiked Mace","U",14,9400,39.2,"12.5 DPS, +6 Str"]
+          [4778,"Heavy Spiked Mace","U",14,12000,39.2,"12.5 DPS, +6 Str"]
         ]
       },
       "RANGED": {"cur":[[263412,"Totem of Charged Flames","U",10,0]],"up":[]}
@@ -67,12 +64,12 @@
   "guild": null,
   "ilvl": 4,
   "level": 14,
-  "login": 1794205400000,
+  "login": 1794268398000,
   "name": "Brakka",
   "profs": [
     ["Alchemy",77,150,[1832,1378,1379,1380,1382,4178,52646,54453,54456,54655,54210,54211]],
-    ["Herbalism",101,150,[1419,54115,52642]],
-    ["Cooking",52,75,[1535,1536,1537,3927,3930,4354,4391,4786,52640]],
+    ["Herbalism",106,150,[1419,54115,52642]],
+    ["Cooking",72,75,[1535,1536,1537,3927,3930,4354,4355,4391,4786,52640]],
     ["Fishing",75,150,[4345,52639]],
     ["First Aid",65,75,[1838,1839,52641,54191,54192]]
   ],
@@ -165,6 +162,7 @@
     "The Guns of Northwatch",
     "The Spirits of Stonetalon",
     "The Zhevra",
+    "Tribes at War",
     "WANTED: Baron Longshore"
   ],
   "race": "Orc",
@@ -182,5 +180,5 @@
   "ruleset": "Normal",
   "surname": "Keltorra",
   "talents": [["Enhancement",3,[["Thundering Strikes",3]]],["Restoration",2,[["Tidal Focus",2]]]],
-  "xp": 8986
+  "xp": 10331
 }

@@ -1,11 +1,34 @@
 {
-  "checked": "2026-11-09T04:00:00Z",
+  "checked": "2026-11-10T04:00:00Z",
   "entries": [
+    {
+      "date": "2026-11-09",
+      "label": "Mon 9 Nov",
+      "chips": ["Known issue"],
+      "state": "new",
+      "title": "Emergency maintenance on Monday night",
+      "blocks": [
+        {
+          "items": [
+            "The servers went down for emergency maintenance at about 9:30pm UK time. They were back by about 10:45pm. Some players had to restart the game.",
+            "Players say some progress from just before the outage was lost. Spells they had trained and profession skill-ups were gone, but the gold they spent stayed spent. A few lost quest items.",
+            "Blizzard has not yet said whether anything will be restored. Check your spellbook and profession skill when you next log in, and retrain if you need to."
+          ]
+        },
+        {
+          "heading": "Still waiting",
+          "items": [
+            "The class tuning for Hunter pets, Warlock Voidwalkers and Affliction, and Enhancement Shaman is still due today, Tue 10 Nov. Blizzard has not given a time.",
+            "No new hotfix notes since Sunday's dungeon XP change."
+          ]
+        }
+      ]
+    },
     {
       "date": "2026-11-08",
       "label": "Sun 8 Nov",
       "chips": ["Hotfix"],
-      "state": "new",
+      "state": "",
       "title": "More XP from dungeon monsters",
       "blocks": [
         {
@@ -17,7 +40,7 @@
       "date": "2026-11-06",
       "label": "Fri 6 Nov",
       "chips": ["Hotfixes"],
-      "state": "new",
+      "state": "",
       "title": "Second round of hotfixes, and class tuning on the way",
       "blocks": [
         {
@@ -201,6 +224,10 @@
     }
   ],
   "sources": [
+    {
+      "title": "Timesaver: WoW Forever server status and the 9 Nov emergency maintenance",
+      "url": "https://timesaver.gg/blog/is-wow-forever-down"
+    },
     {
       "title": "Blizzard: WoW: Forever Hotfixes, 6 Nov 2026",
       "url": "https://worldofwarcraft.blizzard.com/en-us/news/24315281/wow-forever-hotfixes-november-5-2026"

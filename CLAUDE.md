@@ -5,7 +5,7 @@
 - The repo is public. The Blizzard keys must never appear in it, in commit messages, or in `data/status.json`. They live only in the repo's Actions secrets (`BNET_ID`, `BNET_SECRET`).
 - `data/` is written by the GitHub Actions refresh (`tools/ci_refresh.py`). Don't hand-edit it except to fix a mistake. `config/` holds settings that Claude's sync copies from the artifact's database.
 - Test before pushing: serve the folder (`python3 -m http.server`), load it in headless Chrome, and check the Market status line, the watchlist, the gear check and the Updates tab.
-- Status, 9 Nov 2026: the new pipeline is running alongside the old one. Until the switch-over, the artifact still reads the database written by the old Claude price-refresh task, and the old hotfix task still edits the artifact's own index.html. At the switch-over, carry any newer notes from the artifact into `data/updates.json`. Don't publish this repo's files to the artifact until the owner agrees to switch over.
+- Status, 10 Nov 2026: the new pipeline is running alongside the old one. The switch-over was put off to 11 Nov because GitHub started the first scheduled runs hours late; the schedule now has several tries per window. Until the switch-over, the artifact still reads the database written by the old Claude price-refresh task, and the old hotfix task still edits the artifact's own index.html. At the switch-over, carry any newer notes from the artifact into `data/updates.json` (`tools/extract_updates.py` helps). Don't publish this repo's files to the artifact until then.
 
 ## The Updates tab: `data/updates.json`
 

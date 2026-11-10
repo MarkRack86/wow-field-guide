@@ -2,14 +2,18 @@ name: Refresh prices and character
 
 on:
   schedule:
-    - cron: '7 4,18 * * *'   # 04:07 and 18:07 UTC: UK time in winter, an hour later in summer
-  workflow_dispatch:          # "Run workflow" button on the Actions tab
-  push:                       # a change to the refresh itself runs it straight away
+    # GitHub can start scheduled runs hours late, or skip them, so each window gets several tries. The first try
+    # that finds no prices saved since the window opened (4am or 6pm UK time) does the refresh; the rest stop at once.
+    - cron: '23,53 3-6 * * *'    # 03:23 to 06:53 UTC: from about 4am UK time, winter or summer
+    - cron: '23,53 17-20 * * *'  # 17:23 to 20:53 UTC: from about 6pm UK time
+  workflow_dispatch:              # "Run workflow" button on the Actions tab
+  push:                           # a change to the refresh, or a nudge from Claude, runs it straight away
     branches: [main]
     paths:
       - '.github/workflows/refresh.yml'
       - 'refresh.py'
       - 'tools/ci_refresh.py'
+      - 'config/refresh-request'
 
 permissions:
   contents: write
@@ -32,4 +36,4 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          python3 tools/ci_refresh.py
+          python3 tools/ci_refresh.py ${{ github.event_name == 'schedule' && '--if-due' || '' }}

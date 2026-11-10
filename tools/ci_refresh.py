@@ -8,9 +8,14 @@
 
 Nothing here prints or saves the keys. data/status.json is public, so it only holds short, checked messages.
 
-Usage: python3 tools/ci_refresh.py [--no-git]
+With --if-due (scheduled runs), it first checks whether prices were already saved in the current window, which
+starts at 4am or 6pm UK time, and stops straight away if so. The workflow schedules several tries per window,
+because GitHub can start scheduled runs hours late or skip them.
+
+Usage: python3 tools/ci_refresh.py [--if-due] [--no-git]
 """
 import datetime
+import glob
 import json
 import os
 import re
@@ -18,6 +23,7 @@ import subprocess
 import sys
 import tempfile
 import time
+from zoneinfo import ZoneInfo
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import build_latest  # noqa: E402
@@ -26,15 +32,44 @@ ROOT = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), 
 SCRIPT = os.environ.get("WOWF_REFRESH_SCRIPT", os.path.join(ROOT, "refresh.py"))
 SPEED_WAIT = int(os.environ.get("WOWF_SPEED_WAIT", str(82 * 60)))
 USE_GIT = "--no-git" not in sys.argv
+IF_DUE = "--if-due" in sys.argv
 PARTIAL = ("Character", "Quest log", "Gear check", "Non-commodity")
+UK = ZoneInfo("Europe/London")
 
 
 def path(*parts):
     return os.path.join(ROOT, *parts)
 
 
+def utcnow():
+    t = os.environ.get("WOWF_NOW")  # tests only: pretend it's this UTC time
+    return datetime.datetime.fromisoformat(t.replace("Z", "+00:00")) if t else datetime.datetime.now(datetime.timezone.utc)
+
+
 def now():
-    return datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+    return utcnow().strftime("%Y-%m-%dT%H:%M:%SZ")
+
+
+def window_start(t):
+    """The refresh windows open at 4am and 6pm UK time. Returns when the current one opened."""
+    uk = t.astimezone(UK)
+    if 4 <= uk.hour < 18:
+        return uk.replace(hour=4, minute=0, second=0, microsecond=0)
+    if uk.hour >= 18:
+        return uk.replace(hour=18, minute=0, second=0, microsecond=0)
+    return (uk - datetime.timedelta(days=1)).replace(hour=18, minute=0, second=0, microsecond=0)
+
+
+def last_saved():
+    """When prices were last saved, from the newest price files."""
+    best = None
+    for p in sorted(glob.glob(path("data", "prices", "*.json")))[-2:]:
+        try:
+            t = datetime.datetime.fromisoformat((load(p) or {}).get("at", "").replace("Z", "+00:00"))
+        except (AttributeError, ValueError):
+            continue
+        best = t if best is None or t > best else best
+    return best
 
 
 def safe(text, n=200):
@@ -157,6 +192,11 @@ def speed(proc, log_path, spd_dir):
 
 
 def main():
+    if IF_DUE:
+        opened, last = window_start(utcnow()), last_saved()
+        if last and last >= opened:
+            print("Already refreshed in this window (prices saved %s UTC); nothing to do." % last.strftime("%Y-%m-%d %H:%M"))
+            return 0
     env = dict(os.environ)
     if not (env.get("BNET_ID") and env.get("BNET_SECRET")):
         set_status("refresh", {"at": now(), "ok": False, "error": "The BNET_ID and BNET_SECRET secrets aren't set in the repository."})

@@ -64,8 +64,10 @@
   var watchEl = $('#mk-watch'), watchNote = $('#mk-watch-note');
   var days = [], loaded = false, DBH = null, CH = null, WATCH = {}, readOnly = false, saving = false, again = false;
   var KNOWN = {}, KNOWNR = {};
-  var prof = store.get('wowf-mkprof', 'alch');
-  if (!PROFS.some(function (p) { return p.k === prof; })) prof = 'alch';
+  /* Herbalism, Alchemy and First Aid have What to craft and What to sell; the picker covers the other professions. */
+  var OTHER = PROFS.filter(function (p) { return p.k !== 'alch' && p.k !== 'fa'; });
+  var prof = store.get('wowf-mkprof', OTHER[0].k);
+  if (!OTHER.some(function (p) { return p.k === prof; })) prof = OTHER[0].k;
   /* Items on the price chart, in the order they were added. Each keeps its colour slot while it stays on, so colours follow items. */
   var MAXS = 6, chartIds = [], chartSlot = {};
   function freeSlot() {
@@ -426,13 +428,23 @@
       (a.n.qty != null ? ' (' + a.n.qty.toLocaleString('en-GB') + ' listed)' : '') + '.';
     return head + 'cheapest listing ' + money(a.n.min) + ', at or ' + (a.kind === 'lo' ? 'below' : 'above') + ' your ' + money(a.v) + '.';
   }
+  var alertAll = false;
+  (function () {
+    var more = $('#mk-alert-more');
+    if (more) more.addEventListener('click', function () { alertAll = !alertAll; renderAlerts(); more.focus(); });
+  })();
   function renderAlerts() {
     var hits = tracked().map(function (id) { return { id: id, a: alertFor(id) }; }).filter(function (x) { return x.a; })
       .sort(function (x, y) { return (WATCH[y.id] ? 1 : 0) - (WATCH[x.id] ? 1 : 0) || (y.a.c ? Math.abs(y.a.c.pct) : 9) - (x.a.c ? Math.abs(x.a.c.pct) : 9); });
-    var h = '';
-    hits.slice(0, 12).forEach(function (x) { h += '<li>' + alertLine(x.id, x.a) + '</li>'; });
+    var h = '', more = $('#mk-alert-more');
+    hits.slice(0, alertAll ? 12 : 5).forEach(function (x) { h += '<li>' + alertLine(x.id, x.a) + '</li>'; });
     if (!h) h = '<li>' + (days.length < 4 ? 'Alerts start once there are a few days of prices to compare. Prices you set on starred items work from today.' : 'Nothing unusual today.') + '</li>';
     alertList.innerHTML = h;
+    if (more) {
+      more.hidden = hits.length <= 5;
+      more.textContent = alertAll ? 'Show the first five' : 'Show all ' + Math.min(hits.length, 12);
+      more.setAttribute('aria-expanded', alertAll ? 'true' : 'false');
+    }
   }
   function chgCell(c, sp) {
     sp = sp || '';
@@ -440,6 +452,15 @@
     var p = pct(c.pct);
     return '<span class="mk-chg">' + (p === '0%' ? '0%<span class="vh"> change on usual</span>' : (c.pct >= 0 ? '▲ ' : '▼ ') + p.slice(1) + '<span class="vh">' + (c.pct >= 0 ? ' up' : ' down') + ' on usual</span>') + sp + '</span>';
   }
+  /* Watch buttons inside What to craft keep their place (the rows stay open), so they're updated where they are. */
+  function syncStars(id) {
+    $$('.gc-watch[data-star="' + id + '"]').forEach(function (b) {
+      var on = !!WATCH[id];
+      b.setAttribute('aria-pressed', on ? 'true' : 'false');
+      b.innerHTML = watchLabel(id);
+    });
+  }
+  function watchLabel(id) { return WATCH[id] ? '<span aria-hidden="true">★</span> Watching ' + esc(nm(id)) : '<span aria-hidden="true">☆</span> Watch ' + esc(nm(id)); }
   function star(id) {
     var on = !!WATCH[id];
     return '<button type="button" class="mk-star" data-star="' + id + '" aria-pressed="' + on + '" aria-label="Watch ' + esc(nm(id)) + '">' + (on ? '★' : '☆') + '</button>';
@@ -454,8 +475,8 @@
     return sub;
   }
   function swatch(id) { return onChart(id) ? '<span class="mk-sw s' + chartSlot[id] + '" aria-hidden="true"></span>' : ''; }
-  function matRow(id, extra) {
-    var n = now(id), al = alertFor(id), on = onChart(id), vh = verdictHtml(id);
+  function matRow(id, extra, why) {
+    var n = now(id), al = alertFor(id), on = onChart(id), vh = why || verdictHtml(id);
     return '<li class="' + (on ? 'on' : '') + (al ? ' alert' : '') + '">' + star(id) + '<span class="mk-name">' + swatch(id) + itemBtn(id, on) + '</span>' +
       '<span class="mk-price">' + (n ? money(n.price) : '—') + '</span>' + chgCell(change(id), spark(id)) +
       '<span class="mk-sub">' + (vh ? vh + ' · ' : '') + esc(subFor(id).join(' · ')) + (al ? ' · <strong>alert</strong>' : '') + '</span>' + (extra || '') + '</li>';
@@ -497,7 +518,7 @@
     });
     watchEl.innerHTML = h;
   }
-  function renderPrices() { renderStatus(); renderAlerts(); renderDeals(); renderWatch(); renderMats(); renderCrafts(); drawChart(); }
+  function renderPrices() { renderStatus(); renderAlerts(); renderCraftList(); renderSell(); renderDeals(); renderWatch(); renderMats(); renderCrafts(); drawChart(); }
 
   /* ---------- Chart: up to six items, as prices or rebased to 100 on each item's first day ---------- */
   var modeEls = $$('input[name="mkmode"]'), legendEl = $('#mk-legend'), tableEl = $('#mk-table'), chartNote = $('#mk-chart-note'), liveEl = $('#mk-live');
@@ -932,7 +953,7 @@
     if (readOnly) return;
     var wasIdx = listId === 'mk-watch' ? $$('#mk-watch [data-star]').map(function (b) { return +b.getAttribute('data-star'); }).indexOf(id) : -1;
     if (WATCH[id]) delete WATCH[id]; else WATCH[id] = { lo: null, hi: null };
-    saveWatch(); renderAlerts(); renderWatch(); renderMats(); renderCrafts();
+    saveWatch(); renderAlerts(); renderWatch(); renderMats(); renderCrafts(); renderSell(); syncStars(id);
     var b = listId ? $('#' + listId + ' [data-star="' + id + '"]') : null;
     if (!b && listId === 'mk-watch') { var rest = $$('#mk-watch [data-star]'); b = rest[Math.min(Math.max(0, wasIdx), rest.length - 1)] || null; }
     if (b) b.focus(); else if (listId === 'mk-watch') { watchNote.setAttribute('tabindex', '-1'); watchNote.focus(); }
@@ -964,7 +985,7 @@
       chartChanged(nm(id) + ' added to the chart' + (full ? ', replacing ' + full + ': it holds six at once.' : '.'), sel);
     }
   }
-  PROFS.forEach(function (p) { var o = document.createElement('option'); o.value = p.k; o.textContent = p.name; profSel.appendChild(o); });
+  OTHER.forEach(function (p) { var o = document.createElement('option'); o.value = p.k; o.textContent = p.name; profSel.appendChild(o); });
   profSel.value = prof;
   profSel.addEventListener('change', function () {
     prof = profSel.value; store.set('wowf-mkprof', prof);
@@ -990,8 +1011,8 @@
     if (!b) return;
     var id = +b.getAttribute('data-item');
     if (!mPanel.contains(b)) { choose(id, true); return; }
-    if (alertList.contains(b) || (dealsEl && dealsEl.contains(b))) {
-      var owner = PROFS.filter(function (p) { return p.mats.indexOf(id) >= 0 || p.crafts.indexOf(id) >= 0; })[0];
+    if (alertList.contains(b) || (dealsEl && dealsEl.contains(b)) || (gcList && gcList.contains(b)) || (gsList && gsList.contains(b))) {
+      var owner = OTHER.filter(function (p) { return p.mats.indexOf(id) >= 0 || p.crafts.indexOf(id) >= 0; })[0];
       if (owner && owner.k !== prof && P().mats.indexOf(id) < 0 && P().crafts.indexOf(id) < 0) { prof = owner.k; profSel.value = prof; store.set('wowf-mkprof', prof); }
       choose(id, false);
       return;
@@ -1014,15 +1035,15 @@
       var t = e.target;
       if (!t) return;
       if (t === suProf) { skprof = suProf.value; store.set('wowf-skprof', skprof); suCur.value = String(curFor(skprof)); renderSkill(); return; }
-      if (t.classList.contains('sk-alt')) { var o = store.get('wowf-skopt-' + skprof, {}) || {}; o[t.getAttribute('data-step')] = +t.value; store.set('wowf-skopt-' + skprof, o); renderSkill(); return; }
-      if (t === suCur) { suCur.value = String(clampSkill(suCur.value)); store.set('wowf-skcur-' + skprof, { v: clampSkill(suCur.value), at: CH ? CH.at : '' }); renderSkill(); renderCraftList(); renderGoldStrips(); return; }
+      if (t.classList.contains('sk-alt')) { var o = store.get('wowf-skopt-' + skprof, {}) || {}; o[t.getAttribute('data-step')] = +t.value; store.set('wowf-skopt-' + skprof, o); renderSkill(); renderSell(); return; }
+      if (t === suCur) { suCur.value = String(clampSkill(suCur.value)); store.set('wowf-skcur-' + skprof, { v: clampSkill(suCur.value), at: CH ? CH.at : '' }); renderSkill(); renderCraftList(); renderSell(); return; }
       if (t === suPick) { store.set('wowf-skpick', suPick.checked); renderSkill(); }
     });
   }
   if (hPanel) {
     hPanel.addEventListener('change', function (e) {
       var t = e.target;
-      if (t === hzSkill) { hzSkill.value = String(clampSkill(hzSkill.value)); store.set('wowf-hzskill', { v: clampSkill(hzSkill.value), at: CH ? CH.at : '' }); renderZones(); renderBonus(); }
+      if (t === hzSkill) { hzSkill.value = String(clampSkill(hzSkill.value)); store.set('wowf-hzskill', { v: clampSkill(hzSkill.value), at: CH ? CH.at : '' }); renderZones(); renderBonus(); renderSell(); }
       else if (t === hzAll) { store.set('wowf-hzall', hzAll.checked); renderZones(); }
     });
   }
@@ -1031,7 +1052,8 @@
   /* RX rows: [name, profession, item made, how many, reagents, skill to learn, skill estimated, how it's learned
      ('auto' | 'trainer' | 'item'), recipe item, its vendor price, tradeable, vendors [name, zone, faction, limited stock],
      drop or quest note, Merchant's Favor [cost, reputation] or 0]. */
-  var gPanel = document.getElementById('panel-gold'), gcList = $('#gc-list'), gcMore = $('#gc-more'), gcStat = $('#gc-status'), gcNextSub = $('#gc-next-sub');
+  var gPanel = mPanel, gcList = $('#gc-list'), gcMore = $('#gc-more'), gcStat = $('#gc-status'), gcNextSub = $('#gc-next-sub');
+  var gsList = $('#gs-list'), gsStat = $('#gs-status');
   var GATHER = {};
   Object.keys(HERB).forEach(function (k) { GATHER[k] = 1; });
   [249399, 249424, 249274, 248821, 248822, 248823, 8153].forEach(function (k) { GATHER[k] = 1; });
@@ -1104,7 +1126,7 @@
       if (a && a.min != null) { h += ' On the Auction House from ' + money(a.min) + ' in the latest snapshot (' + plural(a.qty || 1, 'listed', 'listed') + ').'; cost = cost == null ? a.min : Math.min(cost, a.min); }
       else h += ' None on the Auction House in the latest snapshot.';
     }
-    if (cost != null && e && e.profit > 0) {
+    if (cost != null && e && e.profit > 0 && st !== 'known') {
       var k = Math.max(1, Math.ceil(cost / e.profit));
       h += ' At today’s prices it pays for itself after ' + plural(k, 'craft') + '.';
     }
@@ -1131,14 +1153,16 @@
     if (rt) say.push(rt.charAt(0).toUpperCase() + rt.slice(1) + '.');
     h += '<p>' + esc(say.join(' ')) + '</p>' + rxSource(rid, e);
     var ids = [r[2]].concat(r[4].filter(function (x) { return GATHER[x[0]]; }).map(function (x) { return x[0]; }));
-    h += '<p class="gc-hist">Price history: ' + ids.map(function (id) { return itemBtn(id); }).join(' · ') + '</p>';
+    h += '<p class="gc-hist">Chart: ' + ids.map(function (id) { return itemBtn(id); }).join(' · ') + '</p>' +
+      '<p><button type="button" class="linkish gc-watch" data-star="' + r[2] + '" aria-pressed="' + !!WATCH[r[2]] + '">' + watchLabel(r[2]) + '</button></p>';
     return h;
   }
+  /* Badges, as on the price lists: blue is something you know, green is money, gold is a vendor. */
   function rxRow(rid, e) {
-    var r = RX[rid], st = rxState(rid);
-    var chip = st === 'known' ? '<span class="chip blue">Known</span>' : st === 'learn' ? '<span class="chip ok">Can learn</span>' : '<span class="chip">Skill ' + r[5] + '</span>';
-    var fig = e.miss ? '<span class="gc-fig na">no total</span>' : '<span class="gc-fig' + (e.profit < 0 ? ' neg' : '') + '">' + (e.profit >= 0 ? '+' : '') + money(e.profit) +
-      '<span class="vh">' + (e.profit >= 0 ? ' profit' : ' loss') + ' a craft</span></span>';
+    var r = RX[rid], st = rxState(rid), vend = (SELL[r[2]] || 0) > (sellNet(r[2]) || 0);
+    var chip = (st === 'known' ? '<span class="chip blue">Known</span>' : st === 'learn' ? '<span class="chip">Can learn</span>' : '<span class="chip">From skill ' + r[5] + '</span>') +
+      (vend ? '<span class="chip gold">Vendor it</span>' : '');
+    var fig = '<span class="chip ok gc-profit"><span class="nc">+' + money(e.profit) + '</span> profit<span class="vh"> a craft</span></span>';
     var mats = r[4].map(function (x) { return (x[1] > 1 ? x[1] + ' ' : '') + nm(x[0]); }).join(', ') + (e.n.qty != null && e.n.qty < 10 ? ' · only ' + e.n.qty + ' listed' : '');
     var sp = sparkSvg(evalSeries(function () { var x = rxEval(rid); return x && !x.miss ? x.profit : null; }), 'Profit on ' + r[0]);
     return '<li><details class="gc-row" data-rx="' + rid + '" data-keep="gc-' + rid + '"' + (gcOpen[rid] ? ' open' : '') + '><summary><span class="gc-head"><span class="gc-name">' + esc(r[0]) + '</span>' +
@@ -1151,64 +1175,102 @@
     if (gcNextSub) gcNextSub.textContent = 'to Alchemy ' + rxReach('alch');
     var d = latest();
     if (!d) { gcList.innerHTML = ''; gcMore.hidden = true; gcStat.textContent = loaded ? 'No prices yet, so there’s nothing to compare.' : 'Waiting for prices…'; return; }
-    var rows = [], none = [];
+    var rows = [], seen = 0;
     Object.keys(RX).forEach(function (rid) {
       if (!inScope(rid)) return;
+      seen++;
       var e = rxEval(rid);
-      if (e) rows.push({ rid: rid, e: e }); else none.push(RX[rid][0]);
+      if (e && !e.miss && e.profit > 0) rows.push({ rid: rid, e: e });
     });
-    rows.sort(function (a, b) {
-      return (a.e.miss ? 1 : 0) - (b.e.miss ? 1 : 0) || (b.e.profit || 0) - (a.e.profit || 0) || RX[a.rid][5] - RX[b.rid][5];
-    });
-    var good = rows.filter(function (x) { return !x.e.miss && x.e.profit > 0; }).length;
+    rows.sort(function (a, b) { return b.e.profit - a.e.profit || RX[a.rid][5] - RX[b.rid][5]; });
     var show = gcAll ? rows : rows.slice(0, GC_TOP);
-    gcList.innerHTML = show.map(function (x) { return rxRow(x.rid, x.e); }).join('') +
-      (gcAll && none.length ? '<li class="gc-none"><p class="note">Nothing listed in the latest snapshot, so no price: ' + esc(none.sort().join(', ')) + '.</p></li>' : '');
+    gcList.innerHTML = show.map(function (x) { return rxRow(x.rid, x.e); }).join('');
     if (window.wowfApplyOpen) window.wowfApplyOpen(gcList);
-    gcMore.hidden = rows.length <= GC_TOP && !none.length;
-    gcMore.textContent = gcAll ? 'Show the top ' + GC_TOP : 'Show all ' + rows.length + (none.length ? ', and ' + none.length + ' with nothing listed' : '');
+    gcMore.hidden = rows.length <= GC_TOP;
+    gcMore.textContent = gcAll ? 'Show the top ' + GC_TOP : 'Show all ' + rows.length;
     gcMore.setAttribute('aria-expanded', gcAll ? 'true' : 'false');
     var when = d.at && !isNaN(Date.parse(d.at)) ? stampFmt.format(new Date(d.at)) : dayLabel(d.d);
-    gcStat.textContent = rows.length ? good + ' of ' + plural(rows.length, 'craft') + ' make a profit at prices from ' + when + '.' : 'None of these sell on the Auction House right now.';
+    gcStat.textContent = rows.length ? rows.length + ' of ' + plural(seen, 'recipe') + ' make a profit at prices from ' + when + '. Only those are listed.'
+      : 'None of these ' + plural(seen, 'recipe') + ' make a profit at prices from ' + when + ', so sell your herbs instead.';
   }
-  /* A strip of today's prices for the herbs (and crates) each level's section names, and the best craft you can make now with them. */
-  var GNAME = null, BONUSH = { 2452: 1, 249399: 1, 249424: 1, 249274: 1, 8153: 1 };
-  function goldNames() {
-    if (GNAME) return GNAME;
-    GNAME = [];
-    Object.keys(GATHER).forEach(function (id) { if (NAMES[id]) GNAME.push([+id, NAMES[id], 0]); });
-    Object.keys(NAMES).forEach(function (id) { var m = /^Waylaid Crate: (.+)$/.exec(NAMES[id]); if (m) GNAME.push([+id, m[1], 1]); });
-    GNAME.sort(function (a, b) { return b[1].length - a[1].length; });
-    return GNAME;
+
+  /* ---------- What to sell: the herbs you pick, sorted into sell and keep ---------- */
+  /* Herbs a skill-up route still needs, from your skill to the cap your rank allows, using the recipes picked on the Skill-up tab. */
+  function routeNeeds(key) {
+    var r = ROUTES[key], p = r ? profSkill(r.n) : null, out = {};
+    if (!r || !p) return out;
+    var cur = +p.sk || 1, cap = +p.max || 75, opts = store.get('wowf-skopt-' + key, {}) || {};
+    r.s.forEach(function (st, i) {
+      if (st[0] === 'T') return;
+      var a = st[0], b = st[1], top = Math.min(b, cap), o = st[2];
+      if (cur >= top || a >= cap) return;
+      var ci = Math.min(o.length - 1, Math.max(0, +opts[i] || 0)), rec = RCP[o[ci][0]], n = o[ci][1];
+      var left = Math.ceil(n * (top - Math.max(a, cur)) / (b - a));
+      if (!rec || left <= 0) return;
+      rec[3].forEach(function (x) { if (HERB[x[0]] != null) out[x[0]] = (out[x[0]] || 0) + x[1] * left; });
+    });
+    return out;
   }
-  function renderGoldStrips() {
-    if (!gPanel) return;
-    $$('.gb-live', gPanel).forEach(function (el) {
-      var body = el.closest('.more-body'), herbP = el.previousElementSibling;
-      if (!body || !herbP) return;
-      var allTxt = Array.prototype.filter.call(body.children, function (c) { return c !== el; }).map(function (c) { return c.textContent; }).join(' ').replace(/’/g, "'");
-      var herbTxt = herbP.textContent.replace(/’/g, "'"), herbs = [], crates = [];
-      goldNames().forEach(function (g) {
-        var hay = g[2] || BONUSH[g[0]] ? allTxt : herbTxt;
-        if (hay.indexOf(g[1]) >= 0) { (g[2] ? crates : herbs).push(g[0]); if (!g[2]) herbTxt = herbTxt.split(g[1]).join(' '); }
+  /* Crafts worth making for the market at a time: about a day's sales, from 5 to 20, and none if nobody bought any. */
+  function craftsFor(id) {
+    var r = rate(id);
+    if (!r) return 10;
+    if (!r.units) return 0;
+    return Math.max(5, Math.min(20, Math.round(r.perDay)));
+  }
+  function sellPlan() {
+    var sk = herbSkill(), ids = [], seen = {};
+    Object.keys(HERB).forEach(function (k) { var id = +k; if (HERB[id] <= sk && NAMES[id]) { ids.push(id); seen[id] = 1; } });
+    BONUS.forEach(function (b) { if (b[2] && sk >= b[2] && NAMES[b[0]] && !seen[b[0]]) ids.push(b[0]); });
+    var needs = {}, caps = {};
+    ['alch', 'fa'].forEach(function (k) {
+      var nd = routeNeeds(k), p = profSkill(ROUTES[k].n);
+      Object.keys(nd).forEach(function (id) { needs[id] = (needs[id] || 0) + nd[id]; if (!caps[id]) caps[id] = { pn: ROUTES[k].n, cap: p ? p.max : 0 }; });
+    });
+    var use = {};
+    Object.keys(RX).forEach(function (rid) {
+      if (rxState(rid) === 'later') return;
+      var e = rxEval(rid), c;
+      if (!e || e.miss || !(e.profit > 0) || !(c = craftsFor(RX[rid][2]))) return;
+      RX[rid][4].forEach(function (x) {
+        var u = use[x[0]] || (use[x[0]] = { n: 0, profit: 0, k: 0 });
+        u.n += x[1] * c; u.k++;
+        if (e.profit > u.profit) { u.rid = rid; u.profit = e.profit; u.crafts = c; }
       });
-      var priced = herbs.filter(function (id) { return now(id); }).sort(function (a, b) { return floorP(b) - floorP(a); });
-      var cr = crates.filter(function (id) { return now(id); });
-      if (!priced.length && !cr.length) { el.hidden = true; el.innerHTML = ''; return; }
-      var h = '<p><span class="label">Today</span> ' + priced.map(function (id) { return '<span class="gb-pair">' + esc(nm(id)) + ' <span class="mk-price">' + money(floorP(id)) + '</span></span>'; }).join(' · ') +
-        (cr.length ? (priced.length ? ' · ' : '') + cr.map(function (id) { return '<span class="gb-pair">an empty ' + esc(NAMES[id].replace(/^Waylaid Crate: /, '')) + ' crate <span class="mk-price">' + money(floorP(id)) + '</span></span>'; }).join(' · ') : '') + '</p>';
-      var best = null;
-      Object.keys(RX).forEach(function (rid) {
-        var r = RX[rid];
-        var hs = r[4].filter(function (x) { return GATHER[x[0]]; });
-        if (rxState(rid) === 'later' || !hs.length || !hs.every(function (x) { return herbs.indexOf(x[0]) >= 0; })) return;
-        var e = rxEval(rid);
-        if (e && !e.miss && e.profit > 0 && (!best || e.profit > best.e.profit)) best = { rid: rid, e: e };
-      });
-      if (best) h += '<p>Best craft you can make or learn now from these: ' + esc(RX[best.rid][0]) + ', +' + money(best.e.profit) + ' a craft. What to craft, above, has the sums.</p>';
-      el.innerHTML = h; el.hidden = false;
+    });
+    return ids.map(function (id) {
+      var n = now(id), s = n ? sellNet(id) : null, v = SELL[id] || 0, u = use[id], x = { id: id, n: n, value: s, need: needs[id] || 0, cap: caps[id] };
+      x.keep = (u ? u.n : 0) + x.need;
+      if (u) { x.act = 'craft'; x.rid = u.rid; x.profit = u.profit; x.crafts = u.crafts; x.forCraft = u.n; x.recipes = u.k; }
+      else if (x.need) x.act = 'skill';
+      else if (v > 0 && s != null && v > s) { x.act = 'vendor'; x.value = v; }
+      else x.act = 'sell';
+      return x;
     });
   }
+  function sellWhy(x) {
+    var skill = x.need && x.cap ? x.cap.pn + ' skill-ups to ' + x.cap.cap : '';
+    if (x.act === 'craft') return '<span class="chip mk-verdict blue">Keep ' + x.keep.toLocaleString('en-GB') + '</span> ' +
+      esc((x.recipes > 1 ? 'for ' + x.recipes + ' profitable crafts (best: ' + RX[x.rid][0] + ', +' + money(x.profit) + ' each)'
+        : 'for ' + x.crafts + ' ' + RX[x.rid][0] + ' at +' + money(x.profit) + ' each') + (skill ? ' and ' + skill : '') + '. Sell any more');
+    if (x.act === 'skill') return '<span class="chip mk-verdict blue">Keep ' + x.keep.toLocaleString('en-GB') + '</span> ' + esc('for ' + x.cap.pn + ' skill-ups to ' + x.cap.cap + '. Sell any more');
+    if (x.act === 'vendor') return '<span class="chip mk-verdict gold">Vendor</span> ' + esc('a vendor pays ' + money(x.value) + ', more than the Auction House');
+    return '<span class="chip mk-verdict ok">Sell</span> ' + esc(x.n ? money(x.value) + ' each after the cut' : 'none listed, so no price yet');
+  }
+  function renderSell() {
+    if (!gsList || !gsStat) return;
+    if (!latest()) { gsList.innerHTML = ''; gsStat.textContent = loaded ? 'No prices yet.' : 'Waiting for prices…'; return; }
+    var plan = sellPlan(), sell = [], keep = [];
+    plan.forEach(function (x) { (x.act === 'craft' || x.act === 'skill' ? keep : sell).push(x); });
+    sell.sort(function (a, b) { return (b.value || 0) - (a.value || 0); });
+    keep.sort(function (a, b) { return (b.profit || 0) - (a.profit || 0) || b.need - a.need; });
+    var h = '';
+    if (sell.length) h += '<li class="mk-group"><span class="label">Sell them all</span></li>' + sell.map(function (x) { return matRow(x.id, '', sellWhy(x)); }).join('');
+    if (keep.length) h += '<li class="mk-group"><span class="label">Keep some for crafting, sell the rest</span></li>' + keep.map(function (x) { return matRow(x.id, '', sellWhy(x)); }).join('');
+    gsList.innerHTML = h;
+    gsStat.textContent = 'At Herbalism ' + herbSkill() + ': ' + plural(sell.length, 'herb or find', 'herbs and finds') + ' only worth selling, and ' + keep.length + ' to keep a few of.';
+  }
+
   if (gPanel) {
     gPanel.addEventListener('change', function (e) {
       var t = e.target;
@@ -1223,7 +1285,6 @@
       var dt = e.target;
       if (dt && dt.classList && dt.classList.contains('gc-row')) { if (dt.open) gcOpen[dt.getAttribute('data-rx')] = 1; else delete gcOpen[dt.getAttribute('data-rx')]; }
     }, true);
-    document.addEventListener('wowf:gold-rendered', renderGoldStrips);
   }
 
   /* ---------- Under-priced listings (Market tab) ---------- */
@@ -1476,8 +1537,9 @@
     if (!inScope(rid)) { gcScope = 'all'; store.set('wowf-gcscope', gcScope); }
     gcAll = true; gcOpen[rid] = 1; renderCraftList();
     var dt = gcList.querySelector('[data-rx="' + rid + '"]');
-    if (dt) dt.open = true;
-    if (window.wowfGo) window.wowfGo('gold', dt ? dt.querySelector('summary') : $('#gc'));
+    if (!dt) { choose(RX[rid][2], true); announce(RX[rid][0] + ' doesn’t make a profit right now, so it isn’t in What to craft. Its price is on the chart.'); return; }
+    dt.open = true;
+    if (window.wowfGo) window.wowfGo('gold', dt.querySelector('summary'));
   }
   function zoneLi(name) { return $$('#hz-list li').filter(function (li) { var b = li.querySelector('.hz-name b'); return b && b.textContent === name; })[0] || null; }
   function openZone(name) {
@@ -1516,11 +1578,11 @@
   WATCH = cleanWatch(store.get('wowf-watch', {}));
   fillSkillProfs(); fillInputs();
   function renderAll() {
-    renderChar(); renderGear(); renderPrices(); renderSkill(); renderZones(); renderBonus(); renderCraftList(); renderGoldStrips(); renderFresh(); renderToday();
+    renderChar(); renderGear(); renderPrices(); renderSkill(); renderZones(); renderBonus(); renderFresh(); renderToday();
   }
   renderAll();
   /* The page's class, faction and level can change while this runs: re-read them for the herb zones and skill-up rows. */
-  document.addEventListener('wowf:char-changed', function () { renderZones(); renderSkill(); renderCraftList(); renderGoldStrips(); renderToday(); });
+  document.addEventListener('wowf:char-changed', function () { renderZones(); renderSkill(); renderCraftList(); renderSell(); renderToday(); });
   document.addEventListener('wowf:tab', function (e) { if (e && e.detail && e.detail.token === 'today') renderToday(); });
   document.addEventListener('wowf:updates', function () { renderFresh(); renderToday(); });
 
@@ -1560,7 +1622,7 @@
   function onSpeed(snap) {
     SPD = snap.docs.map(function (doc) { var v = doc.data() || {}; return { at: String(v.at || ''), w: num(v.w), u: v.u && typeof v.u === 'object' ? v.u : {} }; })
       .filter(function (x) { return x.w && x.w <= 180 && !isNaN(Date.parse(x.at)); });
-    renderMats(); renderWatch(); renderCrafts(); renderCraftList();
+    renderMats(); renderWatch(); renderCrafts(); renderCraftList(); renderSell();
   }
   function onGearCfg(snap) {
     var d = snap && snap.exists ? snap.data() : null;

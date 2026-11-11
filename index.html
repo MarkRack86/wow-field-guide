@@ -340,9 +340,6 @@ input[type=range]:focus-visible{outline:3px solid var(--focus);outline-offset:2p
 .tstate .num{color:var(--gold);font-variant-numeric:tabular-nums}
 
 /* Gold */
-.gl .more>summary{gap:.75rem}
-.gb-sum{display:flex;flex-wrap:wrap;align-items:baseline;gap:.1rem .7rem;flex:1 1 auto;min-width:0}
-.gb.here>summary .lv{color:var(--on-gold);background:var(--gold-fill);border-radius:6px;padding:.05rem .4rem}
 @media (max-width:22em){.tab{font-size:.8125rem}}
 /* Gold: what to craft, and today's herb prices for each level */
 .gc-scope .seg-opts{grid-template-columns:repeat(3,minmax(0,1fr))}
@@ -371,11 +368,6 @@ input[type=range]:focus-visible{outline:3px solid var(--focus);outline-offset:2p
 .gc-hist{font-size:.875rem;color:var(--ink-soft)}
 .gc-hist .mk-item{font-weight:600}
 .gc-none{padding:.7rem .15rem}
-.gb-live{display:grid;gap:.35rem;padding:.6rem .75rem;border-radius:10px;background:var(--sunken);font-size:.9375rem}
-.gb-live p{margin:0}
-.gb-live .label{margin-right:.35rem}
-.gb-live .mk-price{font-weight:600}
-.gb-pair{display:inline-block;max-width:100%}
 
 /* Market, Skill-up, Herb zones and your synced character */
 /* Class quest ticks */
@@ -585,6 +577,10 @@ ol.td-list{counter-reset:td}
 .mk-chg .spark{display:block;margin:.3rem 0 0 auto}
 .mk-chips .spark{align-self:center}
 .gc-figs{display:grid;justify-items:end;gap:.25rem}
+.gc-profit{white-space:nowrap}
+#mk-other .sub-block{display:grid;gap:.5rem;margin-top:1.25rem}
+#mk-other h4{margin:0;font-size:1rem}
+#gs-list .mk-group:first-child{padding-top:0}
 
 /* Under-priced listings */
 .mk-deals li{grid-template-columns:minmax(0,1fr) auto 4.25rem;padding-left:.5rem}
@@ -675,8 +671,7 @@ ol.td-list{counter-reset:td}
       <button type="button" class="tab" role="tab" id="tab-talents" aria-controls="panel-talents" aria-selected="false" tabindex="-1" data-token="talents">Talents</button>
       <button type="button" class="tab" role="tab" id="tab-build" aria-controls="panel-build" aria-selected="false" tabindex="-1" data-token="build">Build</button>
       <button type="button" class="tab" role="tab" id="tab-world" aria-controls="panel-world" aria-selected="false" tabindex="-1" data-token="world">World</button>
-      <button type="button" class="tab" role="tab" id="tab-gold" aria-controls="panel-gold" aria-selected="false" tabindex="-1" data-token="gold">Gold</button>
-      <button type="button" class="tab" role="tab" id="tab-market" aria-controls="panel-market" aria-selected="false" tabindex="-1" data-token="market">Market</button>
+      <button type="button" class="tab" role="tab" id="tab-market" aria-controls="panel-market" aria-selected="false" tabindex="-1" data-token="gold">Gold</button>
       <button type="button" class="tab" role="tab" id="tab-skillup" aria-controls="panel-skillup" aria-selected="false" tabindex="-1" data-token="skillup">Skill-up</button>
       <button type="button" class="tab" role="tab" id="tab-herbs" aria-controls="panel-herbs" aria-selected="false" tabindex="-1" data-token="herbs">Herb zones</button>
       <button type="button" class="tab" role="tab" id="tab-updates" aria-controls="panel-updates" aria-selected="false" tabindex="-1" data-token="updates">Updates</button>
@@ -736,7 +731,7 @@ ol.td-list{counter-reset:td}
     <div class="tcard td-card" id="td-deals">
       <h3>Under-priced right now</h3>
       <ul class="td-list" id="td-deals-list"><li class="note">Waiting for prices…</li></ul>
-      <p class="td-go"><button type="button" class="linkish" data-goto="market" data-at="#mk-deals-block">Under-priced listings, on Market</button></p>
+      <p class="td-go"><button type="button" class="linkish" data-goto="gold" data-at="#mk-deals-block">Under-priced listings, on Gold</button></p>
     </div>
     <div class="tcard td-card" id="td-gear">
       <h3>Gear upgrades</h3>
@@ -972,17 +967,18 @@ ol.td-list{counter-reset:td}
   </div>
 </section>
 
-<!-- GOLD -->
-<section class="panel" id="panel-gold" role="tabpanel" aria-labelledby="tab-gold" tabindex="0" hidden>
+
+<!-- GOLD (the Auction House prices, crafting and selling; it keeps the old Market tab's ids) -->
+<section class="panel" id="panel-market" role="tabpanel" aria-labelledby="tab-market" tabindex="0" hidden>
   <div class="intro">
     <h2>Gold</h2>
-    <p>Making gold with Herbalism and Alchemy, level by level. The section for your level opens by itself, and the details follow your class and faction. Prices come from the latest Auction House snapshot, so the crafts and herb prices here change every day.</p>
-    <p class="note">On the beta, gathering while questing made about 1 to 2 gold an hour around level 20, so a slow start is normal. It climbs with level: in high-level zones, grey items alone sell for a few gold each.</p>
+    <p>What to craft, what to sell and what things cost, from Blizzard’s Auction House data for the Normal ruleset, Horde side, in Europe. It’s read twice a day, early in the morning and in the evening UK time, and the evening read replaces the morning’s as that day’s price.</p>
+    <p class="note" id="mk-status" aria-live="polite">Loading prices…</p>
   </div>
 
   <div class="block" id="gc">
     <h3>What to craft</h3>
-    <p class="note">Profit for one craft at the latest prices. The herbs count at what they’d sell for, so the profit is what crafting earns on top of selling them. The potion counts after the Auction House’s 5% cut, and vials, spices and other reagents at the cheapest of a vendor, the Auction House or making them. Open a craft for the sums and where to get the recipe.</p>
+    <p class="note">Crafts that make a profit at the latest prices, best first; the ones that would lose money are left out. Profit is for one craft. The herbs count at what they’d sell for, so the profit is what crafting earns on top of selling them. The potion counts after the Auction House’s 5% cut, and vials, spices and other reagents at the cheapest of a vendor, the Auction House or making them. Open a craft for the sums, where to get the recipe, its price chart and a watch button.</p>
     <fieldset class="seg gc-scope">
       <legend>Recipes to show</legend>
       <div class="seg-opts">
@@ -996,44 +992,17 @@ ol.td-list{counter-reset:td}
     <p><button type="button" class="linkish" id="gc-more" aria-controls="gc-list" aria-expanded="false" hidden>Show all</button></p>
   </div>
 
-  <div class="block">
-    <h3>By level</h3>
-    <div class="acc gl" id="gold-list"></div>
-  </div>
-
-  <div class="now-box">
-    <p class="label" id="gold-class-label">Shaman tip</p>
-    <p id="gold-class">Your class tip appears here.</p>
-  </div>
-
-  <div class="block">
-    <h3>At every level</h3>
-    <ul class="plain">
-      <li>Look up prices before you sell or craft. The Market tab reads Blizzard’s Auction House data twice a day and says whether each material is worth more sold, crafted or vendored, and <a href="https://ahledger.com" rel="noopener">AHledger</a> shows prices for the other factions and rulesets.</li>
-      <li>Sell to the players who are buying. Low-level herbs sell in the first weeks after launch, while top-end materials listed early mostly sit.</li>
-      <li>Craft only when it pays: a potion has to sell for more than its herbs and vial would. What to craft, at the top of this tab, does the sums with the latest prices.</li>
-      <li>Post short auctions and match the cheapest price rather than undercutting it. On Forever the newest listing at a price sells first, and the market covers everyone on your ruleset, so a fair price sells within hours. Longer auctions cost a bigger deposit.</li>
-      <li>Never vendor Scarce herbs, Herb Seeds, or greens and blues you haven't priced.</li>
-      <li>Don't equip a Bind on Equip item you mean to sell: once worn, it can't be traded.</li>
-      <li>Cook what you kill. Every Well Fed food adds 5% to XP from kills, so cooked food sells from day one.</li>
-      <li>Train only the spells you use, and keep your savings for riding at 40.</li>
-    </ul>
-  </div>
-
-  <p class="note">Forever's market is new, so prices aren't settled yet: check the Auction House before you sell or craft. The details come from beta and launch guides by Warcraft Tavern, Conquest Capped, wow-professions.com, Blizzard Watch and Icy Veins, listed at the bottom of the page.</p>
-</section>
-
-<!-- MARKET -->
-<section class="panel" id="panel-market" role="tabpanel" aria-labelledby="tab-market" tabindex="0" hidden>
-  <div class="intro">
-    <h2>Market</h2>
-    <p>Auction House prices for the Normal ruleset, Horde side, in Europe, read straight from Blizzard. A scheduled refresh reads them at about 4am and again at 6pm UK time; the 6pm read replaces the morning’s as that day’s price.</p>
-    <p class="note" id="mk-status" aria-live="polite">Loading prices…</p>
+  <div class="block" id="gs">
+    <h3>What to sell</h3>
+    <p class="note">The herbs you can pick at your Herbalism skill, and what turns up while you pick them. Sell the ones none of your profitable crafts or skill-ups need. For the rest, keep the number shown and sell any more: it allows for about a day’s sales of each craft (5 to 20 crafts) and your skill-ups to your current cap. Tap a name for its price chart, and the star to watch it.</p>
+    <p class="note" id="gs-status">Waiting for prices…</p>
+    <ul class="mk-list" id="gs-list"></ul>
   </div>
 
   <div class="now-box mk-alerts">
     <p class="label">Price alerts</p>
     <ul class="plain" id="mk-alert-list"><li>Alerts start once there are a few days of prices to compare.</li></ul>
+    <p><button type="button" class="linkish" id="mk-alert-more" aria-controls="mk-alert-list" aria-expanded="false" hidden>Show all</button></p>
     <p class="note">An alert means today's price is at least 40% away from its usual price (the middle of the previous seven days), by 25c or more, with at least ten listed. Starred items alert sooner: at 20% and 10c, or when the cheapest listing reaches a price you set.</p>
   </div>
 
@@ -1048,11 +1017,6 @@ ol.td-list{counter-reset:td}
     <h3>Watchlist</h3>
     <p class="note" id="mk-watch-note">Tap the star next to any item to pin it here.</p>
     <ul class="mk-list mk-wlist" id="mk-watch"></ul>
-  </div>
-
-  <div class="cb-field mk-pick">
-    <label for="mk-prof">Profession</label>
-    <select id="mk-prof" class="select big"></select>
   </div>
 
   <div class="tool">
@@ -1080,21 +1044,48 @@ ol.td-list{counter-reset:td}
     </details>
   </div>
 
-  <div class="block">
-    <h3>Materials</h3>
-    <p class="note">Tap names to add them to the chart, up to six, and tap again to take them off. Prices are what the cheapest 20 cost each in the latest snapshot, and the change is against the usual price. The coloured label is the best use at today's prices: sell on the Auction House, craft it into something worth more, or sell to a vendor when one pays more.</p>
-    <ul class="mk-list" id="mk-mats"></ul>
+  <div class="block" id="mk-other">
+    <h3>Other professions</h3>
+    <p class="note">Prices for the professions What to craft and What to sell don’t cover, for an alt or a change of plan.</p>
+    <div class="cb-field mk-pick">
+    <label for="mk-prof">Profession</label>
+    <select id="mk-prof" class="select big"></select>
+    </div>
+    <div class="sub-block">
+      <h4>Materials</h4>
+      <p class="note">Tap names to add them to the chart, up to six, and tap again to take them off. Prices are what the cheapest 20 cost each in the latest snapshot, and the change is against the usual price. The coloured label is the best use at today's prices: sell on the Auction House, craft it into something worth more, or sell to a vendor when one pays more.</p>
+      <ul class="mk-list" id="mk-mats"></ul>
+    </div>
+    <div class="sub-block">
+      <h4>Crafted items</h4>
+      <p class="note">What each craft sells for, after the 5% cut, against what its materials cost. Herbs count at what they’d sell for, as in What to craft; vendor items count at the cheaper of the vendor and the Auction House. Prices use the cheapest 20 listed.</p>
+      <ul class="mk-list mk-crafts" id="mk-crafts"></ul>
+    </div>
+  </div>
+
+  <div class="now-box">
+    <p class="label" id="gold-class-label">Shaman tip</p>
+    <p id="gold-class">Your class tip appears here.</p>
   </div>
 
   <div class="block">
-    <h3>Crafted items</h3>
-    <p class="note">What each craft sells for, after the 5% cut, against what its materials cost. Herbs count at what they’d sell for, as on the Gold tab; vendor items count at the cheaper of the vendor and the Auction House. Prices use the cheapest 20 listed.</p>
-    <ul class="mk-list mk-crafts" id="mk-crafts"></ul>
-  </div>
-
-  <div class="block">
-    <h3>How the Auction House works</h3>
+    <h3>Good to know</h3>
     <div class="acc">
+      <details class="more">
+        <summary>Making gold at every level</summary>
+        <div class="more-body">
+          <ul>
+            <li>Look up prices before you sell or craft. This tab reads Blizzard’s Auction House data twice a day, and What to sell says which herbs are worth more sold than crafted. <a href="https://ahledger.com" rel="noopener">AHledger</a> shows prices for the other factions and rulesets.</li>
+            <li>Sell to the players who are buying. Low-level herbs sell in the first weeks after launch, while top-end materials listed early mostly sit.</li>
+            <li>Craft only when it pays: a potion has to sell for more than its herbs and vial would. What to craft, on this tab, does the sums with the latest prices.</li>
+            <li>Post short auctions and match the cheapest price rather than undercutting it. On Forever the newest listing at a price sells first, and the market covers everyone on your ruleset, so a fair price sells within hours. Longer auctions cost a bigger deposit.</li>
+            <li>Never vendor Scarce herbs, Herb Seeds, or greens and blues you haven't priced.</li>
+            <li>Don't equip a Bind on Equip item you mean to sell: once worn, it can't be traded.</li>
+            <li>Cook what you kill. Every Well Fed food adds 5% to XP from kills, so cooked food sells from day one.</li>
+            <li>Train only the spells you use, and keep your savings for riding at 40.</li>
+          </ul>
+        </div>
+      </details>
       <details class="more">
         <summary>One market for your whole ruleset</summary>
         <div class="more-body">
@@ -1122,7 +1113,7 @@ ol.td-list{counter-reset:td}
           <ul>
             <li>On Forever the newest listing at a price sells first, so matching the cheapest price sells as fast as undercutting it and stops prices sliding.</li>
             <li>Prices far below the market are bought and relisted within minutes, so dumping only feeds resellers.</li>
-            <li>Check the Crafted items list before you craft to sell: a craft only pays when it sells for more than its materials would.</li>
+            <li>Check What to craft before you craft to sell: a craft only pays when it sells for more than its materials would.</li>
           </ul>
         </div>
       </details>
@@ -1152,6 +1143,8 @@ ol.td-list{counter-reset:td}
       </details>
     </div>
   </div>
+
+  <p class="note">Forever's market is new, so prices aren't settled yet: check the Auction House before you sell or craft. The details come from beta and launch guides by Warcraft Tavern, Conquest Capped, wow-professions.com, Blizzard Watch and Icy Veins, listed at the bottom of the page.</p>
 </section>
 
 <!-- SKILL-UP -->
@@ -1176,7 +1169,7 @@ ol.td-list{counter-reset:td}
 
   <div class="block">
     <h3 id="su-steps-head">Alchemy, step by step</h3>
-    <p class="note">Each step lists the crafts still to make from your skill. Where a step has a choice of recipe, pick the one that suits what you have. Tap a name to see its price history on the Market tab.</p>
+    <p class="note">Each step lists the crafts still to make from your skill. Where a step has a choice of recipe, pick the one that suits what you have. Tap a name to see its price history on the Gold tab.</p>
     <ol class="sk-steps" id="su-steps"></ol>
   </div>
 
@@ -1375,7 +1368,7 @@ ol.td-list{counter-reset:td}
   var tabs = $$('[role="tab"]');
   var panels = tabs.map(function (t) { return document.getElementById(t.getAttribute('aria-controls')); });
   var tokens = tabs.map(function (t) { return t.getAttribute('data-token'); });
-  var ALIAS = { home: 'today', timers: 'world', session: 'build', gear: 'build', setup: 'talents', settings: 'talents', skill: 'skillup', zones: 'herbs' };
+  var ALIAS = { home: 'today', market: 'gold', auction: 'gold', prices: 'gold', timers: 'world', session: 'build', gear: 'build', setup: 'talents', settings: 'talents', skill: 'skillup', zones: 'herbs' };
   var masthead = $('.masthead'), tablist = $('.tablist'), curTab = -1, SCR = store.get('wowf-scroll', {});
   if (!SCR || typeof SCR !== 'object') SCR = {};
   function fades() {
@@ -2699,101 +2692,6 @@ ol.td-list{counter-reset:td}
   })();
 
   /* ---------- Gold ---------- */
-  var GOLD = [
-    {
-      a: 1, b: 20,
-      t: { H: 'The Barrens or Silverpine', A: 'Westfall, Loch Modan or Darkshore' },
-      herbs: 'Peacebloom, Silverleaf, Earthroot, Mageroyal and Briarthorn, with Swiftthistle as a bonus from the last two, then Stranglekelp in coastal water from 85 skill and Bruiseweed from 100.',
-      where: { H: 'In The Barrens, the oases and Agama’gor have the most herbs.', A: 'Elwynn Forest has the most Peacebloom and Silverleaf, and Loch Modan or Darkshore are better from about 70 skill.' },
-      sell: [
-        'Sell most of these herbs now: low-level materials sell fastest in the first weeks after launch, and common herbs lose value quickly.',
-        'Peacebloom and Briarthorn now make healing potions through First Aid, so players levelling First Aid buy them too.',
-        'Frilled Lichen, a Scarce herb, sometimes comes with Earthroot, Mageroyal, Briarthorn and Stranglekelp. It holds its value, so list it rather than vendoring it.',
-        'Sell any Waylaid Crate you can’t fill: empty crates sell too.'
-      ],
-      make: [
-        'Learn First Aid as well: it doesn’t take a profession slot, and it makes Forever’s healing potions. A Minor Healing Potion is one Peacebloom, one Mild Spices and an Empty Vial, and What to craft shows whether it beats selling the Peacebloom today.',
-        'Level Alchemy slowly with whichever herbs sell worst, and keep the mana potions and elixirs for yourself. Every craft also costs a vial from a vendor.'
-      ],
-      also: [
-        { H: 'Durotar Supply and Logistics, just outside the west gate of the Crossroads, swaps filled Waylaid Crates for Merchant’s Favor. Crates drop from monsters and open from level 10. An Apprentice Herbs crate takes 20 Peacebloom or Silverleaf, or 10 Earthroot, Mageroyal or Briarthorn, for 5 Favor, and your first sealed crate starts a quest worth 50 Favor and 2,000 reputation.',
-          A: 'The Azeroth Commerce Authority, at Three Corners in Redridge Mountains, swaps filled Waylaid Crates for Merchant’s Favor. Crates drop from monsters and open from level 10. An Apprentice Herbs crate takes 20 Peacebloom or Silverleaf, or 10 Earthroot, Mageroyal or Briarthorn, for 5 Favor, and your first sealed crate starts a quest worth 50 Favor and 2,000 reputation.' },
-        'Herbalism 20 teaches the Incense Candle. Set it by a campfire and sit for an Intellect buff, which means more mana.'
-      ]
-    },
-    {
-      a: 20, b: 30,
-      t: { H: 'Stonetalon, Ashenvale and Hillsbrad', A: 'Redridge, Duskwood, the Wetlands and Ashenvale' },
-      herbs: 'Bruiseweed, Wild Steelbloom, Grave Moss and Kingsblood, then Liferoot from 150 skill.',
-      sell: [
-        'Bruiseweed makes the plain Healing Potion in First Aid now, so it sells to more than Alchemists.',
-        'Rosecap, another Scarce herb, comes with Kingsblood, Fadeleaf and Goldthorn. List it rather than vendoring it.',
-        'Check every green and blue before you vendor it. Bind on Equip blues sold for many times their vendor price on the beta.'
-      ],
-      make: [
-        { H: 'Apothecary Durelle at the Durotar Supply camp sells new Alchemy recipes for 45 Favor each, with no reputation or level needed: Lesser Mageblood Elixir, Elixir of Lesser Intellect, Lesser Arcane Elixir, and Mender’s, Spellblasting and Frenzy Potions among them. They need 65 to 140 Alchemy, and what they make needs level 25 to use.',
-          A: 'Nina Surefire at the Three Corners camp sells new Alchemy recipes for 45 Favor each, with no reputation or level needed: Lesser Mageblood Elixir, Elixir of Lesser Intellect, Lesser Arcane Elixir, and Mender’s, Spellblasting and Frenzy Potions among them. They need 65 to 140 Alchemy, and what they make needs level 25 to use.' },
-        'Healing Potions in First Aid take Bruiseweed and Hot Spices.'
-      ],
-      also: [
-        'Journeyman Herbs crates take 10 Stranglekelp, Bruiseweed, Wild Steelbloom, Grave Moss or Kingsblood for 10 Favor.',
-        'Keep the Herb Seeds you find while picking. The Greenhouse grows herbs from them and needs Herbalism 140. Its blueprint drops from Shadetooth in the Excavation Site, the Wetlands dungeon for levels 26 to 33.'
-      ]
-    },
-    {
-      a: 30, b: 40,
-      t: { B: 'Stranglethorn, Thousand Needles, Arathi and Riverglades' },
-      herbs: 'Liferoot, Fadeleaf, Goldthorn and Khadgar’s Whisker, then Wintersbite, Firebloom, Purple Lotus and Arthas’ Tears from about 200 skill.',
-      sell: [
-        'Mister Graphed, at Powderfuse Port in Riverglades, sells rare materials at fixed prices with no limit, so nobody pays more than he charges. Price yours just under him.',
-        'Hold rare Bind on Equip finds until players at that level can afford them.'
-      ],
-      make: [
-        { H: 'Artisan Alchemy, for skill 225 to 300, needs level 35. Rogvar trains it in Stonard, Swamp of Sorrows.', A: 'Artisan Alchemy, for skill 225 to 300, needs level 35. Kylanna Windwhisper trains it at Feathermoon Stronghold, Feralas.' },
-        'Greater Healing Potions need Manual: Greater Healing Potion and First Aid 155.',
-        'Dragonfire Potion (Alchemy 245) unlocks at Friendly with the supply camp, for 120 Favor.'
-      ],
-      also: [
-        'Expert crates open at level 20. Earthly Expert Herbs takes 20 Liferoot or 10 Fadeleaf, Goldthorn or Khadgar’s Whisker, and Flowering Expert Herbs takes 10 Wintersbite, Firebloom or Arthas’ Tears or 20 Purple Lotus, each for 15 Favor.',
-        'Riding at 40 costs 100 gold, or 90 at Honored with your home city.'
-      ]
-    },
-    {
-      a: 40, b: 50,
-      t: { B: 'Tanaris, Feralas, the Hinterlands and Badlands' },
-      herbs: 'Sungrass, Blindweed, Ghost Mushroom and Gromsblood, then Golden Sansam from 260 skill.',
-      sell: [
-        'Earth elementals in Badlands drop Elemental Earth, which sells.',
-        'Dungeons add Bind on Equip drops to sell, on top of their quest rewards.'
-      ],
-      make: [
-        'Superior Healing Potions take Sungrass and Soothing Spices, and need Manual: Superior Healing Potion and First Aid 215.'
-      ],
-      also: [
-        'Artisan crates open at level 35. Earthly Artisan Herbs takes 20 Sungrass or 10 Blindweed, Ghost Mushroom, Gromsblood or Golden Sansam, and Flowering Artisan Herbs takes 20 Dreamfoil, Mountain Silversage, Plaguebloom or Icecap.'
-      ]
-    },
-    {
-      a: 50, b: 61,
-      t: { B: 'Un’Goro, Felwood, the Plaguelands and Winterspring' },
-      herbs: 'Golden Sansam, Dreamfoil, Mountain Silversage, Plaguebloom and Icecap, and Black Lotus at 300 skill.',
-      sell: [
-        'Black Lotus and Arcane Crystal rarely sell for more than 50 gold, because Mister Graphed sells both at that price with no limit (45 with the Bartering perk).',
-        'Post flasks, potions and food before raid nights. Raids open on 9 December.',
-        'Classic farms still pay: Jadefire satyrs in Felwood drop demonic runes and felcloth, and Winterfall furbolgs drop E’ko.'
-      ],
-      make: [
-        'The Alchemy Laboratory camp item (Alchemy 300) lets you make flasks without going to Scholomance.',
-        'The Flasks of Natural Accuracy, Aggression, Precision and Swiftness give 60 Stamina anywhere, but their second bonus (hit, crit or haste) only works in Mount Hyjal, Hyjal Summit and the Barrow Deeps.',
-        'Major Healing Potions take Golden Sansam and 3 Soothing Spices, and need Manual: Major Healing Potion and First Aid 275.'
-      ],
-      also: [
-        'Death Lotus grows on any herb in Mount Hyjal, but picking it needs the Lotus Claw glove enchant. Mister Graphed also sells it for 50 gold.',
-        'The Seed Hybridizer, which combines seeds into a rarer tier, needs Herbalism 300 and Blueprint: Seed Hybridizer. Where the blueprint drops isn’t known yet.',
-        'Journeyman Riding costs 1,000 gold at 60, and swift mounts are 200 gold each. Honored takes 10% off both.'
-      ]
-    }
-  ];
   var GOLD_CLASS = {
     Warrior: 'You have no healing spells, so keep healing potions for yourself and sell your mana potions and caster elixirs.',
     Paladin: 'You heal yourself, so sell spare healing potions and keep mana potions for long fights.',
@@ -2806,32 +2704,8 @@ ol.td-list{counter-reset:td}
     Druid: 'Travel Form at 30 speeds up every herb run. You can heal yourself, so sell spare healing potions and bank mana potions for your Restoration spec at 40.'
   };
   (function () {
-    var list = $('#gold-list'), tipEl = $('#gold-class'), tipLab = $('#gold-class-label');
-    if (!list) return;
-    var last = '';
-    function pick(v, f) { return typeof v === 'string' ? v : (v[f] || v.B || ''); }
-    function part(label, arr, f) {
-      var out = (arr || []).map(function (v) { return pick(v, f); }).filter(function (s) { return s; });
-      if (!out.length) return '';
-      return '<p class="tl-sub">' + esc(label) + '</p><ul>' + out.map(function (s) { return '<li>' + esc(s) + '</li>'; }).join('') + '</ul>';
-    }
+    var tipEl = $('#gold-class'), tipLab = $('#gold-class-label');
     function render() {
-      var lvl = CHAR.lvl, f = CHAR.fac === 'Horde' ? 'H' : 'A', cur = -1;
-      GOLD.forEach(function (g, i) { if (lvl >= g.a && lvl < g.b) cur = i; });
-      if (cur + f !== last) {
-        last = cur + f;
-        var h = '';
-        GOLD.forEach(function (g, i) {
-          var here = i === cur;
-          h += '<details class="more gb' + (here ? ' here' : '') + '" data-keep="gb-' + g.a + '"' + (here ? ' open' : '') + '><summary><span class="gb-sum"><span class="lv">Lv ' + g.a + '–' + Math.min(60, g.b) + '</span><span>' + esc(pick(g.t, f)) + '</span></span>' +
-            (here ? '<span class="chip gold">Your level</span>' : '') + '</summary><div class="more-body">' +
-            '<p><strong>Herbs:</strong> ' + esc(g.herbs) + (g.where ? ' ' + esc(pick(g.where, f)) : '') + '</p><div class="gb-live" hidden></div>' +
-            part('Sell', g.sell, f) + part('Make', g.make, f) + part('Also', g.also, f) + '</div></details>';
-        });
-        list.innerHTML = h;
-        if (window.wowfApplyOpen) window.wowfApplyOpen(list);
-        try { document.dispatchEvent(new CustomEvent('wowf:gold-rendered')); } catch (e) {}
-      }
       if (tipLab) tipLab.textContent = CHAR.cls + ' tip';
       if (tipEl) tipEl.textContent = GOLD_CLASS[CHAR.cls] || '';
     }

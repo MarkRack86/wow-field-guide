@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
 """Build data/latest.json, the one file the page loads.
 
-It holds the last 120 days of prices, the character, the last 14 sell-speed samples and the settings files,
-as {"v": 1, "built": "<UTC time>", "docs": {"prices/2026-11-09": {...}, "char/current": {...}, ...}}.
-Each key is the document's old path in the Claude artifact's database.
+It holds the last 120 days of prices, the last day of hourly reads, the character, the last 14 sell-speed samples
+and the settings files, as {"v": 1, "built": "<UTC time>", "docs": {"prices/2026-11-09": {...}, "char/current": {...}, ...}}.
+Each key is the document's old path in the Claude artifact's database, except "hourly/recent", which is new:
+{"at": newest snapshot, "t": [snapshot times, oldest first], "b": {"<item id>": [price at each, or null]}},
+the price being what the cheapest 20 cost each.
 
 Usage: python3 tools/build_latest.py [repo folder]
 """
@@ -13,7 +15,7 @@ import json
 import os
 import sys
 
-PRICE_DAYS, SPEED_SAMPLES = 120, 14
+PRICE_DAYS, SPEED_SAMPLES, HOURLY_SPAN = 120, 14, datetime.timedelta(hours=24, minutes=30)
 
 
 def load(path):
@@ -50,10 +52,38 @@ def save_pretty(path, obj):
     write(path, text)
 
 
+def when(text):
+    try:
+        return datetime.datetime.fromisoformat(str(text).replace("Z", "+00:00"))
+    except ValueError:
+        return None
+
+
+def hourly(root):
+    """Each item's price at every hourly read in about the last day, for the watchlist's 24-hour line."""
+    reads = []
+    for path in glob.glob(os.path.join(root, "data", "hourly", "*.json")):
+        d = load(path)
+        t = when(d.get("snap") or d.get("at"))
+        if t and isinstance(d.get("m"), dict):
+            reads.append((t, d["m"]))
+    if not reads:
+        return None
+    reads.sort(key=lambda r: r[0])
+    reads = [r for r in reads if r[0] >= reads[-1][0] - HOURLY_SPAN]
+    ids = sorted({k for _, m in reads for k in m}, key=lambda k: int(k) if k.isdigit() else 0)
+    b = {k: [m[k][3] if isinstance(m.get(k), list) and len(m[k]) > 3 else None for _, m in reads] for k in ids}
+    stamp = [t.strftime("%Y-%m-%dT%H:%M:%SZ") for t, _ in reads]
+    return {"at": stamp[-1], "t": stamp, "b": {k: v for k, v in b.items() if any(x is not None for x in v)}}
+
+
 def build(root):
     docs = {}
     for path in sorted(glob.glob(os.path.join(root, "data", "prices", "*.json")))[-PRICE_DAYS:]:
         docs["prices/" + os.path.basename(path)[:-5]] = load(path)
+    recent = hourly(root)
+    if recent:
+        docs["hourly/recent"] = recent
     for path in sorted(glob.glob(os.path.join(root, "data", "speed", "*.json")))[-SPEED_SAMPLES:]:
         docs["speed/" + os.path.basename(path)[:-5]] = load(path)
     path = os.path.join(root, "data", "char", "current.json")

@@ -1,10 +1,13 @@
-"""Market refresh for the WoW Forever Field Guide, run at 4am and 6pm UK time.
-Reads the Normal-ruleset Horde Auction House (EU) from Blizzard's API and writes JSON files for the artifact database.
+"""Market refresh for the WoW Forever Field Guide, run by GitHub Actions (tools/ci_refresh.py) every hour while the
+player is usually online. Reads the Normal-ruleset Horde Auction House (EU) from Blizzard's API and writes JSON files:
+prices.json, recent.json, alerts.json, char.json and auctions.json (the tracked commodity listings, for sell speed).
 usage: refresh.py <out_dir> [recent.json] [watch.json] [char.json] [gear.json]
        refresh.py speed <out_dir>   (waits for Blizzard's next hourly snapshot and counts the units sold in between)
+       refresh.py pair <earlier auctions.json> <later auctions.json> <out_dir>   (the same count from two saved runs)
 env: BNET_ID and BNET_SECRET, or a network secret for oauth.battle.net on the environment
 """
 import json, os, subprocess, sys, time, datetime, statistics
+from email.utils import parsedate_to_datetime
 from zoneinfo import ZoneInfo
 
 NAMES = {"2447":"Peacebloom","765":"Silverleaf","2449":"Earthroot","785":"Mageroyal","2450":"Briarthorn","2452":"Swiftthistle","3820":"Stranglekelp","2453":"Bruiseweed","3355":"Wild Steelbloom","3369":"Grave Moss","3356":"Kingsblood","3357":"Liferoot","3818":"Fadeleaf","3821":"Goldthorn","3358":"Khadgar's Whisker","3819":"Wintersbite","4625":"Firebloom","8831":"Purple Lotus","8836":"Arthas' Tears","8838":"Sungrass","8839":"Blindweed","8845":"Ghost Mushroom","8846":"Gromsblood","13464":"Golden Sansam","13463":"Dreamfoil","13465":"Mountain Silversage","13466":"Plaguebloom","13467":"Icecap","13468":"Black Lotus","8153":"Wildvine","3371":"Empty Vial","3372":"Leaded Vial","8925":"Crystal Vial","18256":"Imbued Vial","2678":"Mild Spices","2692":"Hot Spices","3713":"Soothing Spices","2320":"Coarse Thread","2321":"Fine Thread","4291":"Silken Thread","4289":"Salt","2880":"Weak Flux","3466":"Strong Flux","730":"Murloc Eye","6359":"Firefin Snapper","6358":"Oily Blackmouth","6370":"Blackmouth Oil","6371":"Fire Oil","13422":"Stonescale Eel","13423":"Stonescale Oil","6522":"Deviate Fish","247754":"Minor Arcane Elixir","247755":"Elixir of Minor Force","5997":"Elixir of Minor Defense","2455":"Minor Mana Potion","2458":"Elixir of Minor Fortitude","3383":"Elixir of Wisdom","3385":"Lesser Mana Potion","6373":"Elixir of Fire Power","3827":"Mana Potion","3825":"Elixir of Lesser Fortitude","8951":"Elixir of Defense","6052":"Nature Protection Potion","6149":"Greater Mana Potion","9154":"Draught of Detect Undead","13443":"Superior Mana Potion","13445":"Elixir of Greater Defense","9264":"Elixir of Shadow Power","250943":"Major Frenzy Potion","2457":"Elixir of Minor Agility","2459":"Swiftness Potion","3390":"Elixir of Lesser Agility","13444":"Major Mana Potion","2454":"Elixir of Minor Strength","3382":"Minor Troll's Blood Elixir","4596":"Minor Discolored Healing Potion","247239":"Lesser Discolored Healing Potion","2456":"Minor Rejuvenation Potion","1251":"Linen Bandage","2581":"Heavy Linen Bandage","3530":"Wool Bandage","3531":"Heavy Wool Bandage","6450":"Silk Bandage","6451":"Heavy Silk Bandage","8544":"Mageweave Bandage","8545":"Heavy Mageweave Bandage","14529":"Runecloth Bandage","14530":"Heavy Runecloth Bandage","118":"Minor Healing Potion","858":"Lesser Healing Potion","929":"Healing Potion","1710":"Greater Healing Potion","3928":"Superior Healing Potion","13446":"Major Healing Potion","2589":"Linen Cloth","2592":"Wool Cloth","4306":"Silk Cloth","4338":"Mageweave Cloth","14047":"Runecloth","2934":"Ruined Leather Scraps","2318":"Light Leather","783":"Light Hide","2319":"Medium Leather","4232":"Medium Hide","4234":"Heavy Leather","4231":"Cured Light Hide","4233":"Cured Medium Hide","4236":"Cured Heavy Hide","2304":"Light Armor Kit","2313":"Medium Armor Kit","2996":"Bolt of Linen Cloth","2997":"Bolt of Woolen Cloth","4305":"Bolt of Silk Cloth","4339":"Bolt of Mageweave","4238":"Linen Bag","2770":"Copper Ore","2771":"Tin Ore","2775":"Silver Ore","2772":"Iron Ore","2776":"Gold Ore","3858":"Mithril Ore","2835":"Rough Stone","2836":"Coarse Stone","2840":"Copper Bar","3576":"Tin Bar","2841":"Bronze Bar","2842":"Silver Bar","3575":"Iron Bar","3577":"Gold Bar","3859":"Steel Bar","3860":"Mithril Bar","2862":"Rough Sharpening Stone","4357":"Rough Blasting Powder","4359":"Handful of Copper Bolts","4361":"Copper Tube","4363":"Copper Modulator","4364":"Coarse Blasting Powder","4371":"Bronze Tube","4375":"Whirring Bronze Gizmo","4382":"Bronze Framework","10558":"Gold Power Core","4387":"Iron Strut","10559":"Mithril Tube","10560":"Unstable Trigger","10561":"Mithril Casing","10940":"Strange Dust","11083":"Soul Dust","11137":"Vision Dust","10938":"Lesser Magic Essence","10939":"Greater Magic Essence","10998":"Lesser Astral Essence","11082":"Greater Astral Essence","11135":"Greater Mystic Essence","10978":"Small Glimmering Shard","11084":"Large Glimmering Shard","11138":"Small Glowing Shard","11139":"Large Glowing Shard","11177":"Small Radiant Shard","11178":"Large Radiant Shard","248682":"Waylaid Crate: Apprentice Herbs","248683":"Waylaid Crate: Apprentice Ore","248684":"Waylaid Crate: Apprentice Textiles","248685":"Waylaid Crate: Apprentice Curiosities","248702":"Waylaid Crate: Apprentice Fabrics","248703":"Waylaid Crate: Apprentice Ingots","248704":"Waylaid Crate: Apprentice Parts","248686":"Waylaid Crate: Journeyman Herbs","248687":"Waylaid Crate: Journeyman Ore","248688":"Waylaid Crate: Journeyman Textiles","248689":"Waylaid Crate: Journeyman Curiosities","248705":"Waylaid Crate: Journeyman Fabrics","248706":"Waylaid Crate: Journeyman Ingots","248707":"Waylaid Crate: Journeyman Parts","248690":"Waylaid Crate: Earthly Expert Herbs","248691":"Waylaid Crate: Flowering Expert Herbs","248692":"Waylaid Crate: Expert Ore","248693":"Waylaid Crate: Expert Textiles","248694":"Waylaid Crate: Expert Curiosities","248708":"Waylaid Crate: Expert Fabrics","248709":"Waylaid Crate: Expert Ingots","248710":"Waylaid Crate: Expert Parts","769":"Chunk of Boar Meat","818":"Tigerseye","1206":"Moss Agate","1210":"Shadowgem","2325":"Black Dye","2604":"Red Dye","2605":"Green Dye","2673":"Coyote Meat","2838":"Heavy Stone","3470":"Rough Grinding Stone","3478":"Coarse Grinding Stone","3486":"Heavy Grinding Stone","4246":"Fine Leather Belt","4304":"Thick Leather","4340":"Gray Dye","4377":"Heavy Blasting Powder","4470":"Simple Wood","4603":"Raw Spotted Yellowtail","5051":"Dig Rat","5500":"Iridescent Pearl","5504":"Tangy Clam Meat","6037":"Truesilver Bar","6217":"Copper Rod","6261":"Orange Dye","6338":"Silver Rod","6362":"Raw Rockscale Cod","7067":"Elemental Earth","7071":"Iron Buckle","7075":"Core of Earth","7076":"Essence of Earth","7910":"Star Ruby","7912":"Solid Stone","7966":"Solid Grinding Stone","7971":"Black Pearl","7972":"Ichor of Undeath","8170":"Rugged Leather","8343":"Heavy Silken Thread","8365":"Raw Mithril Head Trout","10505":"Solid Blasting Powder","11128":"Golden Rod","11144":"Truesilver Rod","11176":"Dream Dust","12359":"Thorium Bar","12365":"Dense Stone","12644":"Dense Grinding Stone","13760":"Raw Sunscale Salmon","13926":"Golden Pearl","14048":"Bolt of Runecloth","14256":"Felcloth","14341":"Rune Thread","14342":"Mooncloth","14343":"Small Brilliant Shard","14344":"Large Brilliant Shard","16203":"Greater Eternal Essence","16204":"Illusion Dust","16206":"Arcanite Rod","18255":"Runn Tum Tuber","247786":"Mote of Magic","249726":"Azerothium Bar","251291":"Heavy Thorium Bar","249399":"Frilled Lichen","249424":"Rosecap","249274":"Stranglevine","248821":"Demonsage","248822":"Death Lotus","248823":"Marefoil","268415":"Commonplace Herb Seeds","268416":"Uncommon Herb Seeds","268417":"Unusual Herb Seeds","268418":"Scarce Herb Seeds","1288":"Large Venom Sac","2553":"Recipe: Elixir of Minor Agility","2555":"Recipe: Swiftness Potion","3384":"Minor Magic Resistance Potion","3386":"Potion of Poison Cleansing","3387":"Limited Invulnerability Potion","3388":"Lesser Troll's Blood Elixir","3389":"Elixir of Lesser Defense","3391":"Elixir of Ogre Strength","3393":"Recipe: Minor Magic Resistance Potion","3394":"Recipe: Potion of Poison Cleansing","3395":"Recipe: Limited Invulnerability Potion","3396":"Recipe: Elixir of Lesser Agility","3823":"Lesser Invisibility Potion","3824":"Shadow Oil","3826":"Troll's Blood Elixir","3828":"Draught of Detect Lesser Invisibility","3829":"Frost Oil","3830":"Recipe: Elixir of Lesser Fortitude","3831":"Recipe: Troll's Blood Elixir","3832":"Recipe: Elixir of Detect Lesser Invisibility","4342":"Purple Dye","4623":"Lesser Stoneshield Potion","4624":"Recipe: Lesser Stoneshield Potion","5631":"Rage Potion","5633":"Great Rage Potion","5634":"Free Action Potion","5635":"Sharp Claw","5637":"Large Fang","5640":"Recipe: Rage Potion","5642":"Recipe: Free Action Potion","5643":"Recipe: Great Rage Potion","5996":"Draught of Water Breathing","6048":"Shadow Protection Potion","6050":"Frost Protection Potion","6051":"Holy Protection Potion","6211":"Recipe: Elixir of Ogre's Strength","6372":"Swim Speed Potion","6662":"Elixir of Giant Growth","6663":"Recipe: Elixir of Giant Growth","7068":"Elemental Fire","7069":"Elemental Air","7070":"Elemental Water","7078":"Essence of Fire","7080":"Essence of Water","7082":"Essence of Air","8827":"Draught of Water Walking","8949":"Elixir of Agility","8956":"Oil of Immolation","9030":"Restorative Potion","9036":"Magic Resistance Potion","9088":"Gift of Arthas","9144":"Wildvine Potion","9155":"Arcane Elixir","9172":"Invisibility Potion","9179":"Elixir of Greater Intellect","9187":"Elixir of Greater Agility","9197":"Draught of Dream Vision","9206":"Elixir of Greater Strength","9210":"Ghost Dye","9224":"Potion of Demon Slaying","9233":"Draught of Detect Demon","9262":"Black Vitriol","9293":"Recipe: Magic Resistance Potion","9294":"Recipe: Wildvine Potion","9295":"Recipe: Invisibility Potion","9296":"Recipe: Gift of Arthas","9297":"Recipe: Draught of Dream Vision","9298":"Recipe: Elixir of Giants","9301":"Recipe: Elixir of Shadow Power","9303":"Recipe: Philosopher's Stone","10286":"Heart of the Wild","10592":"Catseye Draught","12190":"Dreamless Sleep Potion","12803":"Living Essence","12804":"Powerful Mojo","13442":"Mighty Rage Potion","13447":"Elixir of the Sages","13452":"Elixir of the Mongoose","13453":"Elixir of Brute Force","13454":"Greater Arcane Elixir","13456":"Greater Frost Protection Potion","13457":"Greater Fire Protection Potion","13458":"Greater Nature Protection Potion","13459":"Greater Shadow Protection Potion","13460":"Greater Holy Protection Potion","13461":"Greater Arcane Protection Potion","13462":"Purification Potion","13476":"Recipe: Mighty Rage Potion","13477":"Recipe: Superior Mana Potion","13478":"Recipe: Elixir of Superior Defense","13479":"Recipe: Elixir of the Sages","13481":"Recipe: Elixir of Brute Force","13491":"Recipe: Elixir of the Mongoose","13492":"Recipe: Purification Potion","13493":"Recipe: Greater Arcane Elixir","13494":"Recipe: Greater Fire Protection Potion","13495":"Recipe: Greater Frost Protection Potion","13496":"Recipe: Greater Nature Protection Potion","13497":"Recipe: Greater Arcane Protection Potion","13499":"Recipe: Greater Shadow Protection Potion","13500":"Recipe: Greater Holy Protection Potion","13506":"Flask of Petrification","13510":"Flask of the Titans","13511":"Flask of Distilled Wisdom","13512":"Flask of Supreme Power","13513":"Flask of Chromatic Resistance","13518":"Recipe: Flask of Petrification","13519":"Recipe: Flask of the Titans","13520":"Recipe: Flask of Distilled Wisdom","13521":"Recipe: Flask of Supreme Power","13522":"Recipe: Flask of Chromatic Resistance","17708":"Elixir of Frost Power","17709":"Recipe: Elixir of Frost Power","18253":"Major Rejuvenation Potion","18257":"Recipe: Major Rejuvenation Potion","18294":"Draught of Greater Water Breathing","19931":"Gurubashi Mojo Madness","19943":"Massive Mojo","20002":"Greater Dreamless Sleep Potion","20004":"Major Troll's Blood Elixir","20007":"Mageblood Elixir","20008":"Living Action Potion","21546":"Elixir of Holy Power","21547":"Recipe: Elixir of Greater Firepower","246948":"Distilled Firewater","247240":"Discolored Healing Potion","247241":"Greater Discolored Healing Potion","247242":"Superior Discolored Healing Potion","249409":"Cerulean Dye","249430":"Magenta Dye","249431":"Viridian Dye","250327":"Potion of Predatory Senses","250328":"Elixir of Cunning","250329":"Elixir of the Phalanx","250330":"Minor Cleric's Elixir","250331":"Lesser Cleric's Elixir","250332":"Cleric's Elixir","250333":"Greater Cleric's Elixir","250334":"Elixir of Fortitude","250335":"Elixir of Greater Fortitude","250336":"Elixir of Wicked Regeneration","250337":"Elixir of the Owl","250338":"Elixir of Sages","250339":"Minor Mageblood Elixir","250340":"Lesser Mageblood Elixir","250341":"Greater Mageblood Elixir","250342":"Lesser Arcane Elixir","250343":"Elixir of Nature Power","250344":"Elixir of Minor Spirit","250345":"Elixir of Lesser Spirit","250346":"Elixir of Spirit","250347":"Elixir of Greater Spirit","250348":"Elixir of the Whale","250349":"Elixir of Strength","250350":"Elixir of Ferocity","250351":"Elixir of the Grizzly","250353":"Elixir of Lesser Intellect","250354":"Elixir of Intellect","250363":"Recipe: Potion of Predatory Senses","250366":"Recipe: Minor Cleric's Elixir","250368":"Recipe: Cleric's Elixir","250370":"Recipe: Elixir of Fortitude","250375":"Recipe: Minor Mageblood Elixir","250380":"Recipe: Elixir of Minor Spirit","250382":"Recipe: Elixir of Spirit","250385":"Recipe: Elixir of Strength","250389":"Recipe: Elixir of Intellect","250932":"Minor Spellblasting Potion","250933":"Lesser Spellblasting Potion","250934":"Spellblasting Potion","250935":"Greater Spellblasting Potion","250936":"Superior Spellblasting Potion","250937":"Major Spellblasting Potion","250938":"Minor Frenzy Potion","250939":"Lesser Frenzy Potion","250940":"Frenzy Potion","250941":"Greater Frenzy Potion","250942":"Superior Frenzy Potion","250944":"Minor Mender's Potion","250945":"Lesser Mender's Potion","250946":"Mender's Potion","250947":"Greater Mender's Potion","250948":"Superior Mender's Potion","250949":"Major Mender's Potion","250950":"Potion of Venomous Blood","250951":"Caustic Smog Potion","250953":"Dragonfire Potion","250954":"Potion of Elemental Purging","250955":"Potion of Beast Slaying","250976":"Recipe: Minor Spellblasting Potion","250977":"Recipe: Lesser Spellblasting Potion","250980":"Recipe: Superior Spellblasting Potion","250982":"Recipe: Minor Frenzy Potion","250983":"Recipe: Lesser Frenzy Potion","250986":"Recipe: Superior Frenzy Potion","250988":"Recipe: Minor Mender's Potion","250989":"Recipe: Lesser Mender's Potion","250992":"Recipe: Superior Mender's Potion","255723":"Manual: Greater Healing Potion","255725":"Manual: Superior Healing Potion","255729":"Manual: Major Healing Potion","273085":"Blueprint: Fermenter","274273":"Flask of Natural Accuracy","274274":"Flask of Natural Aggression","274275":"Flask of Natural Precision","274276":"Flask of Natural Swiftness","279956":"Mana Well","279970":"Fermenter","9061":"Goblin Rocket Fuel","9260":"Volatile Rum","10644":"Recipe: Goblin Rocket Fuel"}
@@ -17,6 +20,13 @@ ALERT_IDS = {2447, 765, 2449, 785, 2450, 2452, 3820, 2453, 3355, 3369, 3356, 335
              268415, 268416, 268417, 268418, 3371, 3372, 8925, 18256, 2678, 2692, 3713,
              247754, 247755, 5997, 2454, 3382, 2455, 2456, 2458, 2457, 4596, 2459, 3383, 3385, 247239, 3390, 6371, 6373, 3827, 3825,
              8951, 6052, 6149, 1251, 2581, 3530, 3531, 6450, 6451, 8544, 8545, 14529, 14530, 118, 858, 929, 1710}
+# Phone alerts from the hourly reads cover watched items only: the price (what the cheapest 20 cost each) moving by
+# PUSH_MOVE or more since the previous read, by at least PUSH_MIN_GAIN copper over 20 (1s), with PUSH_MIN_LISTED or
+# more listed both times, at most once per item in PUSH_QUIET_H hours; and the cheapest listing crossing a price
+# the player set, every time it crosses.
+PUSH_MOVE, PUSH_MIN_GAIN, PUSH_MIN_LISTED, PUSH_QUIET_H = 0.25, 100, 20, 3
+# Sell speed compares two runs' snapshots taken 30 minutes to 3 hours apart (the page ignores longer samples).
+PAIR_MINUTES = (30, 180)
 # Gear: who can use what (Classic rules; mail and plate from level 40), and stat weights per playstyle.
 ARMOR = {'Warrior': {1, 2, 3, 4, 6}, 'Paladin': {1, 2, 3, 4, 6, 7}, 'Hunter': {1, 2, 3}, 'Rogue': {1, 2}, 'Priest': {1},
          'Shaman': {1, 2, 3, 6, 9}, 'Mage': {1}, 'Warlock': {1}, 'Druid': {1, 2, 8}}
@@ -68,13 +78,28 @@ def token():
         raise SystemExit('Blizzard login failed: ' + str(d.get('error_description') or d.get('error') or 'no token')[:120])
     return d['access_token']
 
-def get(tok, path, ns, tries=3, timeout=150):
+def last_modified(hf):
+    lm = None
+    try:
+        for ln in open(hf, encoding='latin-1'):
+            if ln.lower().startswith('last-modified:'):
+                lm = ln.split(':', 1)[1].strip()
+    except OSError:
+        pass
+    return lm
+
+def get(tok, path, ns, tries=3, timeout=150, hdr=None):
+    """GET with retries. With hdr (a dict), also notes the reply's Last-Modified there: when Blizzard took the snapshot."""
     sep = '&' if '?' in path else '?'
+    hf = '/tmp/wowf_hdr_%d.txt' % os.getpid()
     for i in range(tries):
         try:
-            out = curl(['-H', 'Authorization: Bearer ' + tok, '-w', '\n%{http_code}', API + path + sep + 'namespace=' + ns + '&locale=en_GB'], timeout)
+            args = ['-H', 'Authorization: Bearer ' + tok, '-w', '\n%{http_code}'] + (['-D', hf] if hdr is not None else [])
+            out = curl(args + [API + path + sep + 'namespace=' + ns + '&locale=en_GB'], timeout)
             body, code = out.rsplit('\n', 1)
             if code == '200':
+                if hdr is not None:
+                    hdr['last-modified'] = last_modified(hf)
                 return json.loads(body)
             if code == '404':
                 return None
@@ -93,14 +118,11 @@ def getc(tok, path, ns, since=None, timeout=150):
         args += ['-H', 'If-Modified-Since: ' + since]
     out = curl(args + [API + path + sep + 'namespace=' + ns + '&locale=en_GB'], timeout)
     body, code = out.rsplit('\n', 1)
-    lm = None
-    try:
-        for ln in open(hf, encoding='latin-1'):
-            if ln.lower().startswith('last-modified:'):
-                lm = ln.split(':', 1)[1].strip()
-    except OSError:
-        pass
-    return code, body, lm
+    return code, body, last_modified(hf)
+
+def utcnow():
+    t = os.environ.get('WOWF_NOW')  # tests only: pretend it's this UTC time
+    return datetime.datetime.fromisoformat(t.replace('Z', '+00:00')) if t else datetime.datetime.now(datetime.timezone.utc)
 
 def money(c):
     c = int(c + 0.5); g, s, cp = c // 10000, (c % 10000) // 100, c % 100
@@ -120,19 +142,22 @@ def main():
     load = lambda i: json.load(open(sys.argv[i])) if len(sys.argv) > i and sys.argv[i] and os.path.exists(sys.argv[i]) else None
     recent, watch, char, gearcfg = load(2) or {}, load(3) or {}, load(4) or {}, load(5) or {}
     tz = ZoneInfo('Europe/London')
-    D = datetime.datetime.now(tz).strftime('%Y-%m-%d')
+    D = utcnow().astimezone(tz).strftime('%Y-%m-%d')
     tok = token()
     house = DEFAULT_HOUSE
-    rows, com, gearp = {}, set(), {}
+    rows, com, gearp, hdr, dump, track = {}, set(), {}, {}, [], set(ITEMS)
     for kind in ('/commodities', ''):
         try:
-            d = get(tok, '/data/wow/ruleset/%d/auctions/%d%s' % (RULESET, house, kind), 'dynamic-forever-eu') or {}
+            d = get(tok, '/data/wow/ruleset/%d/auctions/%d%s' % (RULESET, house, kind), 'dynamic-forever-eu', hdr=hdr if kind else None) or {}
         except RuntimeError as e:
             if kind:
                 raise
             print('Non-commodity auctions skipped: ' + str(e)[:120], file=sys.stderr); d = {}
         if kind:
-            com = {a['item']['id'] for a in d.get('auctions', [])} & set(ITEMS)
+            com = {a['item']['id'] for a in d.get('auctions', [])} & track
+            # the tracked listings, so the next hourly run can count what sold in between (see pair)
+            dump = [[a['id'], a['item']['id'], a.get('unit_price') or 0, a.get('quantity') or 1, a.get('time_left')]
+                    for a in d.get('auctions', []) if a['item']['id'] in track]
         for a in d.get('auctions', []):
             q = a.get('quantity') or 1
             u = a.get('unit_price') or (a['buyout'] // q if a.get('buyout') else None)
@@ -156,8 +181,17 @@ def main():
         m[str(i)] = [r[0][0], med, sum(q for u, q in r), round(cost / got), sum(q for u, q in r if u == r[0][0])]
     if len(m) < 40 or len(com) < 100:
         raise SystemExit('Too few items priced (%d, %d commodities); the auction house data looks wrong.' % (len(m), len(com)))
-    at = datetime.datetime.now(datetime.timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ')
-    json.dump({'d': D, 'at': at, 'src': 'blizzard', 'house': house, 'm': m}, open(out + '/prices.json', 'w'), separators=(',', ':'))
+    at = utcnow().strftime('%Y-%m-%dT%H:%M:%SZ')
+    lm, snap = hdr.get('last-modified'), None
+    try:
+        snap = parsedate_to_datetime(lm).astimezone(datetime.timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ') if lm else None
+    except (TypeError, ValueError):
+        lm = None
+    doc = {'d': D, 'at': at, 'src': 'blizzard', 'house': house, 'm': m}
+    if snap:
+        doc = {'d': D, 'at': at, 'snap': snap, 'src': 'blizzard', 'house': house, 'm': m}  # snap: when Blizzard took it
+        json.dump({'lm': lm, 'snap': snap, 'a': dump}, open(out + '/auctions.json', 'w'), separators=(',', ':'))
+    json.dump(doc, open(out + '/prices.json', 'w'), separators=(',', ':'))
     if recent.get('k') != 'buy':
         recent = {}  # older history held the median of everything listed, which isn't comparable
     days = [x for x in (recent.get('days') or []) if isinstance(x, str)]
@@ -353,41 +387,14 @@ def gear_check(eq, c, gearp, spec):
             slots[slot] = {'cur': [h[:5] for h in have], 'up': ups[:3]}
     return {'spec': spec, 'lvl': lvl, 'slots': slots}
 
-def speed(out):
-    """Units sold between two of Blizzard's hourly commodity snapshots. Buyers always take the cheapest listings first,
-    so a listing that vanished while a cheaper one stayed untouched was cancelled, not bought, and doesn't count."""
-    os.makedirs(out, exist_ok=True)
-    tok = token()
-    path, ns = '/data/wow/ruleset/%d/auctions/%d/commodities' % (RULESET, DEFAULT_HOUSE), 'dynamic-forever-eu'
-    code, body, la = getc(tok, path, ns)
-    if code != '200' or not la:
-        raise SystemExit('Speed sample skipped: no snapshot (HTTP %s)' % code)
-    track, A, stock = set(ITEMS), {}, {}
-    for a in json.loads(body).get('auctions', []):
-        i = a['item']['id']
-        if i in track:
-            A[a['id']] = (i, a.get('unit_price') or 0, a.get('quantity') or 1, a.get('time_left'))
-            stock[i] = stock.get(i, 0) + (a.get('quantity') or 1)
-    if os.environ.get('WOWF_KEEP_RAW'):
-        open(out + '/A.json', 'w').write(body)
-    body = None
-    deadline, lb = time.time() + 78 * 60, None
-    while time.time() < deadline:
-        time.sleep(60)
-        try:
-            code, body, lb = getc(tok, path, ns, since=la)
-        except RuntimeError:
-            continue
-        if code == '200' and lb and lb != la:
-            break
-        body = None
-    if not body:
-        raise SystemExit('Speed sample skipped: Blizzard published no new snapshot within 78 minutes')
-    if os.environ.get('WOWF_KEEP_RAW'):
-        open(out + '/B.json', 'w').write(body)
-    B = {a['id']: a.get('quantity') or 1 for a in json.loads(body).get('auctions', []) if a['item']['id'] in track}
-    from email.utils import parsedate_to_datetime
-    ta, tb = parsedate_to_datetime(la), parsedate_to_datetime(lb)
+def compare(A, B, ta, tb):
+    """Units sold between two of Blizzard's hourly commodity snapshots: A at time ta ({auction id: (item, unit price,
+    quantity, time left)}) and B at tb ({auction id: quantity}). Buyers always take the cheapest listings first, so a
+    listing that vanished while a cheaper one stayed untouched was cancelled, not bought, and doesn't count.
+    Returns the sell-speed document and a one-line summary."""
+    stock = {}
+    for i, p, q, tl in A.values():
+        stock[i] = stock.get(i, 0) + q
     mins = max(1, round((tb - ta).total_seconds() / 60))
     # How far up each item's price ladder buyers reached: the dearest listing they bought part of, or else
     # (when nothing was part-bought) the cheapest listing nobody touched.
@@ -409,11 +416,116 @@ def speed(out):
     # only items that sold: an item with listings and no entry sold nothing, which keeps the document small enough to save by hand
     doc = {'at': tb.strftime('%Y-%m-%dT%H:%M:%SZ'), 'from': ta.strftime('%Y-%m-%dT%H:%M:%SZ'), 'w': mins, 'n': len(stock),
            'u': {str(k): v for k, v in sorted(sold.items()) if v > 0}}
+    return doc, {'speed': sid, 'items': len(stock), 'sold': len(doc['u']), 'minutes': mins, 'units': sum(sold.values())}
+
+def speed(out):
+    """Sell speed from one run: reads the current snapshot, then waits up to 78 minutes for Blizzard's next one."""
+    os.makedirs(out, exist_ok=True)
+    tok = token()
+    path, ns = '/data/wow/ruleset/%d/auctions/%d/commodities' % (RULESET, DEFAULT_HOUSE), 'dynamic-forever-eu'
+    code, body, la = getc(tok, path, ns)
+    if code != '200' or not la:
+        raise SystemExit('Speed sample skipped: no snapshot (HTTP %s)' % code)
+    track, A = set(ITEMS), {}
+    for a in json.loads(body).get('auctions', []):
+        i = a['item']['id']
+        if i in track:
+            A[a['id']] = (i, a.get('unit_price') or 0, a.get('quantity') or 1, a.get('time_left'))
+    if os.environ.get('WOWF_KEEP_RAW'):
+        open(out + '/A.json', 'w').write(body)
+    body = None
+    deadline, lb = time.time() + 78 * 60, None
+    while time.time() < deadline:
+        time.sleep(60)
+        try:
+            code, body, lb = getc(tok, path, ns, since=la)
+        except RuntimeError:
+            continue
+        if code == '200' and lb and lb != la:
+            break
+        body = None
+    if not body:
+        raise SystemExit('Speed sample skipped: Blizzard published no new snapshot within 78 minutes')
+    if os.environ.get('WOWF_KEEP_RAW'):
+        open(out + '/B.json', 'w').write(body)
+    B = {a['id']: a.get('quantity') or 1 for a in json.loads(body).get('auctions', []) if a['item']['id'] in track}
+    doc, info = compare(A, B, parsedate_to_datetime(la), parsedate_to_datetime(lb))
     json.dump(doc, open(out + '/speed.json', 'w'), separators=(',', ':'))
-    print(json.dumps({'speed': sid, 'items': len(stock), 'sold': len(doc['u']), 'minutes': mins, 'units': sum(sold.values())}), flush=True)
+    print(json.dumps(info), flush=True)
+
+def pair(prev, cur):
+    """Sell speed from two runs' auctions.json (see main). Returns (document, summary), or (None, why not)."""
+    try:
+        ta, tb = parsedate_to_datetime(prev['lm']), parsedate_to_datetime(cur['lm'])
+        A = {x[0]: (x[1], x[2], x[3], x[4]) for x in prev['a']}
+        B = {x[0]: x[3] for x in cur['a']}
+    except (KeyError, TypeError, ValueError, IndexError):
+        return None, 'a saved snapshot is unreadable'
+    mins = (tb - ta).total_seconds() / 60
+    if mins <= 0:
+        return None, 'no new snapshot since the last run'
+    if not PAIR_MINUTES[0] <= mins <= PAIR_MINUTES[1]:
+        return None, 'the last run was %d minutes earlier; sell speed needs runs %d minutes to %d hours apart' % (
+            round(mins), PAIR_MINUTES[0], PAIR_MINUTES[1] // 60)
+    return compare(A, B, ta, tb)
+
+def clock(t, ref):
+    """UK time like 8.55pm, with "yesterday" or the day when t isn't on ref's day."""
+    tz = ZoneInfo('Europe/London')
+    lt, lr = t.astimezone(tz), ref.astimezone(tz)
+    h = lt.hour % 12 or 12
+    s = '%d%s%s' % (h, ('.%02d' % lt.minute) if lt.minute else '', 'am' if lt.hour < 12 else 'pm')
+    days = (lr.date() - lt.date()).days
+    return s if days == 0 else s + ' yesterday' if days == 1 else lt.strftime('%a ') + s
+
+def hourly_alerts(cur, prev, watch, sent):
+    """Phone alerts for one hourly read (see PUSH_MOVE). cur and prev are this read's and the previous read's prices.json;
+    watch is config/watch.json; sent lists earlier pushes as [{"at": UTC time, "sent": true, "items": [{"id", "kind"}]}].
+    Returns [{"id", "kind" (lo, hi, up or down), "line"}], prices the player set first, then the biggest moves."""
+    wl = watch.get('items') if isinstance(watch, dict) and isinstance(watch.get('items'), dict) else {}
+    cm, pm = cur.get('m') or {}, (prev or {}).get('m') or {}
+    tc = datetime.datetime.fromisoformat(cur['at'].replace('Z', '+00:00'))
+    tp = datetime.datetime.fromisoformat(prev['at'].replace('Z', '+00:00')) if prev and prev.get('at') else None
+    stale = not tp or tc - tp > datetime.timedelta(hours=24)  # moves only count against a read from the last day
+    quiet = set()
+    for s in sent or []:
+        try:
+            ts = datetime.datetime.fromisoformat(s['at'].replace('Z', '+00:00'))
+        except (KeyError, AttributeError, ValueError):
+            continue
+        if s.get('sent') and datetime.timedelta(0) <= tc - ts < datetime.timedelta(hours=PUSH_QUIET_H):
+            quiet |= {str(x.get('id')) for x in s.get('items', []) if x.get('kind') in ('up', 'down')}
+    out = []
+    for k, w in wl.items():
+        c, p = cm.get(k), pm.get(k)
+        if not c or len(c) < 5:
+            continue
+        w, name = w if isinstance(w, dict) else {}, NAMES.get(k, 'Item ' + k)
+        lo, hi = w.get('lo'), w.get('hi')
+        was = p[0] if p else None
+        if isinstance(lo, (int, float)) and lo > 0 and c[0] <= lo and (was is None or was > lo):
+            out.append({'id': int(k), 'kind': 'lo', 'size': 9, 'line': '%s: cheapest listing %s, at or below your %s' % (name, money(c[0]), money(lo))})
+        elif isinstance(hi, (int, float)) and hi > 0 and c[0] >= hi and (was is None or was < hi):
+            out.append({'id': int(k), 'kind': 'hi', 'size': 9, 'line': '%s: cheapest listing %s, at or above your %s' % (name, money(c[0]), money(hi))})
+        if not p or len(p) < 5 or k in quiet or c[2] < PUSH_MIN_LISTED or p[2] < PUSH_MIN_LISTED or not p[3] or stale:
+            continue
+        ch = (c[3] - p[3]) / p[3]
+        if abs(ch) >= PUSH_MOVE and abs(c[3] - p[3]) * 20 >= PUSH_MIN_GAIN:
+            out.append({'id': int(k), 'kind': 'up' if ch > 0 else 'down', 'size': abs(ch),
+                        'line': '%s: %s each, %s %d%% since %s (%s listed)' % (name, money(c[3]), 'up' if ch > 0 else 'down',
+                                round(abs(ch) * 100), clock(tp, tc), '{:,}'.format(c[2]))})
+    out.sort(key=lambda a: (a['kind'] not in ('lo', 'hi'), -a['size'], a['line']))
+    return [{'id': a['id'], 'kind': a['kind'], 'line': a['line']} for a in out]
 
 if __name__ == '__main__':
     if len(sys.argv) > 2 and sys.argv[1] == 'speed':
         speed(sys.argv[2])
+    elif len(sys.argv) > 4 and sys.argv[1] == 'pair':
+        doc, info = pair(json.load(open(sys.argv[2])), json.load(open(sys.argv[3])))
+        if not doc:
+            raise SystemExit('Speed sample skipped: ' + info)
+        os.makedirs(sys.argv[4], exist_ok=True)
+        json.dump(doc, open(sys.argv[4] + '/speed.json', 'w'), separators=(',', ':'))
+        print(json.dumps(info), flush=True)
     else:
         main()

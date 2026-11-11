@@ -1,28 +1,37 @@
 #!/usr/bin/env python3
 """GitHub Actions refresh for the WoW Forever Field Guide (see .github/workflows/refresh.yml).
 
-1. Starts the sell-speed sample in the background (it waits up to 78 minutes for Blizzard's next hourly snapshot).
-2. Runs refresh.py with the Blizzard keys from the repository's encrypted secrets (BNET_ID and BNET_SECRET), files its
-   output under data/, rebuilds data/latest.json (what the page reads) and data/status.json, and commits to main.
-3. When the sell-speed sample finishes, saves it under data/speed/ and commits again.
+Each run:
+1. Runs refresh.py with the Blizzard keys from the repository's encrypted secrets (BNET_ID and BNET_SECRET): the
+   latest hourly Auction House snapshot, the character and its gear check.
+2. Files the output under data/: that day's prices (each run replaces the day's file), this snapshot's prices under
+   data/hourly/ (two days kept, for the watchlist's 24-hour line), the price history and the character.
+3. Works out how fast things sell by comparing this snapshot with the previous run's, when that was 30 minutes to
+   3 hours earlier. The workflow keeps the previous run's listings in the Actions cache (.cache/auctions.json).
+4. Sends a phone alert through ntfy.sh (the NTFY_TOPIC secret) when a watched item's price moved a lot since the
+   previous read, or crossed a price set on the watchlist, in the online hours only (the rule is refresh.py's PUSH_*).
+5. Rebuilds data/latest.json (what the page reads) and data/status.json, and commits it all to main in one commit.
 
-Nothing here prints or saves the keys. data/status.json is public, so it only holds short, checked messages.
+Nothing here prints or saves the keys or the ntfy topic. data/status.json and data/stats/pushes.json are public, so
+they only hold short, checked messages.
 
-With --if-due (scheduled runs), it first checks whether prices were already saved in the current window, which
-starts at 4am or 6pm UK time, and stops straight away if so. The workflow schedules several tries per window,
-because GitHub can start scheduled runs hours late or skip them.
+cron-job.org presses "Run workflow" at five to each hour in the online hours. With --if-stale (GitHub's own
+schedule, a backup), it stops straight away outside the online hours or when the last read was under 40 minutes ago.
 
-Usage: python3 tools/ci_refresh.py [--if-due] [--no-git]
+Usage: python3 tools/ci_refresh.py [--if-stale] [--no-git] [--no-push]
 """
 import datetime
 import glob
+import importlib.util
 import json
 import os
 import re
+import shutil
 import subprocess
 import sys
 import tempfile
 import time
+import urllib.request
 from zoneinfo import ZoneInfo
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -30,11 +39,17 @@ import build_latest  # noqa: E402
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
 SCRIPT = os.environ.get("WOWF_REFRESH_SCRIPT", os.path.join(ROOT, "refresh.py"))
-SPEED_WAIT = int(os.environ.get("WOWF_SPEED_WAIT", str(82 * 60)))
+CACHE = os.environ.get("WOWF_CACHE", os.path.join(ROOT, ".cache", "auctions.json"))
+NTFY = os.environ.get("NTFY_SERVER", "https://ntfy.sh").rstrip("/")
+PAGE = "https://markrack86.github.io/wow-field-guide/#gold"
 USE_GIT = "--no-git" not in sys.argv
-IF_DUE = "--if-due" in sys.argv
+IF_STALE = "--if-stale" in sys.argv
+NO_PUSH = "--no-push" in sys.argv
 PARTIAL = ("Character", "Quest log", "Gear check", "Non-commodity")
 UK = ZoneInfo("Europe/London")
+# The player is usually online from 5 to 6.30am and 8 to 11pm UK time; the reads run at five to each hour from 4.55.
+ONLINE = ((4, 30, 6, 45), (19, 30, 23, 15))
+KEEP_HOURS, STALE_MINUTES = 48, 40
 
 
 def path(*parts):
@@ -46,35 +61,44 @@ def utcnow():
     return datetime.datetime.fromisoformat(t.replace("Z", "+00:00")) if t else datetime.datetime.now(datetime.timezone.utc)
 
 
+def iso(t):
+    return t.astimezone(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+
+
 def now():
-    return utcnow().strftime("%Y-%m-%dT%H:%M:%SZ")
+    return iso(utcnow())
 
 
-def window_start(t):
-    """The refresh windows open at 4am and 6pm UK time. Returns when the current one opened."""
+def parse(text):
+    try:
+        return datetime.datetime.fromisoformat(str(text).replace("Z", "+00:00"))
+    except ValueError:
+        return None
+
+
+def online(t):
     uk = t.astimezone(UK)
-    if 4 <= uk.hour < 18:
-        return uk.replace(hour=4, minute=0, second=0, microsecond=0)
-    if uk.hour >= 18:
-        return uk.replace(hour=18, minute=0, second=0, microsecond=0)
-    return (uk - datetime.timedelta(days=1)).replace(hour=18, minute=0, second=0, microsecond=0)
+    m = uk.hour * 60 + uk.minute
+    return any(h1 * 60 + m1 <= m < h2 * 60 + m2 for h1, m1, h2, m2 in ONLINE)
 
 
 def last_saved():
-    """When prices were last saved, from the newest price files."""
+    """When prices were last read, from the newest price files."""
     best = None
     for p in sorted(glob.glob(path("data", "prices", "*.json")))[-2:]:
-        try:
-            t = datetime.datetime.fromisoformat((load(p) or {}).get("at", "").replace("Z", "+00:00"))
-        except (AttributeError, ValueError):
-            continue
-        best = t if best is None or t > best else best
+        t = parse((load(p) or {}).get("at", ""))
+        if t and (best is None or t > best):
+            best = t
     return best
 
 
 def safe(text, n=200):
-    """Short text for the public status file. The keys never reach these messages; long tokens are hidden anyway."""
-    text = re.sub(r"[A-Za-z0-9_\-]{24,}", "[hidden]", str(text or ""))
+    """Short text for the public files. The keys never reach these messages; long tokens are hidden anyway."""
+    text = str(text or "")
+    topic = os.environ.get("NTFY_TOPIC")
+    if topic:
+        text = text.replace(topic, "[topic]")
+    text = re.sub(r"[A-Za-z0-9_\-]{24,}", "[hidden]", text)
     return " ".join(text.split())[:n]
 
 
@@ -99,17 +123,18 @@ def git(*args, check=True):
     return r
 
 
-def commit(message, files):
+def commit(message, paths):
+    """Commit everything changed under paths (new, changed and deleted files) and push to main."""
     if not USE_GIT:
         return
-    git("add", "--", *[f for f in files if os.path.exists(f)])
+    git("add", "-A", "--", *paths)
     if git("diff", "--cached", "--quiet", check=False).returncode == 0:
         return
     git("commit", "-q", "-m", message)
     for attempt in range(5):
         if git("push", "-q", "origin", "HEAD:main", check=False).returncode == 0:
             return
-        # Someone else pushed (Claude's sync or an edit): replay this commit on top. They never touch data/.
+        # Someone else pushed (Claude's sync or an edit): replay this commit on top. They never touch these files.
         if git("pull", "-q", "--rebase", "origin", "main", check=False).returncode:
             git("rebase", "--abort", check=False)
         time.sleep(5 * (attempt + 1))
@@ -119,6 +144,118 @@ def commit(message, files):
 def last_line(text):
     lines = [ln for ln in (text or "").splitlines() if ln.strip()]
     return lines[-1] if lines else ""
+
+
+def refresh_module():
+    """refresh.py's functions (pair, hourly_alerts), loaded without running it."""
+    spec = importlib.util.spec_from_file_location("wowf_refresh", SCRIPT)
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return mod
+
+
+def hour_of(name):
+    try:
+        return datetime.datetime.strptime(os.path.basename(name)[:13], "%Y-%m-%dT%H").replace(tzinfo=datetime.timezone.utc)
+    except ValueError:
+        return None
+
+
+def save_hourly(prices):
+    """Keep this read under data/hourly/, named by the UTC hour of Blizzard's snapshot, and drop those over two days
+    old. Returns (new, previous): new is False when the snapshot was already saved; previous is the read before it."""
+    t = parse(prices.get("snap") or prices.get("at"))
+    folder = path("data", "hourly")
+    target = os.path.join(folder, t.strftime("%Y-%m-%dT%H") + ".json")
+    prev = None
+    for p in sorted(glob.glob(os.path.join(folder, "*.json")), reverse=True):
+        d = load(p) or {}
+        s = parse(d.get("snap") or d.get("at"))
+        if s and s < t and isinstance(d.get("m"), dict):
+            prev = d
+            break
+    same = load(target) or {}
+    new = not (prices.get("snap") and same.get("snap") == prices.get("snap"))
+    if new:
+        build_latest.save_pretty(target, prices)
+    for p in glob.glob(os.path.join(folder, "*.json")):
+        h = hour_of(p)
+        if h and h < t - datetime.timedelta(hours=KEEP_HOURS):
+            os.remove(p)
+    return new, prev
+
+
+def github_output(name, value):
+    out = os.environ.get("GITHUB_OUTPUT")
+    if out:
+        with open(out, "a", encoding="utf-8") as f:
+            f.write("%s=%s\n" % (name, value))
+
+
+def speed_pair(rf, out):
+    """Sell speed from this run's listings and the previous run's, then keep this run's for the next.
+    Returns (status, summary or None)."""
+    cur = load(os.path.join(out, "auctions.json"))
+    if not cur:
+        return {"at": now(), "ok": False, "reason": "Blizzard didn't say when it took this snapshot"}, None
+    prev = load(CACHE)
+    info = None
+    if not prev:
+        status = {"at": now(), "ok": False, "reason": "no earlier run's listings to compare with yet"}
+    else:
+        doc, info = rf.pair(prev, cur)
+        if doc:
+            target = path("data", "speed", info["speed"] + ".json")
+            if not os.path.exists(target):
+                build_latest.save_pretty(target, doc)
+            status = {"at": now(), "ok": True, "id": info["speed"], "units": info.get("units"), "minutes": info.get("minutes")}
+        else:
+            status, info = {"at": now(), "ok": False, "reason": safe(info, 160)}, None
+    if not prev or prev.get("lm") != cur.get("lm"):
+        os.makedirs(os.path.dirname(CACHE), exist_ok=True)
+        shutil.copyfile(os.path.join(out, "auctions.json"), CACHE)
+        github_output("snapshot", "new")
+    return status, info
+
+
+def ntfy(topic, title, lines):
+    body = json.dumps({"topic": topic, "title": title, "message": "\n".join(lines), "tags": ["moneybag"], "priority": 3,
+                       "click": PAGE}).encode("utf-8")
+    req = urllib.request.Request(NTFY + "/", data=body, method="POST",
+                                 headers={"Content-Type": "application/json", "User-Agent": "wow-field-guide-refresh"})
+    with urllib.request.urlopen(req, timeout=20) as r:
+        if r.status >= 300:
+            raise RuntimeError("ntfy answered HTTP %d" % r.status)
+
+
+def phone(rf, prices, prev):
+    """Phone alerts for this read. Returns a short note for the status, or None when nothing was worth sending."""
+    log_path = path("data", "stats", "pushes.json")
+    t = utcnow()
+    sent = [s for s in (load(log_path, {}) or {}).get("sent", [])
+            if isinstance(s, dict) and parse(s.get("at", "")) and t - parse(s["at"]) < datetime.timedelta(hours=KEEP_HOURS)]
+    found = rf.hourly_alerts(prices, prev, load(path("config", "watch.json"), {}) or {}, sent)
+    if not found:
+        return None
+    lines = [a["line"] for a in found]
+    shown = lines[:5] + (["and %d more: see the watchlist" % (len(lines) - 5)] if len(lines) > 5 else [])
+    entry = {"at": now(), "snap": prices.get("snap"), "sent": False, "items": [{"id": a["id"], "kind": a["kind"]} for a in found], "lines": lines}
+    topic = os.environ.get("NTFY_TOPIC", "").strip()
+    if not online(t):
+        entry["why"] = "outside the online hours"
+    elif not topic:
+        entry["why"] = "no NTFY_TOPIC secret"
+    elif NO_PUSH:
+        entry["why"] = "sending switched off for this run"
+    else:
+        try:
+            ntfy(topic, "WoW Forever: %d price alert%s" % (len(lines), "" if len(lines) == 1 else "s"), shown)
+            entry["sent"] = True
+        except Exception as e:  # a failed alert never stops the refresh
+            entry["why"] = safe(str(e) or type(e).__name__, 120)
+    build_latest.save_pretty(log_path, {"v": 1, "sent": sent + [entry]})
+    n = "%d alert%s" % (len(lines), "" if len(lines) == 1 else "s")
+    return n + " sent" if entry["sent"] else n + " not sent: " + entry["why"]
 
 
 def refresh(tmp, env):
@@ -142,60 +279,59 @@ def refresh(tmp, env):
         return False
 
     day = prices["d"]
-    files = [path("data", "prices", day + ".json"), path("data", "stats", "recent.json"), path("data", "char", "current.json"),
-             path("data", "latest.json"), path("data", "status.json")]
-    build_latest.save_pretty(files[0], prices)
+    build_latest.save_pretty(path("data", "prices", day + ".json"), prices)
     recent = load(os.path.join(out, "recent.json"))
     if recent:
-        build_latest.save_pretty(files[1], recent)
+        build_latest.save_pretty(path("data", "stats", "recent.json"), recent)
     char, level, char_state = load(os.path.join(out, "char.json")), None, "not set up"
     if char and char.get("missing"):
         char_state = "not found on Blizzard"
     elif char:
-        current = load(files[2], {}) or {}
+        current = load(path("data", "char", "current.json"), {}) or {}
         current.update(char)  # like the old database merge: parts that failed to sync keep their previous values
-        build_latest.save_pretty(files[2], current)
+        build_latest.save_pretty(path("data", "char", "current.json"), current)
         level, char_state = current.get("level"), "synced"
+
+    rf = refresh_module()
+    new, prev = save_hourly(prices)
+    spd, spd_info = speed_pair(rf, out)
+    note = None
+    if new:
+        try:
+            note = phone(rf, prices, prev)
+        except Exception as e:  # never lose the prices over an alert
+            note = "alerts failed: " + safe(str(e) or type(e).__name__, 120)
     build_latest.build(ROOT)
-    set_status("refresh", {"at": now(), "ok": True, "date": day, "items": summary.get("items"), "of": summary.get("of"),
-                           "alerts": summary.get("alerts"), "character": char_state, "level": level, "notes": notes})
-    commit("Prices for %s: %s items%s" % (day, summary.get("items"), ", level %s" % level if level else ""), files)
-    print("Saved %s prices for %s; character %s." % (summary.get("items"), day, char_state))
+    snap = parse(prices.get("snap") or prices.get("at"))
+    set_status("refresh", {"at": now(), "ok": True, "date": day, "snapshot": prices.get("snap"), "new": new,
+                           "items": summary.get("items"), "of": summary.get("of"), "alerts": summary.get("alerts"),
+                           "phone": note or "nothing to send", "character": char_state, "level": level, "notes": notes})
+    set_status("speed", spd)
+    extra = ([", level %s" % level] if level else []) + ([", speed over %s min" % spd_info["minutes"]] if spd_info else []) + \
+        ([", " + note.split(":")[0]] if note else []) + ([] if new else [", same snapshot"])
+    commit("Prices for %s %s: %s items%s" % (day, snap.astimezone(UK).strftime("%H:%M"), summary.get("items"), "".join(extra)), [path("data")])
+    print("Saved %s prices for %s (snapshot %s UTC); character %s; sell speed: %s; phone: %s." % (
+        summary.get("items"), day, prices.get("snap") or "time unknown", char_state,
+        "%s units over %s minutes" % (spd_info["units"], spd_info["minutes"]) if spd_info else spd.get("reason"),
+        note or "nothing to send"))
     return True
 
 
-def speed(proc, log_path, spd_dir):
-    """Wait for the sell-speed sample and save it."""
-    try:
-        proc.wait(timeout=SPEED_WAIT)
-    except subprocess.TimeoutExpired:
-        proc.kill()
-    with open(log_path, encoding="utf-8", errors="replace") as f:
-        log = f.read()
-    line = next((ln for ln in log.splitlines() if ln.startswith('{"speed"')), None)
-    doc = load(os.path.join(spd_dir, "speed.json"))
-    if not (line and doc):
-        reason = safe(last_line(log) or "no result", 160)
-        set_status("speed", {"at": now(), "ok": False, "reason": reason})
-        commit("Sell-speed sample skipped", [path("data", "status.json")])
-        print("Sell-speed sample skipped:", reason)
-        return
-    info = json.loads(line)
-    target = path("data", "speed", info["speed"] + ".json")
-    if not os.path.exists(target):
-        build_latest.save_pretty(target, doc)
-    build_latest.build(ROOT)
-    set_status("speed", {"at": now(), "ok": True, "id": info["speed"], "units": info.get("units"), "minutes": info.get("minutes")})
-    commit("Sell-speed sample %s: %s units over %s minutes" % (info["speed"], info.get("units"), info.get("minutes")),
-           [target, path("data", "latest.json"), path("data", "status.json")])
-    print("Sell-speed sample saved: %s units over %s minutes." % (info.get("units"), info.get("minutes")))
+def stale_reason(t):
+    """Why a scheduled (backup) run has nothing to do, or None."""
+    if not online(t):
+        return "Outside the online hours (%s UK time); nothing to do." % t.astimezone(UK).strftime("%H:%M")
+    last = last_saved()
+    if last and t - last < datetime.timedelta(minutes=STALE_MINUTES):
+        return "Prices were read %d minutes ago; nothing to do." % ((t - last).total_seconds() // 60)
+    return None
 
 
 def main():
-    if IF_DUE:
-        opened, last = window_start(utcnow()), last_saved()
-        if last and last >= opened:
-            print("Already refreshed in this window (prices saved %s UTC); nothing to do." % last.strftime("%Y-%m-%d %H:%M"))
+    if IF_STALE:
+        reason = stale_reason(utcnow())
+        if reason:
+            print(reason)
             return 0
     env = dict(os.environ)
     if not (env.get("BNET_ID") and env.get("BNET_SECRET")):
@@ -203,12 +339,8 @@ def main():
         commit("Refresh failed: Blizzard secrets missing", [path("data", "status.json")])
         print("The BNET_ID and BNET_SECRET secrets aren't set in the repository.")
         return 1
-    tmp = tempfile.mkdtemp(prefix="wowf-")
-    spd_dir, log_path = os.path.join(tmp, "spd"), os.path.join(tmp, "speed.log")
-    with open(log_path, "w") as log:
-        proc = subprocess.Popen([sys.executable, SCRIPT, "speed", spd_dir], stdout=log, stderr=subprocess.STDOUT, env=env)
-    ok = refresh(tmp, env)
-    speed(proc, log_path, spd_dir)
+    env.pop("NTFY_TOPIC", None)  # refresh.py doesn't need it
+    ok = refresh(tempfile.mkdtemp(prefix="wowf-"), env)
     return 0 if ok else 1
 
 

@@ -62,7 +62,7 @@
   var statusEl = $('#mk-status'), alertList = $('#mk-alert-list'), profSel = $('#mk-prof');
   var chartEl = $('#mk-chart'), tipEl = $('#mk-tip'), titleEl = $('#mk-chart-title'), matsEl = $('#mk-mats'), craftsEl = $('#mk-crafts');
   var watchEl = $('#mk-watch'), watchNote = $('#mk-watch-note');
-  var days = [], loaded = false, DBH = null, CH = null, WATCH = {}, readOnly = false, saving = false, again = false;
+  var days = [], loaded = false, DBH = null, CH = null, WATCH = {}, readOnly = false, saving = false, again = false, LIVE = false;
   var KNOWN = {}, KNOWNR = {};
   /* Herbalism, Alchemy and First Aid have What to craft and What to sell; the picker covers the other professions. */
   var OTHER = PROFS.filter(function (p) { return p.k !== 'alch' && p.k !== 'fa'; });
@@ -104,6 +104,9 @@
   catch (e) { dayFmt = { format: function (d) { return d.toDateString(); } }; }
   try { stampFmt = new Intl.DateTimeFormat('en-GB', { weekday: 'short', day: 'numeric', month: 'short', hour: 'numeric', minute: '2-digit', hour12: true }); }
   catch (e) { stampFmt = { format: function (d) { return d.toLocaleString(); } }; }
+  var clockFmt, wdayFmt;
+  try { clockFmt = new Intl.DateTimeFormat('en-GB', { hour: 'numeric', minute: '2-digit', hour12: true }); wdayFmt = new Intl.DateTimeFormat('en-GB', { weekday: 'short' }); }
+  catch (e) { clockFmt = { format: function (d) { return d.toLocaleTimeString(); } }; wdayFmt = { format: function (d) { return d.toDateString().slice(0, 3); } }; }
 
   function P() { for (var i = 0; i < PROFS.length; i++) if (PROFS[i].k === prof) return PROFS[i]; return PROFS[0]; }
   function nm(id) { return NAMES[id] || ('Item ' + id); }
@@ -273,21 +276,47 @@
     trendDays().forEach(function (d) { var v = atDay(d, fn); if (v != null && isFinite(v)) out.push({ d: d.d, v: v }); });
     return out;
   }
-  function sparkSvg(s, what) {
+  function ptTime(p) { return p.t != null ? p.t : Date.parse(p.d + 'T12:00:00Z'); }  /* a day's point, or an hourly read's */
+  function sparkSvg(s, what, W) {
     if (!s || s.length < 2) return '';
-    var W = 56, H = 18, pad = 2.5, lo = Infinity, hi = -Infinity;
+    W = W || 56;
+    var H = 18, pad = 2.5, lo = Infinity, hi = -Infinity;
     s.forEach(function (p) { if (p.v < lo) lo = p.v; if (p.v > hi) hi = p.v; });
-    var t0 = Date.parse(s[0].d + 'T12:00:00Z'), t1 = Date.parse(s[s.length - 1].d + 'T12:00:00Z');
-    var X = function (d) { return pad + (t1 > t0 ? (Date.parse(d + 'T12:00:00Z') - t0) / (t1 - t0) : 1) * (W - 2 * pad); };
+    var t0 = ptTime(s[0]), t1 = ptTime(s[s.length - 1]);
+    var X = function (p) { return pad + (t1 > t0 ? (ptTime(p) - t0) / (t1 - t0) : 1) * (W - 2 * pad); };
     var Y = function (v) { return hi > lo ? pad + (1 - (v - lo) / (hi - lo)) * (H - 2 * pad) : H / 2; };
     var last = s[s.length - 1], g = '';
     if (lo < 0 && hi > 0) g += '<line class="z" x1="0" x2="' + W + '" y1="' + Y(0).toFixed(1) + '" y2="' + Y(0).toFixed(1) + '"/>';
-    g += '<path d="' + s.map(function (p, i) { return (i ? 'L' : 'M') + X(p.d).toFixed(1) + ' ' + Y(p.v).toFixed(1); }).join('') + '"/>';
-    g += '<circle cx="' + X(last.d).toFixed(1) + '" cy="' + Y(last.v).toFixed(1) + '" r="2.4"/>';
-    var lab = what + ' since ' + dayLabel(s[0].d) + ': ' + money(s[0].v) + ', now ' + money(last.v) + (hi > lo ? ' (low ' + money(lo) + ', high ' + money(hi) + ')' : ', no change');
+    g += '<path d="' + s.map(function (p, i) { return (i ? 'L' : 'M') + X(p).toFixed(1) + ' ' + Y(p.v).toFixed(1); }).join('') + '"/>';
+    g += '<circle cx="' + X(last).toFixed(1) + '" cy="' + Y(last.v).toFixed(1) + '" r="2.4"/>';
+    var lab = what + ' since ' + (s[0].t != null ? stamp(s[0].t) : dayLabel(s[0].d)) + ': ' + money(s[0].v) + ', now ' + money(last.v) + (hi > lo ? ' (low ' + money(lo) + ', high ' + money(hi) + ')' : ', no change');
     return '<svg class="spark" viewBox="0 0 ' + W + ' ' + H + '" width="' + W + '" height="' + H + '" role="img" aria-label="' + esc(lab) + '"><title>' + esc(lab) + '</title>' + g + '</svg>';
   }
   function spark(id) { return sparkSvg(priceSeries(id), nm(id)); }
+
+  /* ---------- The last day of hourly reads: a line and the change, on the watchlist ---------- */
+  var HOURLY = { t: [], b: {} };
+  function hourSeries(id) {
+    var v = HOURLY.b[id] || [], out = [];
+    HOURLY.t.forEach(function (t, i) { var x = num(v[i]); if (x) out.push({ t: t, v: x }); });
+    return out;
+  }
+  function clockText(t) {  /* 8:55 pm, 8:55 pm yesterday, or Mon, 8:55 pm */
+    var d = new Date(t), today = new Date(), yest = new Date(today.getTime() - 864e5);
+    if (d.toDateString() === today.toDateString()) return clockFmt.format(d);
+    return (d.toDateString() === yest.toDateString() ? clockFmt.format(d) + ' yesterday' : wdayFmt.format(d) + ', ' + clockFmt.format(d));
+  }
+  function dayLine(id) {
+    var s = hourSeries(id);
+    if (s.length < 2) return '';
+    var a = s[0], z = s[s.length - 1], lo = Infinity, hi = -Infinity;
+    s.forEach(function (p) { if (p.v < lo) lo = p.v; if (p.v > hi) hi = p.v; });
+    var ch = (z.v - a.v) / a.v, p = pct(ch);
+    var move = p === '0%' ? 'no change' : (ch >= 0 ? '<span aria-hidden="true">▲ </span><span class="vh">up </span>' : '<span aria-hidden="true">▼ </span><span class="vh">down </span>') + p.slice(1);
+    var since = z.t - a.t >= 20 * 36e5 ? 'over the last day' : 'since ' + clockText(a.t);
+    return '<p class="mk-24h"><span class="mk-24h-k">Hourly</span>' + sparkSvg(s, nm(id) + ' at each hourly read', 72) +
+      '<span><strong>' + move + '</strong> ' + esc(since) + (hi > lo ? ' · low ' + esc(money(lo)) + ', high ' + esc(money(hi)) : '') + '</span></p>';
+  }
 
   /* ---------- Under-priced listings: a cheapest listing far below that item's usual cheapest ---------- */
   function prevDays() { var src = latest() ? latest().src : ''; return days.slice(0, days.length - 1).filter(function (d) { return d.src === src; }).slice(-7); }
@@ -313,7 +342,7 @@
     return out.sort(function (a, b) { return b.tot - a.tot; });
   }
 
-  /* ---------- How fast things sell: one-hour samples, about 4am and 6pm UK time ---------- */
+  /* ---------- How fast things sell: one-hour samples, from each hourly read and the one before ---------- */
   var SPD = [];
   function rate(id) {
     if (SPD.length < 2) return null;
@@ -415,9 +444,10 @@
   function renderStatus() {
     if (!loaded) return;
     var d = latest();
-    if (!d) { statusEl.textContent = 'No prices yet. The refresh runs at about 4am and 6pm UK time.'; return; }
+    if (!d) { statusEl.textContent = 'No prices yet. They’re read every hour from about 5am to 6.30am and 8pm to 11pm UK time.'; return; }
     var when = d.at && !isNaN(Date.parse(d.at)) ? stampFmt.format(new Date(d.at)) : dayLabel(d.d);
-    statusEl.textContent = 'Updated ' + when + ' · ' + plural(days.length, 'day') + ' of prices · from ' + (d.src === 'blizzard' ? 'Blizzard’s Auction House data' : 'AHledger’s player scans') + '.';
+    var snap = d.snap && !isNaN(Date.parse(d.snap)) ? ', from Blizzard’s snapshot of ' + clockFmt.format(new Date(d.snap)) : '';
+    statusEl.textContent = 'Updated ' + when + snap + ' · ' + plural(days.length, 'day') + ' of prices · from ' + (d.src === 'blizzard' ? 'Blizzard’s Auction House data' : 'AHledger’s player scans') + '.';
   }
   function itemBtn(id, pressed) {
     return '<button type="button" class="mk-item" data-item="' + id + '"' + (pressed != null ? ' aria-pressed="' + pressed + '"' : '') + '>' + esc(nm(id)) + '</button>';
@@ -507,14 +537,17 @@
       watchNote.textContent = readOnly ? 'Only the page’s owner can change the watchlist.' : 'Tap the star next to any item to pin it here. Starred items alert at a smaller move, and at prices you set.';
       return;
     }
-    watchNote.textContent = (readOnly ? 'Only the page’s owner can change the watchlist. ' : '') + 'Set a price to be told when the cheapest listing reaches it. Write prices like 1s 50c; a plain number means silver.';
+    watchNote.textContent = (readOnly ? 'Only the page’s owner can change the watchlist. ' : '') + 'Set a price to be told when the cheapest listing reaches it. Write prices like 1s 50c; a plain number means silver. ' +
+      (ids.some(function (id) { return hourSeries(id).length > 1; }) ? 'Hourly shows the price at each hourly read over the last day. ' : '') +
+      'Phone alerts cover these items too: a price you set, or a move of 25% or more since the last hourly read, at most once in three hours.' +
+      (LIVE ? '' : ' They follow the watchlist saved in the Claude app, not the one in this browser.');
     var h = '';
     ids.sort(function (a, b) { return nm(a) < nm(b) ? -1 : 1; }).forEach(function (id) {
       var w = WATCH[id] || {};
       var set = '<div class="mk-wset">' +
         '<label>Alert below<input class="mk-money" type="text" inputmode="decimal" autocomplete="off" data-w="lo" data-wid="' + id + '" value="' + (w.lo ? esc(money(w.lo)) : '') + '" placeholder="e.g. 1s 50c"' + (readOnly ? ' disabled' : '') + '></label>' +
         '<label>Alert above<input class="mk-money" type="text" inputmode="decimal" autocomplete="off" data-w="hi" data-wid="' + id + '" value="' + (w.hi ? esc(money(w.hi)) : '') + '" placeholder="e.g. 4s"' + (readOnly ? ' disabled' : '') + '></label></div>';
-      h += matRow(id, set);
+      h += matRow(id, dayLine(id) + set);
     });
     watchEl.innerHTML = h;
   }
@@ -1387,7 +1420,8 @@
       '. Items with random stats, such as “of the Bear”, are left out: Blizzard’s data doesn’t say which stats they rolled.</p></div>';
     h += '<div class="cb-field gear-w"><label for="gear-spec">Score gear for</label><select id="gear-spec" class="select"' + (readOnly ? ' disabled' : '') + '>' +
       WTS.map(function (w) { return '<option value="' + w[0] + '"' + (w[0] === want ? ' selected' : '') + '>' + esc(w[1] + ': ' + w[2]) + '</option>'; }).join('') + '</select></div>';
-    if (want !== g.spec) h += '<p class="mk-hint go">Saved. The picks below are still for ' + esc(wName(g.spec).toLowerCase()) + '; the next refresh, at about 4am or 6pm UK time, picks for ' + esc(wName(want).toLowerCase()) + '.</p>';
+    if (want !== g.spec) h += LIVE ? '<p class="mk-hint go">Saved. The picks below are still for ' + esc(wName(g.spec).toLowerCase()) + '; Claude’s next sync, at about 5am or 8pm UK time, brings picks for ' + esc(wName(want).toLowerCase()) + '.</p>'
+      : '<p class="mk-hint">Saved in this browser only. The picks below are for ' + esc(wName(g.spec).toLowerCase()) + ', the stat saved in the Claude app.</p>';
     Object.keys(SLOTN).forEach(function (s) { var x = g.slots[s]; if (!x) return; if (x.up && x.up.length) ups.push(s); else none.push(SLOTN[s]); });
     var top = [], seenS = {};
     gearPicks().sort(function (a, b) { return b.per - a.per; }).forEach(function (x) { if (!seenS[x.slot] && top.length < 3) { seenS[x.slot] = 1; top.push(x); } });
@@ -1593,7 +1627,7 @@
     loaded = true; clearTimeout(timer);
     days = snap.docs.map(function (doc) {
       var v = doc.data() || {};
-      return { d: String(v.d || doc.id), at: typeof v.at === 'string' ? v.at : '', src: v.src === 'blizzard' ? 'blizzard' : 'ahledger', m: v.m && typeof v.m === 'object' ? v.m : {} };
+      return { d: String(v.d || doc.id), at: typeof v.at === 'string' ? v.at : '', snap: typeof v.snap === 'string' ? v.snap : '', src: v.src === 'blizzard' ? 'blizzard' : 'ahledger', m: v.m && typeof v.m === 'object' ? v.m : {} };
     }).filter(function (d) { return /^[0-9]{4}-[0-9]{2}-[0-9]{2}$/.test(d.d); })
       .sort(function (a, b) { return a.d < b.d ? -1 : (a.d > b.d ? 1 : 0); });
     renderAll();
@@ -1624,6 +1658,16 @@
       .filter(function (x) { return x.w && x.w <= 180 && !isNaN(Date.parse(x.at)); });
     renderMats(); renderWatch(); renderCrafts(); renderCraftList(); renderSell();
   }
+  function onHourly(snap) {
+    var d = snap && snap.exists ? snap.data() : null, t = [], b = {};
+    if (d && Array.isArray(d.t) && d.b && typeof d.b === 'object') {
+      t = d.t.map(function (x) { return Date.parse(x); });
+      if (t.every(isFinite)) Object.keys(d.b).forEach(function (k) { if (Array.isArray(d.b[k]) && d.b[k].length === t.length) b[k] = d.b[k]; });
+      else t = [];
+    }
+    HOURLY = { t: t, b: b };
+    renderWatch();
+  }
   function onGearCfg(snap) {
     var d = snap && snap.exists ? snap.data() : null;
     GEARCFG = d && typeof d.spec === 'string' && WTS.some(function (w) { return w[0] === d.spec; }) ? { spec: d.spec } : null;
@@ -1640,8 +1684,9 @@
     DBH.doc('config/quests').set({ done: clean, at: new Date().toISOString() }).then(null, function (err) { if (err && err.code === 'invalid_argument') readOnly = true; });
   });
   /* ---------- Where the data comes from ----------
-     Prices, the character and the sell-speed samples are read from data/latest.json, next to this page. The GitHub
-     Actions refresh writes it twice a day; Claude's sync copies it into the Claude artifact. Settings (watchlist,
+     Prices, the hourly reads, the character and the sell-speed samples are read from data/latest.json, next to this
+     page. The GitHub Actions refresh writes it every hour from about 5am to 6.30am and 8pm to 11pm UK time; Claude's
+     sync copies it into the Claude artifact at about 5am and 8pm. Settings (watchlist,
      gear stat, quest ticks) are saved in the artifact's database when the page runs inside Claude. Anywhere else
      they start from the copies in data/latest.json, and changes stay in this browser. */
   var LOCAL = 'wowf-local:';
@@ -1706,11 +1751,12 @@
   }
   Promise.all([loadFiles().then(null, function () { return null; }), liveDb()]).then(function (r) {
     var files = r[0], db = fileDb(files, r[1]);
-    DBH = db;
+    DBH = db; LIVE = !!r[1];
     if (files) {
       db.collection('prices').orderBy('d', 'desc').limit(120).onSnapshot(onDays, function () { fail('Prices couldn’t load. Try opening the page again later.'); });
       db.doc('char/current').onSnapshot(onChar, function () {});
       db.collection('speed').orderBy('at', 'desc').limit(14).onSnapshot(onSpeed, function () {});
+      db.doc('hourly/recent').onSnapshot(onHourly, function () {});
     } else fail('Prices couldn’t load. Try opening the page again later.');
     db.doc('config/watch').onSnapshot(onWatch, function () {});
     db.doc('config/quests').onSnapshot(onQuests, function () {});

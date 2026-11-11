@@ -1,11 +1,127 @@
 {
-  "checked": "2026-11-10T04:00:00Z",
+  "checked": "2026-11-11T04:00:00Z",
   "entries": [
+    {
+      "date": "2026-11-10",
+      "label": "Tue 10 Nov",
+      "chips": ["Hotfixes"],
+      "state": "new",
+      "title": "Class tuning is live, plus Auction House and quest fixes",
+      "blocks": [
+        {
+          "heading": "Classes",
+          "items": [
+            "The class tuning Blizzard promised for Tue 10 Nov has now gone live.",
+            "Hunter: Pet health is now 115% of normal, down from 150%. Hawk pets hit about 80% harder. Arcane Shot and Summon Hawk now cost 11% of your base mana at every rank.",
+            "Warlock: Your Imp, Voidwalker, Incubus and Succubus have about 15% more health. The Imp's first four Firebolt ranks hit harder.",
+            "Warlock: For Affliction, Wrack does 30% less damage and is now a 6-second channel. While you channel it, Corruption, Siphon Life and Bane of Agony tick twice as fast. Soul Siphon now boosts Drain Life, Drain Soul and Wrack for each of those spells on the target, up to 36%.",
+            "Shaman: Weapon imbues and weapon totems now work together. Windfury Weapon and Windfury Totem can both trigger on the same hits.",
+            "Shaman: For Enhancement, Stormstrike now does 100% weapon damage, down from 150%, on an 8-second cooldown. Mental Dexterity turns less Intellect into attack power. Maelstrom Weapon cuts cast time and mana by 20% per stack at every rank, but triggers less often. Blizzard says this moves Enhancement back towards Windfury and away from Spell Power gear.",
+            "Shaman: Rage of the Storm, the Shaman quest reward, now gives 16 Strength instead of 16 Intellect. Its speed is now 3.6.",
+            "Druid: Omen of Clarity works again after you switch specs. For Restoration, Nature's Swiftness also makes Wild Growth instant.",
+            "Warrior: For Arms, Sweeping Strikes no longer uses up charges when there is no second target."
+          ]
+        },
+        {
+          "heading": "Auction House and mail",
+          "items": [
+            "The smallest Auction House deposit is now 1 copper, down from 1 silver.",
+            "Some Auction House mail was arriving after about 2 minutes. It now takes the intended 60 minutes.",
+            "Unread mail no longer all says it is from the Stormwind Auction House."
+          ]
+        },
+        {
+          "heading": "Quests and world",
+          "items": [
+            "Most quests from level 48 upwards now also give gold. Level 60 quests do not turn XP into gold.",
+            "Shatterspear Trolls no longer give XP.",
+            "Riverglades: many more Glade Vipers for \"Poison Tips\".",
+            "Duskwood: more Nightbane worgen for \"Worgen in the Woods\".",
+            "Murloc Tideskimmers now drop Saltwater Murloc Eyes for \"A Taste of the Sea\".",
+            "Feralas: you can start \"Rescue OOX-22/FE!\" again.",
+            "Zephras Isle: \"Camping 101: Herbalism\" now completes in Shen'dar Village.",
+            "The Broken Frond of Celastrus now drops for everyone in your group.",
+            "You no longer get sent to the wrong graveyard when you die.",
+            "The people of Pyrewood Village now appear at dawn and dusk as intended.",
+            "Racial mounts from vendors are now Bind on Pickup, so you can't buy them for another character."
+          ]
+        },
+        {
+          "heading": "Professions",
+          "items": [
+            "Cooking: the Journeyman Campfire Kit now needs Cooking 90, down from 140.",
+            "Blacksmithing: Coarse Grinding Stones now give skill-ups up to 90, up from 75.",
+            "Alchemy: Minor Arcane Elixir sells to vendors for 5 copper, down from 25. Recipe: Elixir of Greater Firepower is now called Recipe: Elixir of Holy Power.",
+            "Enchanting: the Lesser Spirit enchants for boots and bracers now give Spirit. The Arcane Salvager now needs a Runed Golden Rod.",
+            "Engineering: Iron Grenades now cost 1 silver 25 copper from vendors, down from 5 silver.",
+            "Some crafted Bind on Pickup armour from Leatherworking, Tailoring and Blacksmithing now sells to vendors for less.",
+            "Fishing: Fishing Racks give lures more reliably. Blizzard knows about other rack problems, such as the \"There is no loot\" error."
+          ]
+        },
+        {
+          "heading": "Also",
+          "items": [
+            "For now, Blizzard is limiting new characters on the busier faction. That means Horde on North American PvP realms and Alliance on EU Roleplay-PvP realms.",
+            "Still no word on the proper fix for boats and zeppelins, or on restoring progress lost in Monday night's outage."
+          ]
+        }
+      ]
+    },
+    {
+      "date": "2026-11-09",
+      "label": "Mon 9 Nov",
+      "chips": ["Hotfixes"],
+      "state": "new",
+      "title": "Smaller crowds, easier dungeons and many quest fixes",
+      "blocks": [
+        {
+          "heading": "World",
+          "items": [
+            "Blizzard lowered the number of players in zones that were very crowded. The change was bigger on PvP realms.",
+            "The flight from Camp Taurajo to Thunder Bluff no longer flies through objects."
+          ]
+        },
+        {
+          "heading": "Classes",
+          "items": [
+            "Warlock: Finishing \"Summon Felsteed\" now teaches you riding. If you finished it earlier, summon your Felsteed once to get Apprentice Riding.",
+            "Druid: Feral Charge in Cat Form puts you in combat straight away. Natural Instinct now works with Lacerate and Pounce.",
+            "Hunter: You no longer pull far-away monsters just by targeting them.",
+            "Mage: Flamestrike's burning ground no longer uses up Clearcasting.",
+            "Priest: Casting Fear Ward no longer knocks you out of Shadowform.",
+            "Shaman: Lightning Overload now does the right Lightning Bolt damage."
+          ]
+        },
+        {
+          "heading": "Dungeons",
+          "items": [
+            "The Drowned City: monsters were hitting about 30% too hard. That is fixed.",
+            "Deathless Marrow: monsters have 25% less health. Some of their attacks are weaker or used less often.",
+            "Blackfathom Deeps: you can release your spirit after dying again.",
+            "Alcaz Prison: Zarla Ober now drops loot.",
+            "Waylaid Crates and Craftsman's Writs now drop inside dungeons."
+          ]
+        },
+        {
+          "heading": "Monsters, quests and items",
+          "items": [
+            "Un'Goro Crater: Young Diemetradons are now level 51 to 52, not 58.",
+            "Silverpine Forest: Ivar the Foul respawns at the right speed. Teldrassil: Ferocitas the Dream Eater spawns sooner.",
+            "Quest items for \"The Monster Surfaces\", \"Croaky's Head\" and \"Elmpaw's Head\" are now shared with your group.",
+            "Fixed: \"Ever After\", \"Unwelcome Guests\", \"A Recipe for Death\", \"Fetch 'n' Fletch\" and Jom-jom's escape.",
+            "\"Feathers in Flight\": you can loot the Hyjal Owl Nests before level 60.",
+            "Henrig Lonebrow's Journal respawns faster.",
+            "The Pouch of Violet Dust now gives the extra hour of Camp Benefits.",
+            "The Nifty Stopwatch no longer shares a cooldown with Sprint, Dash and Blink."
+          ]
+        }
+      ]
+    },
     {
       "date": "2026-11-09",
       "label": "Mon 9 Nov",
       "chips": ["Known issue"],
-      "state": "new",
+      "state": "",
       "title": "Emergency maintenance on Monday night",
       "blocks": [
         {
@@ -13,13 +129,6 @@
             "The servers went down for emergency maintenance at about 9:30pm UK time. They were back by about 10:45pm. Some players had to restart the game.",
             "Players say some progress from just before the outage was lost. Spells they had trained and profession skill-ups were gone, but the gold they spent stayed spent. A few lost quest items.",
             "Blizzard has not yet said whether anything will be restored. Check your spellbook and profession skill when you next log in, and retrain if you need to."
-          ]
-        },
-        {
-          "heading": "Still waiting",
-          "items": [
-            "The class tuning for Hunter pets, Warlock Voidwalkers and Affliction, and Enhancement Shaman is still due today, Tue 10 Nov. Blizzard has not given a time.",
-            "No new hotfix notes since Sunday's dungeon XP change."
           ]
         }
       ]
@@ -73,14 +182,6 @@
           "items": [
             "Leatherworking: the Tanning Rack now needs skill 125, down from 140.",
             "Maraudon: Zaetar's Spirit appears after Princess Theradras. The Drowned City portal works again."
-          ]
-        },
-        {
-          "heading": "Coming on Tue 10 Nov",
-          "items": [
-            "Hunter: Pets will get tougher, so they can hold monsters like in Classic.",
-            "Warlock: Voidwalkers will get tougher too. Affliction's damage over time spells will be worth casting next to Wrack.",
-            "Shaman: Enhancement will be changed so Strength is its best stat. If you level as Enhancement, keep Strength and Attack Power gear."
           ]
         }
       ]
@@ -224,6 +325,14 @@
     }
   ],
   "sources": [
+    {
+      "title": "Blizzard: WoW: Forever Hotfixes, 9 and 10 Nov 2026",
+      "url": "https://worldofwarcraft.blizzard.com/en-us/news/24315281/wow-forever-hotfixes-november-10-2026"
+    },
+    {
+      "title": "The Forever Era: Blizzard blue posts on faction balance, 10–11 Nov",
+      "url": "https://theforeverera.com/en/blue/"
+    },
     {
       "title": "Timesaver: WoW Forever server status and the 9 Nov emergency maintenance",
       "url": "https://timesaver.gg/blog/is-wow-forever-down"

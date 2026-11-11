@@ -1,5 +1,5 @@
 {
-  "at": "2026-11-11T09:32:54Z",
+  "at": "2026-11-11T13:54:05Z",
   "cls": "Shaman",
   "faction": "Horde",
   "gear": {
@@ -9,13 +9,12 @@
       "SHOULDER": {
         "cur": [],
         "up": [
-          [14170,"Buccaneer's Mantle","C",17,400,0.5,"26 armor"],
           [
             4314,
             "Double-Stitched Woolen Shoulders",
             "U",
             17,
-            500,
+            400,
             2.5,
             "+4 Sta, +4 spell power, 27 armor"
           ]
@@ -44,7 +43,7 @@
         "cur": [[4940,"Veiled Grips","C",10,0.7]],
         "up": [
           [4239,"Embossed Leather Gloves","U",8,200,1.0,"+1 Agi, +1 Sta, 41 armor"],
-          [6467,"Deviate Scale Gloves","U",16,2300,2.8,"+3 Agi, +3 Sta, 49 armor"]
+          [6467,"Deviate Scale Gloves","U",16,1700,2.8,"+3 Agi, +3 Sta, 49 armor"]
         ]
       },
       "WAIST": {
@@ -74,24 +73,24 @@
   "guild": null,
   "ilvl": 7,
   "level": 15,
-  "login": 1794351753000,
+  "login": 1794391006000,
   "name": "Brakka",
   "profs": [
     [
       "Alchemy",
       90,
       150,
-      [54211,4393,1814,1378,1379,4178,1380,54655,1382,54210,54456,1832,4176,54453,52646]
+      [1814,1832,1378,1379,1380,1382,4393,4176,4178,52646,54453,54456,54655,54210,54211]
     ],
     ["Herbalism",107,150,[1419,54115,52642]],
     [
       "Cooking",
       93,
       150,
-      [3964,4786,1543,52640,4355,1538,1545,1536,4391,3927,3930,1537,1535,4354]
+      [1535,1536,1537,1538,1543,1545,3927,3930,4354,4355,4391,3964,4786,52640]
     ],
-    ["Fishing",96,150,[52639,4345]],
-    ["First Aid",81,150,[4417,1839,54192,54191,52641,1840,1838]]
+    ["Fishing",96,150,[4345,52639]],
+    ["First Aid",81,150,[4417,1838,1839,1840,52641,54191,54192]]
   ],
   "qdone": [
     "A Missing Hand",
@@ -195,7 +194,6 @@
     ["Orgrimmar","Honored",438,12000],
     ["Darkspear Trolls","Friendly",4588,6000],
     ["Booty Bay","Neutral",600,3000],
-    ["Warsong Outriders","Neutral",0,3000],
     ["Gadgetzan","Neutral",600,3000],
     ["Undercity","Neutral",743,3000],
     ["Powderfuse","Neutral",600,3000]

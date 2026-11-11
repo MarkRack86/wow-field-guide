@@ -1,20 +1,21 @@
 {
  "refresh": {
-  "at": "2026-11-11T09:32:58Z",
+  "at": "2026-11-11T13:54:10Z",
   "ok": true,
   "date": "2026-11-11",
-  "items": 368,
+  "snapshot": "2026-11-11T13:25:21Z",
+  "new": true,
+  "items": 377,
   "of": 463,
-  "alerts": 15,
+  "alerts": 16,
+  "phone": "nothing to send",
   "character": "synced",
   "level": 15,
   "notes": []
  },
  "speed": {
-  "at": "2026-11-11T10:25:38Z",
-  "ok": true,
-  "id": "2026-11-11T10",
-  "units": 35262,
-  "minutes": 60
+  "at": "2026-11-11T13:54:10Z",
+  "ok": false,
+  "reason": "no earlier run's listings to compare with yet"
  }
 }

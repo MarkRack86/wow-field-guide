@@ -1,10 +1,10 @@
 {
  "refresh": {
-  "at": "2026-11-11T13:54:10Z",
+  "at": "2026-11-11T13:55:40Z",
   "ok": true,
   "date": "2026-11-11",
   "snapshot": "2026-11-11T13:25:21Z",
-  "new": true,
+  "new": false,
   "items": 377,
   "of": 463,
   "alerts": 16,
@@ -14,8 +14,8 @@
   "notes": []
  },
  "speed": {
-  "at": "2026-11-11T13:54:10Z",
+  "at": "2026-11-11T13:55:40Z",
   "ok": false,
-  "reason": "no earlier run's listings to compare with yet"
+  "reason": "no new snapshot since the last run"
  }
 }

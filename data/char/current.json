@@ -1,5 +1,5 @@
 {
-  "at": "2026-11-11T13:55:35Z",
+  "at": "2026-11-11T14:41:05Z",
   "cls": "Shaman",
   "faction": "Horde",
   "gear": {
@@ -43,7 +43,7 @@
         "cur": [[4940,"Veiled Grips","C",10,0.7]],
         "up": [
           [4239,"Embossed Leather Gloves","U",8,200,1.0,"+1 Agi, +1 Sta, 41 armor"],
-          [6467,"Deviate Scale Gloves","U",16,1700,2.8,"+3 Agi, +3 Sta, 49 armor"]
+          [6467,"Deviate Scale Gloves","U",16,1800,2.8,"+3 Agi, +3 Sta, 49 armor"]
         ]
       },
       "WAIST": {

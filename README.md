@@ -7,11 +7,11 @@ It also runs as a private Claude artifact, published from this repo.
 
 ## How it works
 
-- **Refresh.** `.github/workflows/refresh.yml` runs at 04:07 and 18:07 UTC (UK time in winter, an hour later in summer). It runs `refresh.py` with the Blizzard API keys from this repo's encrypted Actions secrets (`BNET_ID`, `BNET_SECRET`). It then saves prices, price history, the character (with a gear check) and a sell-speed sample under `data/`, and commits to main. To run it now, open the **Actions** tab, pick **Refresh prices and character**, and choose **Run workflow**.
+- **Refresh.** `.github/workflows/refresh.yml` runs `refresh.py` with the Blizzard API keys from this repo's encrypted Actions secrets (`BNET_ID`, `BNET_SECRET`), saves prices, price history, the character (with a gear check) and a sell-speed sample under `data/`, and commits to main. Claude's "WoW Forever sync" task starts it at about 05:37 and 19:37 UK time by pushing the time to `config/refresh-request`, because GitHub's own schedule (tries from 4am and 6pm UK time) often runs hours late or not at all. To run it now, open the **Actions** tab, pick **Refresh prices and character**, and choose **Run workflow**.
 - **Data.** `data/latest.json` holds the prices, character and settings the page loads. `data/updates.json` holds the Updates tab's notes. `data/status.json` says how the last refresh went.
 - **Site.** GitHub Pages serves `index.html` and `market.js` straight from main.
 - **Settings.** The watchlist, gear stat and quest ticks are saved in the Claude artifact's database, and Claude copies them into `config/`. On the GitHub site, setting changes stay in your browser.
-- **Claude.** This repo is the master copy. Claude makes changes here first, then publishes them to the artifact.
+- **Claude.** This repo is the master copy. Claude's sync task copies settings in, starts the refresh, adds hotfix notes to `data/updates.json` each morning and publishes changed files to the Claude artifact. Code changes are made here first.
 
 ## Files
 

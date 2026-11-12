@@ -1,0 +1,16 @@
+{
+  "v": 1,
+  "sent": [
+    {
+      "at": "2026-11-12T08:08:04Z",
+      "snap": "2026-11-12T07:25:17Z",
+      "sent": false,
+      "items": [{"id":785,"kind":"up"},{"id":2450,"kind":"up"}],
+      "lines": [
+        "Mageroyal: 60c each, up 62% since 5.10am (5,372 listed)",
+        "Briarthorn: 1s 39c each, up 42% since 5.10am (544 listed)"
+      ],
+      "why": "outside the online hours"
+    }
+  ]
+}

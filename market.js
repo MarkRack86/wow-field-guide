@@ -1685,8 +1685,8 @@
   });
   /* ---------- Where the data comes from ----------
      Prices, the hourly reads, the character and the sell-speed samples are read from data/latest.json, next to this
-     page. The GitHub Actions refresh writes it every hour from about 5am to 6.30am and 8pm to 11pm UK time; Claude's
-     sync copies it into the Claude artifact at about 5am and 8pm. Settings (watchlist,
+     page. The GitHub Actions refresh writes it every hour from about 5am to 6.30am and 8pm to 11pm UK time. (The
+     Claude artifact copy is no longer updated, since 12 Nov 2026.) Settings (watchlist,
      gear stat, quest ticks) are saved in the artifact's database when the page runs inside Claude. Anywhere else
      they start from the copies in data/latest.json, and changes stay in this browser. */
   var LOCAL = 'wowf-local:';

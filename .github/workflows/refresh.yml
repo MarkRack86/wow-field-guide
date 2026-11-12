@@ -1,13 +1,13 @@
 name: Refresh prices and character
 
 on:
-  workflow_dispatch:              # the "Run workflow" button, and cron-job.org at five to each hour in the online hours
+  workflow_dispatch:              # the "Run workflow" button
   schedule:
-    # A backup for cron-job.org: GitHub often starts scheduled runs hours late, or skips them. These hours cover UK
+    # A backup for Claude's nudge: GitHub often starts scheduled runs hours late, or skips them. These hours cover UK
     # winter and summer time; --if-stale stops at once outside about 4.30 to 6.45am and 7.30 to 11.15pm UK time,
     # or when prices were read in the last 40 minutes.
     - cron: '55 3,4,5,18,19,20,21,22 * * *'
-  push:                           # a change to the refresh, or a nudge from Claude, runs it straight away
+  push:                           # a change to the refresh, or Claude's nudge at the start of each session, runs it now
     branches: [main]
     paths:
       - '.github/workflows/refresh.yml'
@@ -25,7 +25,7 @@ concurrency:
 jobs:
   refresh:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 240          # with --hourly one run lasts the whole session, up to about 3.5 hours
     steps:
       - uses: actions/checkout@v5
 
@@ -36,16 +36,17 @@ jobs:
           key: auctions-${{ github.run_id }}-${{ github.run_attempt }}
           restore-keys: auctions-
 
-      - name: Refresh prices and character, sell speed and phone alerts
+      - name: Refresh prices and character, sell speed and phone alerts, hourly until the session ends
         id: refresh
         env:
           BNET_ID: ${{ secrets.BNET_ID }}
           BNET_SECRET: ${{ secrets.BNET_SECRET }}
           NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
+          PYTHONUNBUFFERED: "1"
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          python3 tools/ci_refresh.py ${{ github.event_name == 'schedule' && '--if-stale' || '' }}
+          python3 tools/ci_refresh.py --hourly ${{ github.event_name == 'schedule' && '--if-stale' || '' }}
 
       - name: Keep this run's listings for the next run
         if: always() && steps.refresh.outputs.snapshot == 'new'

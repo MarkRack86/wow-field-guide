@@ -15,10 +15,13 @@ Each run:
 Nothing here prints or saves the keys or the ntfy topic. data/status.json and data/stats/pushes.json are public, so
 they only hold short, checked messages.
 
-cron-job.org presses "Run workflow" at five to each hour in the online hours. With --if-stale (GitHub's own
-schedule, a backup), it stops straight away outside the online hours or when the last read was under 40 minutes ago.
+Claude's sync starts a run at the start of each online session (about 4.55am and 7.55pm UK time) by pushing
+config/refresh-request. With --hourly, the run then waits and reads again at five to each hour while that read still
+falls in the online hours, so one run covers the session (4.55 and 5.55am, or 7.55 to 10.55pm). GitHub's own
+schedule is a backup and adds --if-stale: it stops straight away outside the online hours or when the last read was
+under 40 minutes ago.
 
-Usage: python3 tools/ci_refresh.py [--if-stale] [--no-git] [--no-push]
+Usage: python3 tools/ci_refresh.py [--if-stale] [--hourly] [--no-git] [--no-push]
 """
 import datetime
 import glob
@@ -44,12 +47,15 @@ NTFY = os.environ.get("NTFY_SERVER", "https://ntfy.sh").rstrip("/")
 PAGE = "https://markrack86.github.io/wow-field-guide/#gold"
 USE_GIT = "--no-git" not in sys.argv
 IF_STALE = "--if-stale" in sys.argv
+HOURLY = "--hourly" in sys.argv
 NO_PUSH = "--no-push" in sys.argv
 PARTIAL = ("Character", "Quest log", "Gear check", "Non-commodity")
 UK = ZoneInfo("Europe/London")
 # The player is usually online from 5 to 6.30am and 8 to 11pm UK time; the reads run at five to each hour from 4.55.
 ONLINE = ((4, 30, 6, 45), (19, 30, 23, 15))
 KEEP_HOURS, STALE_MINUTES = 48, 40
+# With --hourly, the next read is at this minute past the hour (UK time), and at least GAP_MINUTES after the last.
+READ_MINUTE, GAP_MINUTES = 55, 30
 
 
 def path(*parts):
@@ -327,6 +333,16 @@ def stale_reason(t):
     return None
 
 
+def next_read(t):
+    """With --hourly: when to read next, the first five to the hour (UK time) at least GAP_MINUTES after t, or None
+    when that falls outside the online hours, so the session is over."""
+    uk = t.astimezone(UK)
+    nxt = uk.replace(minute=READ_MINUTE, second=0, microsecond=0)
+    while nxt < uk + datetime.timedelta(minutes=GAP_MINUTES):
+        nxt += datetime.timedelta(hours=1)
+    return nxt.astimezone(datetime.timezone.utc) if online(nxt) else None
+
+
 def main():
     if IF_STALE:
         reason = stale_reason(utcnow())
@@ -341,6 +357,17 @@ def main():
         return 1
     env.pop("NTFY_TOPIC", None)  # refresh.py doesn't need it
     ok = refresh(tempfile.mkdtemp(prefix="wowf-"), env)
+    while HOURLY:
+        nxt = next_read(utcnow())
+        if not nxt:
+            print("The next read would fall outside the online hours, so this run is done.", flush=True)
+            break
+        print("Next read at %s UK time." % nxt.astimezone(UK).strftime("%H:%M"), flush=True)
+        time.sleep(max(0, (nxt - utcnow()).total_seconds()))
+        # Pick up anything pushed meanwhile (settings, Claude's notes). If this fails, the next commit retries.
+        if USE_GIT and git("pull", "-q", "--rebase", "origin", "main", check=False).returncode:
+            git("rebase", "--abort", check=False)
+        ok = refresh(tempfile.mkdtemp(prefix="wowf-"), env)
     return 0 if ok else 1
 
 

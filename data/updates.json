@@ -1,12 +1,67 @@
 {
-  "checked": "2026-11-11T04:00:00Z",
+  "checked": "2026-11-12T05:24:46Z",
   "entries": [
+    {
+      "date": "2026-11-11",
+      "label": "Wed 11 Nov",
+      "chips": ["Hotfixes"],
+      "state": "new",
+      "title": "Auction House changes held back, plus class and quest fixes",
+      "blocks": [
+        {
+          "heading": "Auction House",
+          "items": [
+            "Blizzard has taken the Auction House and mail changes out of the 10 Nov hotfixes, so they are not live yet. They have been taken out of the 10 Nov notes here too.",
+            "That means the smallest deposit is still 1 silver for each listing.",
+            "Blizzard says the changes should come with the maintenance on 17 Nov, or in a later hotfix."
+          ]
+        },
+        {
+          "heading": "Classes",
+          "items": [
+            "Shaman: If a totem went missing after Monday night's outage, Blizzard has now fixed it in all regions. The totem should be back in your bags.",
+            "Shaman: Flametongue Totem Rank 2 now works.",
+            "Druid: For Feral, Rend and Tear now works with Pounce Bleed.",
+            "Hunter: Volley no longer sets off proc effects. It also stops when you start moving.",
+            "Paladin: Judgement now counts as a ranged attack. It uses your ranged hit chance and no longer sets off melee effects.",
+            "Paladin: For Retribution, Unsealed Fury no longer echoes Windfury Totem attacks.",
+            "Priest: Gnomes can now use Confounding Flash in Shadowform. For Holy, Twilight Focus now works in Shadowform."
+          ]
+        },
+        {
+          "heading": "Quests and world",
+          "items": [
+            "Riverglades: Twilight Enforcers' Smash now does much less damage, and Executioner Morg hits less hard. The Twilight Forgemaster's Mark of Flames now adds 50 damage, down from 1,000.",
+            "Western Plaguelands: you can now use the Command Tent for \"Scarlet Diversions\".",
+            "Arathi Highlands: the Witherbark Mallet works again, so you can carry on with \"The Giant in the Den\".",
+            "Feralas: the cage door for \"Freedom for All Creatures\" now resets.",
+            "Shen'dralas: you can mount up again in its named areas."
+          ]
+        },
+        {
+          "heading": "Items and professions",
+          "items": [
+            "Bloody Claws of Attack now give the +1 weapon skill they should.",
+            "Earthen Silk Slippers no longer give more spell damage than intended.",
+            "Tailoring: five bags now need one more bolt of cloth. Red and Green Woolen Bags: 5 Bolts of Woolen Cloth, 10 slots. Green Silk Pack: 5 Bolts of Silk Cloth, 12 slots. Black Silk Pack: 6 Bolts of Silk Cloth, 12 slots. Red Mageweave Bag: 5 Bolts of Mageweave, 14 slots."
+          ]
+        },
+        {
+          "heading": "Also",
+          "items": [
+            "Blizzard has switched off the Item Restoration service for now while it fixes a serious bug.",
+            "After Wednesday morning's EU maintenance, some players saw \"No realms are currently available\" (WOW51900309). Blizzard support says this means you need the latest game update. Close the game, let the Battle.net app download the update, then start the game again.",
+            "Still no word on the proper fix for boats and zeppelins, or on restoring other progress lost in Monday night's outage."
+          ]
+        }
+      ]
+    },
     {
       "date": "2026-11-10",
       "label": "Tue 10 Nov",
       "chips": ["Hotfixes"],
-      "state": "new",
-      "title": "Class tuning is live, plus Auction House and quest fixes",
+      "state": "",
+      "title": "Class tuning is live, plus quest and profession fixes",
       "blocks": [
         {
           "heading": "Classes",
@@ -20,14 +75,6 @@
             "Shaman: Rage of the Storm, the Shaman quest reward, now gives 16 Strength instead of 16 Intellect. Its speed is now 3.6.",
             "Druid: Omen of Clarity works again after you switch specs. For Restoration, Nature's Swiftness also makes Wild Growth instant.",
             "Warrior: For Arms, Sweeping Strikes no longer uses up charges when there is no second target."
-          ]
-        },
-        {
-          "heading": "Auction House and mail",
-          "items": [
-            "The smallest Auction House deposit is now 1 copper, down from 1 silver.",
-            "Some Auction House mail was arriving after about 2 minutes. It now takes the intended 60 minutes.",
-            "Unread mail no longer all says it is from the Stormwind Auction House."
           ]
         },
         {
@@ -71,7 +118,7 @@
       "date": "2026-11-09",
       "label": "Mon 9 Nov",
       "chips": ["Hotfixes"],
-      "state": "new",
+      "state": "",
       "title": "Smaller crowds, easier dungeons and many quest fixes",
       "blocks": [
         {
@@ -325,6 +372,22 @@
     }
   ],
   "sources": [
+    {
+      "title": "Blizzard: WoW: Forever Hotfixes, 11 Nov 2026",
+      "url": "https://news.blizzard.com/en-us/article/24315281/wow-forever-hotfixes-november-11-2026"
+    },
+    {
+      "title": "Blizzard forums: the hotfix thread, where the Auction House changes were held back (12 Nov)",
+      "url": "https://us.forums.blizzard.com/en/wow/t/wow-forever-hotfixes-november-11-2026/2403040"
+    },
+    {
+      "title": "Timesaver: the 11 Nov EU maintenance and the Shaman totem fix",
+      "url": "https://timesaver.gg/blog/is-wow-forever-down"
+    },
+    {
+      "title": "Timesaver: WoW Forever login errors, including WOW51900309",
+      "url": "https://timesaver.gg/blog/wow-forever-login-errors-fix"
+    },
     {
       "title": "Blizzard: WoW: Forever Hotfixes, 9 and 10 Nov 2026",
       "url": "https://worldofwarcraft.blizzard.com/en-us/news/24315281/wow-forever-hotfixes-november-10-2026"

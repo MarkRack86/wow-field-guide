@@ -1,5 +1,5 @@
 {
-  "at": "2026-11-12T21:55:03Z",
+  "at": "2026-11-12T22:55:03Z",
   "cls": "Shaman",
   "faction": "Horde",
   "gear": {
@@ -9,13 +9,12 @@
       "SHOULDER": {
         "cur": [],
         "up": [
-          [14170,"Buccaneer's Mantle","C",17,389,0.5,"26 armor"],
           [
             4314,
             "Double-Stitched Woolen Shoulders",
             "U",
             17,
-            390,
+            340,
             2.5,
             "+4 Sta, +4 spell power, 27 armor"
           ]
@@ -24,16 +23,16 @@
       "BACK": {
         "cur": [[1733,"Worn Cloak","P",15,0.3]],
         "up": [
-          [2308,"Fine Leather Cloak","U",10,267,0.7,"+2 Sta, 14 armor"],
+          [2308,"Fine Leather Cloak","U",10,249,0.7,"+2 Sta, 14 armor"],
           [2316,"Dark Leather Cloak","U",17,405,3.6,"+2 Str, +3 Agi, 18 armor"]
         ]
       },
       "CHEST": {
         "cur": [[5341,"Spore-covered Tunic","U",15,2.1]],
         "up": [
-          [2311,"White Leather Jerkin","U",8,399,1.5,"+2 Str, +2 spell power, 65 armor"],
-          [4243,"Fine Leather Tunic","U",12,593,2.4,"+4 Agi, +3 Sta, 73 armor"],
-          [5781,"Murloc Scale Breastplate","U",14,2100,5.9,"+5 Str, +3 Agi, 76 armor"]
+          [2311,"White Leather Jerkin","U",8,400,1.5,"+2 Str, +2 spell power, 65 armor"],
+          [4243,"Fine Leather Tunic","U",12,548,2.4,"+4 Agi, +3 Sta, 73 armor"],
+          [5781,"Murloc Scale Breastplate","U",14,2099,5.9,"+5 Str, +3 Agi, 76 armor"]
         ]
       },
       "WRIST": {
@@ -50,15 +49,15 @@
       "WAIST": {
         "cur": [[5275,"Binding Girdle","U",15,1.2]],
         "up": [
-          [4246,"Fine Leather Belt","U",11,210,1.3,"+2 Agi, +2 Sta, 40 armor"],
+          [4246,"Fine Leather Belt","U",11,209,1.3,"+2 Agi, +2 Sta, 40 armor"],
           [5780,"Murloc Scale Belt","U",13,1330,3.1,"+2 Str, +3 Agi, 42 armor"],
-          [6468,"Deviate Scale Belt","R",18,10299,7.4,"+3 Str, +5 Agi, +6 Sta, 51 armor"]
+          [6468,"Deviate Scale Belt","R",18,10200,7.4,"+3 Str, +5 Agi, +6 Sta, 51 armor"]
         ]
       },
       "LEGS": {
         "cur": [[4921,"Dust-covered Leggings","C",5,0.6]],
         "up": [
-          [2303,"Handstitched Leather Pants","U",5,102,0.9,"+1 Agi, 48 armor"],
+          [2303,"Handstitched Leather Pants","U",5,100,0.9,"+1 Agi, 48 armor"],
           [7282,"Light Leather Pants","U",14,596,4.3,"+5 Agi, +3 Sta, 66 armor"],
           [5961,"Dark Leather Pants","U",18,1087,4.8,"+8 Agi, 72 armor"]
         ]

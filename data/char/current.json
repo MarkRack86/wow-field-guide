@@ -1,10 +1,10 @@
 {
-  "at": "2026-11-11T20:11:35Z",
+  "at": "2026-11-12T05:10:36Z",
   "cls": "Shaman",
   "faction": "Horde",
   "gear": {
     "spec": "str",
-    "lvl": 15,
+    "lvl": 16,
     "slots": {
       "SHOULDER": {
         "cur": [],
@@ -24,41 +24,43 @@
         "cur": [[1733,"Worn Cloak","P",15,0.3]],
         "up": [
           [2308,"Fine Leather Cloak","U",10,300,0.7,"+2 Sta, 14 armor"],
-          [2316,"Dark Leather Cloak","U",17,500,3.6,"+2 Str, +3 Agi, 18 armor"]
+          [6466,"Deviate Scale Cloak","U",13,450,1.7,"+2 Agi, +2 Sta, 16 armor"],
+          [2316,"Dark Leather Cloak","U",17,499,3.6,"+2 Str, +3 Agi, 18 armor"]
         ]
       },
       "CHEST": {
-        "cur": [[3288,"Tribal Vest","U",13,2.6]],
+        "cur": [[5341,"Spore-covered Tunic","U",15,2.1]],
         "up": [
-          [2311,"White Leather Jerkin","U",8,400,1.0,"+2 Str, +2 spell power, 65 armor"],
-          [6263,"Blue Overalls","U",15,1400,3.5,"+4 Str, +4 Sta, 34 armor"],
-          [5781,"Murloc Scale Breastplate","U",14,2900,5.4,"+5 Str, +3 Agi, 76 armor"]
+          [2311,"White Leather Jerkin","U",8,400,1.5,"+2 Str, +2 spell power, 65 armor"],
+          [6263,"Blue Overalls","U",15,2800,4.0,"+4 Str, +4 Sta, 34 armor"],
+          [5781,"Murloc Scale Breastplate","U",14,2900,5.9,"+5 Str, +3 Agi, 76 armor"]
         ]
       },
       "WRIST": {
         "cur": [[281270,"Thra's Friendship Bracelet","U",10,0.6]],
-        "up": [[7281,"Light Leather Bracers","U",9,200,1.5,"+1 Str, +1 Agi, 30 armor"]]
+        "up": [[7281,"Light Leather Bracers","U",9,195,1.5,"+1 Str, +1 Agi, 30 armor"]]
       },
       "HANDS": {
-        "cur": [[4940,"Veiled Grips","C",10,0.7]],
+        "cur": [[3286,"Tribal Gloves","C",12,0.7]],
         "up": [
-          [4239,"Embossed Leather Gloves","U",8,200,1.0,"+1 Agi, +1 Sta, 41 armor"],
-          [6467,"Deviate Scale Gloves","U",16,1500,2.8,"+3 Agi, +3 Sta, 49 armor"]
+          [4239,"Embossed Leather Gloves","U",8,130,1.0,"+1 Agi, +1 Sta, 41 armor"],
+          [6467,"Deviate Scale Gloves","U",16,1700,2.8,"+3 Agi, +3 Sta, 49 armor"]
         ]
       },
       "WAIST": {
         "cur": [[5275,"Binding Girdle","U",15,1.2]],
         "up": [
-          [4246,"Fine Leather Belt","U",11,200,1.3,"+2 Agi, +2 Sta, 40 armor"],
-          [5780,"Murloc Scale Belt","U",13,1700,3.1,"+2 Str, +3 Agi, 42 armor"]
+          [4246,"Fine Leather Belt","U",11,290,1.3,"+2 Agi, +2 Sta, 40 armor"],
+          [5780,"Murloc Scale Belt","U",13,1600,3.1,"+2 Str, +3 Agi, 42 armor"],
+          [6468,"Deviate Scale Belt","R",18,10799,7.4,"+3 Str, +5 Agi, +6 Sta, 51 armor"]
         ]
       },
       "LEGS": {
         "cur": [[4921,"Dust-covered Leggings","C",5,0.6]],
         "up": [
-          [10047,"Simple Kilt","U",10,200,1.2,"+3 Sta, +2 spell power, 24 armor"],
-          [4242,"Embossed Leather Pants","U",10,400,1.8,"+2 Sta, +3 spell power, 61 armor"],
-          [7282,"Light Leather Pants","U",14,600,4.3,"+5 Agi, +3 Sta, 66 armor"]
+          [2303,"Handstitched Leather Pants","U",5,180,0.9,"+1 Agi, 48 armor"],
+          [7282,"Light Leather Pants","U",14,600,4.3,"+5 Agi, +3 Sta, 66 armor"],
+          [5961,"Dark Leather Pants","U",18,1100,4.8,"+8 Agi, 72 armor"]
         ]
       },
       "FEET": {
@@ -72,17 +74,35 @@
   },
   "guild": null,
   "ilvl": 7,
-  "level": 15,
-  "login": 1794391006000,
+  "level": 16,
+  "login": 1794441669000,
   "name": "Brakka",
   "profs": [
     [
       "Alchemy",
-      90,
+      101,
       150,
-      [1814,1832,1378,1379,1380,1382,4393,4176,4178,52646,54453,54456,54655,54210,54211]
+      [
+        1814,
+        1832,
+        1378,
+        1379,
+        1380,
+        1382,
+        4393,
+        4395,
+        4176,
+        4178,
+        52646,
+        54453,
+        54456,
+        54552,
+        54655,
+        54210,
+        54211
+      ]
     ],
-    ["Herbalism",107,150,[1419,54115,52642]],
+    ["Herbalism",126,150,[1419,54115,52642]],
     [
       "Cooking",
       93,
@@ -121,6 +141,7 @@
     "Forgotten Loa Idols",
     "From The Wreckage....",
     "Galgar's Cactus Apple Surprise",
+    "Harpy Raiders",
     "Hidden Enemies",
     "Lazy Peons",
     "Legging It",
@@ -132,14 +153,18 @@
     "Neeru Fireblade",
     "Plainstrider Menace",
     "Practical Prey",
+    "Raptor Thieves",
     "Report to Orgnil",
     "Report to Sen'jin Village",
     "Return to the Crossroads",
     "Ride to Orgrimmar",
     "Rocks to Rests",
+    "Root Samples",
     "Rune-Inscribed Parchment",
+    "Samophlange",
     "Sarkoth",
     "Securing the Lines",
+    "Shipping Label",
     "Skull Rock",
     "Sting of the Scorpid",
     "Stormy Potential",
@@ -152,6 +177,8 @@
     "The Forgotten Pools",
     "The Great Outdoors",
     "The Last Element",
+    "The Spirits of Stonetalon",
+    "The Zhevra",
     "This Fruit Could Bite Back",
     "Threat from Below",
     "Thwarting Kolkar Aggression",
@@ -166,40 +193,47 @@
     "Zalazane"
   ],
   "qnow": [
+    "Arachnophobia",
+    "Avenge My Village",
     "Battle of Warsong Gulch",
     "Consumed by Hatred",
+    "Deepmoss Spider Eggs",
     "Fungal Spores",
-    "Harpy Raiders",
+    "Goblin Invaders",
+    "Harpy Lieutenants",
     "Hidden Enemies",
     "Lost in Battle",
     "Miner's Fortune",
     "Parts and Pieces",
+    "Prowlers of the Barrens",
     "Raptor Horns",
-    "Raptor Thieves",
-    "Root Samples",
-    "Samophlange",
     "Slaying the Beast",
+    "Southsea Freebooters",
+    "Stolen Silver",
     "The Guns of Northwatch",
-    "The Spirits of Stonetalon",
     "The Stagnant Oasis",
-    "The Zhevra",
     "Tribes at War",
-    "WANTED: Baron Longshore"
+    "Trouble at the Docks",
+    "WANTED: Baron Longshore",
+    "WANTED: Bruuz",
+    "Wenikee Boltbucket",
+    "Ziz Fizziks"
   ],
   "race": "Orc",
   "reps": [
-    ["Everlook","Neutral",600,3000],
-    ["Thunder Bluff","Friendly",400,6000],
-    ["Ratchet","Neutral",1100,3000],
-    ["Orgrimmar","Honored",438,12000],
-    ["Darkspear Trolls","Friendly",4588,6000],
-    ["Booty Bay","Neutral",600,3000],
-    ["Gadgetzan","Neutral",600,3000],
-    ["Undercity","Neutral",743,3000],
-    ["Powderfuse","Neutral",600,3000]
+    ["Everlook","Neutral",910,3000],
+    ["Thunder Bluff","Friendly",481,6000],
+    ["Ratchet","Neutral",1720,3000],
+    ["Orgrimmar","Honored",763,12000],
+    ["Darkspear Trolls","Friendly",4670,6000],
+    ["Booty Bay","Neutral",910,3000],
+    ["Durotar Supply and Logistics","Neutral",2000,3000],
+    ["Gadgetzan","Neutral",910,3000],
+    ["Undercity","Neutral",825,3000],
+    ["Powderfuse","Neutral",910,3000]
   ],
   "ruleset": "Normal",
   "surname": "Keltorra",
-  "talents": [["Enhancement",3,[["Thundering Strikes",3]]],["Restoration",3,[["Tidal Focus",3]]]],
-  "xp": 9846
+  "talents": [["Enhancement",3,[["Thundering Strikes",3]]],["Restoration",4,[["Tidal Focus",4]]]],
+  "xp": 14303
 }

@@ -1,5 +1,5 @@
 {
-  "at": "2026-11-13T05:55:03Z",
+  "at": "2026-11-13T13:30:21Z",
   "cls": "Shaman",
   "faction": "Horde",
   "gear": {
@@ -9,13 +9,13 @@
       "SHOULDER": {
         "cur": [],
         "up": [
-          [14170,"Buccaneer's Mantle","C",17,389,0.5,"26 armor"],
+          [14368,"Mystic's Shoulder Pads","C",17,385,0.5,"26 armor"],
           [
             4314,
             "Double-Stitched Woolen Shoulders",
             "U",
             17,
-            429,
+            410,
             2.5,
             "+4 Sta, +4 spell power, 27 armor"
           ]
@@ -24,47 +24,47 @@
       "BACK": {
         "cur": [[1733,"Worn Cloak","P",15,0.3]],
         "up": [
-          [2308,"Fine Leather Cloak","U",10,267,0.7,"+2 Sta, 14 armor"],
-          [2316,"Dark Leather Cloak","U",17,400,3.6,"+2 Str, +3 Agi, 18 armor"]
+          [2308,"Fine Leather Cloak","U",10,266,0.7,"+2 Sta, 14 armor"],
+          [2316,"Dark Leather Cloak","U",17,408,3.6,"+2 Str, +3 Agi, 18 armor"]
         ]
       },
       "CHEST": {
         "cur": [[15304,"Grizzly Jerkin of Strength","U",16,5.4]],
-        "up": [[5781,"Murloc Scale Breastplate","U",14,2100,2.6,"+5 Str, +3 Agi, 76 armor"]]
+        "up": [[5781,"Murloc Scale Breastplate","U",14,1750,2.6,"+5 Str, +3 Agi, 76 armor"]]
       },
       "WRIST": {
         "cur": [[15453,"Savannah Bracers","U",18,1.7]],
         "up": [
-          [4795,"Bear Bracers","U",20,3799,0.8,"+5 Sta, 37 armor"],
-          [4794,"Wolf Bracers","U",20,4000,1.7,"+4 Agi, +2 Sta, 37 armor"]
+          [4795,"Bear Bracers","U",20,3200,0.8,"+5 Sta, 37 armor"],
+          [4794,"Wolf Bracers","U",20,4799,1.7,"+4 Agi, +2 Sta, 37 armor"]
         ]
       },
       "HANDS": {
         "cur": [[3286,"Tribal Gloves","C",12,0.7]],
         "up": [
-          [4239,"Embossed Leather Gloves","U",8,108,1.0,"+1 Agi, +1 Sta, 41 armor"],
+          [4239,"Embossed Leather Gloves","U",8,100,1.0,"+1 Agi, +1 Sta, 41 armor"],
           [7285,"Nimble Leather Gloves","U",19,588,3.7,"+4 Agi, +4 Sta, 52 armor"],
-          [7348,"Fletcher's Gloves","U",20,690,168.4,"14% crit, 53 armor"]
+          [7348,"Fletcher's Gloves","U",20,1000,17.2,"1.4% crit, 53 armor"]
         ]
       },
       "WAIST": {
         "cur": [[5275,"Binding Girdle","U",15,1.2]],
         "up": [
-          [4246,"Fine Leather Belt","U",11,210,1.3,"+2 Agi, +2 Sta, 40 armor"],
+          [4246,"Fine Leather Belt","U",11,207,1.3,"+2 Agi, +2 Sta, 40 armor"],
           [4249,"Dark Leather Belt","U",20,710,3.2,"+4 Agi, +4 Sta, 48 armor"],
-          [6468,"Deviate Scale Belt","R",18,10300,7.4,"+3 Str, +5 Agi, +6 Sta, 51 armor"]
+          [6468,"Deviate Scale Belt","R",18,10299,7.4,"+3 Str, +5 Agi, +6 Sta, 51 armor"]
         ]
       },
       "LEGS": {
         "cur": [[15450,"Dredgemire Leggings","U",18,2.6]],
         "up": [
-          [7282,"Light Leather Pants","U",14,599,2.3,"+5 Agi, +3 Sta, 66 armor"],
-          [5961,"Dark Leather Pants","U",18,1087,2.8,"+8 Agi, 72 armor"]
+          [7282,"Light Leather Pants","U",14,598,2.3,"+5 Agi, +3 Sta, 66 armor"],
+          [5961,"Dark Leather Pants","U",18,1089,2.8,"+8 Agi, 72 armor"]
         ]
       },
       "FEET": {
         "cur": [[4942,"Tiger Hide Boots","C",12,0.8]],
-        "up": [[2307,"Fine Leather Boots","U",13,210,2.4,"+3 Agi, +2 Sta, 51 armor"]]
+        "up": [[2307,"Fine Leather Boots","U",13,221,2.4,"+3 Agi, +2 Sta, 51 armor"]]
       },
       "FINGER": {"cur":[[281268,"Depleted Ritual Band","C",9,0.0]],"up":[]},
       "MAIN_HAND": {

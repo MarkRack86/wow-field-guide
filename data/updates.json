@@ -1,11 +1,44 @@
 {
-  "checked": "2026-11-12T05:24:46Z",
+  "checked": "2026-11-13T05:06:29Z",
   "entries": [
+    {
+      "date": "2026-11-12",
+      "label": "Thu 12 Nov",
+      "chips": ["Hotfixes"],
+      "state": "new",
+      "title": "Shaman changes go live, two days late",
+      "blocks": [
+        {
+          "heading": "Classes",
+          "items": [
+            "Shaman: The Shaman changes in the 10 Nov hotfixes were held up. Blizzard says they went live in all regions at 6:45pm UK time on Thu 12 Nov. They have been moved here from the 10 Nov notes.",
+            "Shaman: You can now use a weapon imbue and a weapon totem at the same time. Windfury Weapon and Windfury Totem can both trigger on your attacks.",
+            "Shaman: For Enhancement, Stormstrike now does 100% weapon damage, down from 150%. Its cooldown is 8 seconds, up from 6.",
+            "Shaman: For Enhancement, Mental Dexterity turns less Intellect into attack power. It is 33, 66 or 100% by rank, down from 50, 100 or 150%.",
+            "Shaman: For Enhancement, Maelstrom Weapon now cuts cast time and mana cost by 20% per stack at every rank. It triggers less often, 6 to 10 times a minute by rank instead of 20. Its tooltip shows your chance per swing, which depends on your main-hand weapon speed.",
+            "Shaman: Blizzard says this moves Enhancement back towards Windfury and away from Spell Power gear."
+          ]
+        },
+        {
+          "heading": "Auction House",
+          "items": [
+            "The Auction House changes are still not live, so the smallest deposit is still 1 silver for each listing.",
+            "In Europe they are due with the weekly maintenance on Wed 18 Nov, not 17 Nov as this page said before. The Americas get them on Tue 17 Nov."
+          ]
+        },
+        {
+          "heading": "Also",
+          "items": [
+            "Still no word on the proper fix for boats and zeppelins, on restoring progress lost in Monday night's outage, or on when Item Restoration will be switched back on."
+          ]
+        }
+      ]
+    },
     {
       "date": "2026-11-11",
       "label": "Wed 11 Nov",
       "chips": ["Hotfixes"],
-      "state": "new",
+      "state": "",
       "title": "Auction House changes held back, plus class and quest fixes",
       "blocks": [
         {
@@ -13,7 +46,7 @@
           "items": [
             "Blizzard has taken the Auction House and mail changes out of the 10 Nov hotfixes, so they are not live yet. They have been taken out of the 10 Nov notes here too.",
             "That means the smallest deposit is still 1 silver for each listing.",
-            "Blizzard says the changes should come with the maintenance on 17 Nov, or in a later hotfix."
+            "Blizzard says they will go live with the weekly maintenance on Wed 18 Nov in Europe, and on Tue 17 Nov in the Americas. They will then be listed again in the hotfix notes."
           ]
         },
         {
@@ -66,12 +99,10 @@
         {
           "heading": "Classes",
           "items": [
-            "The class tuning Blizzard promised for Tue 10 Nov has now gone live.",
+            "The class tuning Blizzard promised for Tue 10 Nov went live that day. The Shaman part was held up until Thu 12 Nov, so it is in that day's notes.",
             "Hunter: Pet health is now 115% of normal, down from 150%. Hawk pets hit about 80% harder. Arcane Shot and Summon Hawk now cost 11% of your base mana at every rank.",
             "Warlock: Your Imp, Voidwalker, Incubus and Succubus have about 15% more health. The Imp's first four Firebolt ranks hit harder.",
             "Warlock: For Affliction, Wrack does 30% less damage and is now a 6-second channel. While you channel it, Corruption, Siphon Life and Bane of Agony tick twice as fast. Soul Siphon now boosts Drain Life, Drain Soul and Wrack for each of those spells on the target, up to 36%.",
-            "Shaman: Weapon imbues and weapon totems now work together. Windfury Weapon and Windfury Totem can both trigger on the same hits.",
-            "Shaman: For Enhancement, Stormstrike now does 100% weapon damage, down from 150%, on an 8-second cooldown. Mental Dexterity turns less Intellect into attack power. Maelstrom Weapon cuts cast time and mana by 20% per stack at every rank, but triggers less often. Blizzard says this moves Enhancement back towards Windfury and away from Spell Power gear.",
             "Shaman: Rage of the Storm, the Shaman quest reward, now gives 16 Strength instead of 16 Intellect. Its speed is now 3.6.",
             "Druid: Omen of Clarity works again after you switch specs. For Restoration, Nature's Swiftness also makes Wild Growth instant.",
             "Warrior: For Arms, Sweeping Strikes no longer uses up charges when there is no second target."
@@ -372,6 +403,18 @@
     }
   ],
   "sources": [
+    {
+      "title": "Blizzard EU forums: the Shaman changes went live on 12 Nov",
+      "url": "https://eu.forums.blizzard.com/en/wow/t/wow-forever-hotfixes-november-11-2026/639885/8"
+    },
+    {
+      "title": "Blizzard US forums: the Shaman changes went live on 12 Nov",
+      "url": "https://us.forums.blizzard.com/en/wow/t/wow-forever-hotfixes-november-11-2026/2403040/9"
+    },
+    {
+      "title": "Blizzard EU forums: Auction House changes due with the 18 Nov maintenance",
+      "url": "https://eu.forums.blizzard.com/en/wow/t/wow-forever-hotfixes-november-11-2026/639885/6"
+    },
     {
       "title": "Blizzard: WoW: Forever Hotfixes, 11 Nov 2026",
       "url": "https://news.blizzard.com/en-us/article/24315281/wow-forever-hotfixes-november-11-2026"

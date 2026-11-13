@@ -1,0 +1,47 @@
+{
+  "checked": "2026-11-13T17:48:00Z",
+  "notes": [
+    {
+      "ids": [7080],
+      "date": "2026-11-13",
+      "text": "Blizzard hasn’t changed its drop rate: no hotfix up to 12 Nov mentions it. It drops from water elementals in Felwood and the Eastern Plaguelands, at levels 53 to 58, so more get listed as players reach them. Forever’s new Leatherworking Living Crown takes 20 at a time.",
+      "source": "Timesaver",
+      "url": "https://timesaver.gg/blog/wow-forever-essence-of-water-farm"
+    },
+    {
+      "ids": [8170],
+      "date": "2026-11-13",
+      "text": "No hotfix or news explains the jump. Forever’s new Leatherworking crafts use it in bulk: the Living Crown takes 20.",
+      "source": "Timesaver",
+      "url": "https://timesaver.gg/blog/wow-forever-living-essence-and-essence-of-undeath-farm"
+    },
+    {
+      "ids": [248686],
+      "date": "2026-11-13",
+      "text": "Waylaid Crates are world drops you fill with materials and hand in for Merchant’s Favor, the currency for Forever’s new recipes, so their price follows demand for Favor. This one takes 10 each of Stranglekelp, Bruiseweed, Wild Steelbloom, Grave Moss and Kingsblood. No hotfix has changed them.",
+      "source": "Method",
+      "url": "https://www.method.gg/wow-forever/how-to-get-waylaid-crates-and-merchants-favor-in-wow-forever"
+    },
+    {
+      "ids": [248682, 248683, 248684, 248685, 248702, 248703, 248704, 248687, 248688, 248689, 248705, 248706, 248707, 248690, 248691, 248692, 248693, 248694, 248708, 248709, 248710],
+      "date": "2026-11-13",
+      "text": "Waylaid Crates are world drops you fill with materials and hand in for Merchant’s Favor, the currency for Forever’s new recipes, so their price follows demand for Favor and the cost of filling them. No hotfix has changed them.",
+      "source": "Method",
+      "url": "https://www.method.gg/wow-forever/how-to-get-waylaid-crates-and-merchants-favor-in-wow-forever"
+    },
+    {
+      "ids": [268415, 268416, 268417, 268418],
+      "date": "2026-11-13",
+      "text": "Herb Seeds are a bonus from picking herbs, and grow herbs in a Greenhouse that Herbalists can place at a camp. No hotfix has changed them.",
+      "source": "Icy Veins",
+      "url": "https://www.icy-veins.com/wow-forever/news/greenhouse-blueprint-found-how-herbalism-seeds-work-in-wow-forever/"
+    },
+    {
+      "ids": [3832],
+      "date": "2026-11-13",
+      "text": "A rare drop (Fenros in Duskwood, 0.2%), so few are listed and its price jumps around. In Forever it teaches Draught of Detect Lesser Invisibility, from Alchemy 195. No hotfix has changed it.",
+      "source": "Metaforge",
+      "url": "https://metaforge.app/wow-forever/database/recipes/recipe-elixir-of-detect-lesser-invisibility"
+    }
+  ]
+}

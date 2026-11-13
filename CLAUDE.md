@@ -9,7 +9,7 @@
 
 ## The Updates tab: `data/updates.json`
 
-Claude's daily hotfix check edits only this file, never `index.html`. The page escapes everything, so write plain text only.
+Claude's daily hotfix check edits only this file and `data/market-notes.json` (below), never `index.html`. The page escapes everything, so write plain text only.
 
 - `checked`: when the check last ran, in UTC, like `2026-11-10T05:37:00Z`. The page shows it in UK time on the Updates tab, in the masthead and in the footer.
 - `entries`: newest first, with future events (like raids opening) at the bottom. Each entry has:
@@ -28,3 +28,17 @@ Each run:
 - Update `checked`, even when nothing is new.
 - Write plain British English in short sentences. Start a class-specific bullet with the class name, like "Shaman: ...".
 - Run `python3 tools/check_updates.py` before committing.
+- Then do the Gold tab's "Why" notes, below.
+
+## The Gold tab's "Why" notes: `data/market-notes.json`
+
+The Gold tab says why a price moved sharply (Price alerts and Under-priced listings). The page works out what the listings show by itself: new to the Auction House, far more or fewer listed than usual, few listed, or most of them at one price. This file adds the causes the data can't show. Plain text only: the page escapes it, and the repo is public.
+
+- `checked`: when the notes were last checked, in UTC, like `2026-11-13T05:37:00Z`.
+- `notes`: newest first. Each has `ids` (item ids, as in market.js's `NAMES`), `date` (`YYYY-MM-DD`, when written), `text` (one to three short sentences), and may have `source` (a short name, like "Blizzard") with `url` (https). The page shows an item's newest note from the last 30 days, with the source and date.
+
+Each morning run, after the Updates check:
+- Run `python3 tools/market_moves.py`. It lists the big moves, the under-priced listings and Brakka's herbs and potions selling high, with listed counts and whether a note covers each item.
+- For the biggest moves with no note (about the top ten, and every under-priced listing), look for a clear cause in Blizzard's hotfix notes and the news: a drop rate, vendor, recipe or quest change, a new use, an event. Add a note only when a source supports it. Write "No hotfix has changed it" only after checking Blizzard's latest hotfix list. Don't guess about buyouts or individual sellers; the page already reports the listed counts.
+- Replace a note when its cause changes, and delete notes older than 30 days.
+- Update `checked` even when nothing is new, and run `python3 tools/check_notes.py` before committing.

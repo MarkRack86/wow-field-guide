@@ -422,6 +422,9 @@ input[type=range]:focus-visible{outline:3px solid var(--focus);outline-offset:2p
 #mk-alerts-block .sub-block{display:grid;gap:.5rem;margin-top:1rem}
 #mk-alerts-block .sub-block:first-of-type{margin-top:.25rem}
 #mk-high:empty{display:none}
+.mk-why{display:block;margin-top:.15rem;font-size:.8125rem;color:var(--ink-soft)}
+.mk-why b,.mk-learn b{font-weight:600;color:var(--ink)}
+.mk-list .mk-learn{margin-top:.2rem}
 .mk-char-h{font-size:1.5rem}
 .mk-char-grid{display:grid;gap:1.25rem}
 @media (min-width:40em){.mk-char-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:1.5rem}}
@@ -1002,14 +1005,14 @@ ol.td-list{counter-reset:td}
       <ul class="plain" id="mk-alert-list"><li>Alerts start once there are a few days of prices to compare.</li></ul>
       <p><button type="button" class="linkish" id="mk-alert-more" aria-controls="mk-alert-list" aria-expanded="false" hidden>Show all</button></p>
     </div>
-    <p class="note">Both lists compare today’s price with its usual price, the middle of the previous seven days. Your herbs and potions are the herbs you can pick at your Herbalism skill and what your known Alchemy recipes make; they show here from 15% and 5c above usual, with at least ten listed. A big move is any other item at least 40% away from usual, by 25c or more, with at least ten listed. Starred items alert sooner: at 20% and 10c, or when the cheapest listing reaches a price you set.</p>
+    <p class="note">Both lists compare today’s price with its usual price, the middle of the previous seven days. Your herbs and potions are the herbs you can pick at your Herbalism skill and what your known Alchemy recipes make; they show here from 15% and 5c above usual, with at least ten listed. A big move is any other item at least 40% away from usual, by 25c or more, with at least ten listed. Starred items alert sooner: at 20% and 10c, or when the cheapest listing reaches a price you set. Why gives the cause when there is a clear one: a note from Claude’s morning check of Blizzard’s hotfixes and the news, with its source, and what the listings show, such as far more listed than usual.</p>
   </div>
 
   <div class="block" id="mk-deals-block">
     <h3>Under-priced listings</h3>
     <p class="note" id="mk-deals-note">Checking the latest listings…</p>
     <ul class="mk-list mk-deals" id="mk-deals"></ul>
-    <p class="note">A listing shows here when it costs at most 60% of that item’s usual cheapest price (the middle of the previous seven days with at least ten listed), and buying up to 20 at that price to relist at the usual price would clear at least 1s after the Auction House cut, before the deposit. When the whole market has dropped, not just a few listings, it’s left out.</p>
+    <p class="note">A listing shows here when it costs at most 60% of that item’s usual cheapest price (the middle of the previous seven days with at least ten listed), and buying up to 20 at that price to relist at the usual price would clear at least 1s after the Auction House cut, before the deposit. When the whole market has dropped, not just a few listings, it’s left out. Why says when the usual price may be out of date: an item new to the Auction House, or far more listed than usual, often keeps falling.</p>
   </div>
 
   <div class="block" id="gc">
@@ -1030,7 +1033,7 @@ ol.td-list{counter-reset:td}
 
   <div class="block" id="gs">
     <h3>What to sell</h3>
-    <p class="note">The herbs you can pick at your Herbalism skill, and what turns up while you pick them. Craft means a recipe uses it that earns at least 10% more than selling its herbs, and people are buying what it makes. It names the best recipe you know, or one you can learn when you know none. The rest are worth more sold, on the Auction House or to a vendor when one pays more. High, Normal and Low compare today’s price with its usual, the middle of the previous seven days: High is 15% or more above it, a good time to sell, and Low 15% or more below. Tap a name for its price chart, and the star to watch it.</p>
+    <p class="note">The herbs you can pick at your Herbalism skill, and what turns up while you pick them. Craft means a recipe uses it that earns at least 10% more than selling its herbs, and people are buying what it makes. It names the best recipe you know, or one you can learn when you know none; tap a recipe to open it in What to craft. For recipes you’d have to learn, it says when you can, where the recipe comes from and how rare it is, what else it needs, and how many crafts pay for it. Coming up is a profitable recipe within your next 50 skill. The rest are worth more sold, on the Auction House or to a vendor when one pays more. High, Normal and Low compare today’s price with its usual, the middle of the previous seven days: High is 15% or more above it, a good time to sell, and Low 15% or more below. Tap a name for its price chart, and the star to watch it.</p>
     <p class="note" id="gs-status">Waiting for prices…</p>
     <ul class="mk-list" id="gs-list"></ul>
   </div>

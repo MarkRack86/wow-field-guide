@@ -507,26 +507,132 @@
   }
   function highWhy(x, plan) {
     var up = Math.round(x.c.pct * 100) + '% above its usual ' + money(x.c.base), h = plan[x.id];
-    if (h && h.act === 'craft') return '<span class="chip mk-verdict blue">Craft</span> ' + esc('into ' + RX[h.rid][0] + ' (+' + money(h.profit) + ' a craft' +
+    if (h && h.act === 'craft') return '<span class="chip mk-verdict blue">Craft</span> into ' + rxLink(h.rid) + esc(' (+' + money(h.profit) + ' a craft' +
       (rxState(h.rid) === 'learn' ? ', once you learn it' : '') + '): still worth more than selling, even ' + up);
     if (h && h.act === 'vendor') return '<span class="chip mk-verdict gold">Vendor</span> ' + esc('a vendor pays ' + money(h.value) + ', more than the Auction House, even ' + up);
     var b = x.how === 'make' ? makeBest(x.id) : null;
     return '<span class="chip mk-verdict ok">Sell</span> ' + esc(money(sellNet(x.id)) + ' each after the cut, ' + up +
       (b ? (b.profit > 0 ? '. Crafting more makes +' + money(b.profit) + ' a craft' : '. Crafting more costs ' + money(-b.profit) + ' more than it makes, so sell what you have') : ''));
   }
+  /* ---------- Why a price moved: notes from Claude's checks (data/market-notes.json), and what the listings show ---------- */
+  var NOTES = {};
+  function loadNotes() {
+    if (document.getElementById('wowf-data') || !window.fetch) return;  /* the offline copy has no notes */
+    fetch('data/market-notes.json', { cache: 'no-cache' }).then(function (r) { return r.ok ? r.json() : null; }).then(function (j) {
+      if (!j || !Array.isArray(j.notes)) return;
+      var cut = Date.now() - 31 * 864e5, map = {};
+      j.notes.forEach(function (n) {
+        if (!n || typeof n.text !== 'string' || !Array.isArray(n.ids) || !(Date.parse(n.date) >= cut)) return;
+        var x = { text: n.text, date: String(n.date), source: typeof n.source === 'string' ? n.source : '',
+          url: typeof n.url === 'string' && /^https:\/\/[^\s"'<>]+$/.test(n.url) ? n.url : '' };
+        n.ids.forEach(function (id) { (map[id] = map[id] || []).push(x); });
+      });
+      Object.keys(map).forEach(function (k) { map[k].sort(function (a, b) { return a.date < b.date ? 1 : a.date > b.date ? -1 : 0; }); });
+      NOTES = map;
+      if (loaded) { renderAlerts(); renderDeals(); renderGlance(); }
+    }).then(null, function () {});
+  }
+  /* Listed now against the usual count (the middle of the previous seven days), and when it first showed up. */
+  function supplyOf(id) {
+    var n = now(id);
+    if (!n || n.qty == null || !latest()) return null;
+    var prev = prevDays().map(function (d) { var p = point(d, id); return p ? p.qty : null; }).filter(function (v) { return v != null; }), first = null;
+    for (var i = 0; i < days.length; i++) if (point(days[i], id)) { first = days[i].d; break; }
+    var age = first ? Math.round((Date.parse(latest().d) - Date.parse(first)) / 864e5) : 99;
+    return { q: n.qty, uq: prev.length >= 3 ? median(prev) : null, fresh: !!first && first !== days[0].d && age <= 3, first: first, at1: n.nmin };
+  }
+  function supplyText(id, dir, deal) {
+    var s = supplyOf(id), q = function (v) { return Math.round(v).toLocaleString('en-GB'); };
+    if (!s) return '';
+    var more = s.uq && s.q >= s.uq * 2.5, fewer = s.uq && s.q <= s.uq * 0.4;
+    if (s.fresh) return 'New to the Auction House since ' + dayLabel(s.first) + ', so its usual price is still settling' + (more ? ': ' + q(s.q) + ' listed now, against ' + q(s.uq) + ' before.' : '.');
+    if (more) return 'Far more listed than usual: ' + q(s.q) + ', against about ' + q(s.uq) + '.' +
+      (dir < 0 ? (latest().d < '2026-12-16' ? ' Supply is catching up, as it often does in the first weeks after launch.' : ' More for sale pushes the price down.') : '') +
+      (deal ? ' Its usual price may be out of date.' : '');
+    if (fewer) return 'Far fewer listed than usual: ' + q(s.q) + ', against about ' + q(s.uq) + '.' + (dir > 0 ? ' With less for sale, the price goes up.' : '');
+    if (s.q < 15) return 'Only ' + q(s.q) + ' listed, so one listing moves the price.';
+    if (s.at1 && s.at1 >= 20 && s.at1 >= s.q * 0.5) return 'Most of what’s listed (' + q(s.at1) + ' of ' + q(s.q) + ') sits at one price.';
+    return '';
+  }
+  /* "Why:" a note when there is one, then what the listings show; quiet leaves out "No known cause". */
+  function whyHtml(id, dir, o) {
+    o = o || {};
+    var a = NOTES[id], n = a && a[0], s = supplyText(id, dir, o.deal), h = '';
+    if (n) h = esc(n.text);
+    if (s) h += (h ? ' ' : '') + esc(s);
+    if (!h) { if (o.quiet) return ''; h = 'No known cause, and about the usual number listed.'; }
+    if (n) h += ' <span class="mk-src">(' + (n.url ? '<a href="' + esc(n.url) + '" target="_blank" rel="noopener">' + esc(n.source || 'Source') + '</a>' : esc(n.source || 'Note')) + ', ' + esc(dayLabel(n.date)) + ')</span>';
+    return '<span class="mk-why"><b>Why:</b> ' + h + '</span>';
+  }
+  function dealCaution(id) {
+    var s = supplyOf(id);
+    if (!s) return '';
+    if (s.fresh) return ' Careful: it’s new to the Auction House, so its usual price is still settling.';
+    if (s.uq && s.q >= s.uq * 2.5) return ' Careful: far more are listed than usual, so its usual price may be out of date.';
+    return '';
+  }
+
+  /* ---------- Recipes you could learn: when, where they come from, how rare, what else they need ---------- */
+  function up1(s) { return s ? s.charAt(0).toUpperCase() + s.slice(1) : s; }
+  function rxLink(rid) { return '<button type="button" class="linkish" data-rxgo="' + rid + '">' + esc(RX[rid][0]) + '</button>'; }
+  function rarity(r) {
+    if (r[7] !== 'item' || r[13]) return '';
+    if (r[11].length) return r[11].some(function (v) { return v[3]; }) ? 'sold a few at a time' : '';
+    var t = r[12] || '', m = t.match(/\d+(?:\.\d+)?(?=%)/g);
+    if (/world drop/i.test(t)) return 'a random world drop';
+    if (m) { var b = Math.max.apply(null, m.map(parseFloat)); return b < 1 ? 'a rare drop' : b < 5 ? 'an uncommon drop' : 'a common drop'; }
+    return '';
+  }
+  function learnText(rid, skip, profit) {
+    var r = RX[rid], pn = RXP[r[1]], cur = curFor(r[1]), f = fac(), e = rxEval(rid), s = [], cost = null;
+    s.push(cur >= r[5] ? 'You can learn it now: it needs ' + pn + ' ' + r[5] + ', and you have ' + cur + '.' : 'You can learn it at ' + pn + ' ' + r[5] + '; you have ' + cur + '.');
+    if (r[7] !== 'item') s.push('Any ' + pn + ' trainer teaches it.');
+    else if (r[13]) s.push((f === 'H' ? 'Apothecary Durelle, outside the Crossroads, ' : 'Nina Surefire, at Three Corners in Redridge, ') + 'sells the recipe for ' + r[13][0] + ' Merchant’s Favor' +
+      (r[13][1] ? ' once you’re ' + r[13][1] + ' with ' + (f === 'H' ? 'Durotar Supply and Logistics' : 'the Azeroth Commerce Authority') : '') + '.');
+    else if (r[11].length) {
+      var mine = r[11].filter(function (v) { return !v[2] || v[2] === f; });
+      s.push(mine.length ? 'Sold by ' + listAnd(mine.map(function (v) { return v[0] + ' in ' + v[1]; })) + (r[9] ? ' for ' + money(r[9]) : '') + '.' : 'Only ' + (f === 'H' ? 'Alliance' : 'Horde') + ' vendors sell it.');
+      if (mine.length && r[9]) cost = r[9];
+    } else s.push(r[12] ? up1(r[12]) + '.' : 'Where the recipe drops isn’t documented yet.');
+    var rr = rarity(r), ah = '';
+    if (r[7] === 'item' && r[10] && r[8]) {
+      var a = now(r[8]);
+      if (a && a.min != null) { ah = plural(a.qty || 1, 'is', 'are') + ' on the Auction House, from ' + money(a.min); cost = cost == null ? a.min : Math.min(cost, a.min); }
+      else ah = 'none is on the Auction House today';
+    }
+    if (rr || ah) s.push(up1(rr ? 'it’s ' + rr + (ah ? ', and ' + ah : '') : ah) + '.');
+    var other = e ? e.parts.filter(function (p) { return p.id !== skip; }).map(function (p) {
+      return (p.c > 1 ? p.c + ' ' : '') + nm(p.id) + (p.v == null ? ' (no price today)' : ' (' + money(p.v * p.c) +
+        (p.herb ? (HERB[p.id] != null && HERB[p.id] <= herbSkill() ? ', or pick it' : ' on the Auction House') : VBUY[p.id] != null && buyCost(p.id) === VBUY[p.id] ? ' from a vendor' : ' on the Auction House') + ')');
+    }) : [];
+    if (other.length) s.push('It also needs ' + listAnd(other) + '.');
+    if (cost != null && profit > 0) s.push('The recipe pays for itself after ' + plural(Math.max(1, Math.ceil(cost / profit)), 'craft') + '.');
+    return s.join(' ');
+  }
+  /* The block under a row: head is a label like "Coming up", with the recipe's name and profit. */
+  function learnHtml(rid, skip, profit, head) {
+    return '<span class="mk-sub mk-learn">' + (head ? '<b>' + esc(head) + ':</b> ' + rxLink(rid) + esc(profit > 0 ? ', +' + money(profit) + ' a craft. ' : '. ') : '<b>How to learn it:</b> ') +
+      esc(learnText(rid, skip, profit)) + '</span>';
+  }
   var highEl = $('#mk-high'), highNote = $('#mk-high-note');
+  function highExtra(x, plan) {
+    var h = plan[x.id], out = '';
+    if (h && h.act === 'craft' && rxState(h.rid) === 'learn') out += learnHtml(h.rid, x.id, h.profit);
+    var w = whyHtml(x.id, x.c.pct, { quiet: true });
+    return out + (w ? '<span class="mk-sub">' + w + '</span>' : '');
+  }
   function renderAlerts() {
     var hi = latest() ? sellHigh() : [], skip = {}, plan = hi.length ? herbPlan() : {};
     hi.forEach(function (x) { skip[x.id] = 1; });
     if (highEl && highNote) {
-      highEl.innerHTML = hi.map(function (x) { return matRow(x.id, '', highWhy(x, plan)); }).join('');
+      highEl.innerHTML = hi.map(function (x) { return matRow(x.id, highExtra(x, plan), highWhy(x, plan)); }).join('');
       highNote.textContent = !loaded ? 'Waiting for prices…' : !latest() ? 'No prices yet.' : days.length < 4 ? 'This starts once there are a few days of prices to compare.'
         : hi.length ? (hi.length === 1 ? 'One of yours is' : hi.length + ' of yours are') + ' selling 15% or more above usual, highest first.' : 'None of your herbs or potions is selling 15% or more above its usual price.';
     }
     var hits = tracked().filter(function (id) { return !skip[id]; }).map(function (id) { return { id: id, a: alertFor(id) }; }).filter(function (x) { return x.a; })
       .sort(function (x, y) { return (WATCH[y.id] ? 1 : 0) - (WATCH[x.id] ? 1 : 0) || (y.a.c ? Math.abs(y.a.c.pct) : 9) - (x.a.c ? Math.abs(x.a.c.pct) : 9); });
     var h = '', more = $('#mk-alert-more');
-    hits.slice(0, alertAll ? 12 : 5).forEach(function (x) { h += '<li>' + alertLine(x.id, x.a) + '</li>'; });
+    hits.slice(0, alertAll ? 12 : 5).forEach(function (x) { h += '<li>' + alertLine(x.id, x.a) + (x.a.kind === 'move' ? whyHtml(x.id, x.a.c.pct) : '') + '</li>'; });
     if (!h) h = '<li>' + (days.length < 4 ? 'Alerts start once there are a few days of prices to compare. Prices you set on starred items work from today.' : hi.length ? 'Nothing else unusual today.' : 'Nothing unusual today.') + '</li>';
     alertList.innerHTML = h;
     if (more) {
@@ -1294,12 +1400,13 @@
     Object.keys(HERB).forEach(function (k) { var id = +k; if (HERB[id] <= sk && NAMES[id]) { ids.push(id); seen[id] = 1; } });
     BONUS.forEach(function (b) { if (b[2] && sk >= b[2] && NAMES[b[0]] && !seen[b[0]]) ids.push(b[0]); });
     Object.keys(RX).forEach(function (rid) {
-      var st = rxState(rid);
-      if (st === 'later') return;
-      var e = rxEval(rid), r = rate(RX[rid][2]);
+      var st = rxState(rid), r0 = RX[rid];
+      if (st === 'later' && r0[5] > rxReach(r0[1])) return;  /* coming up: within the next 50 skill or your rank's cap */
+      var e = rxEval(rid), r = rate(r0[2]);
       if (!e || e.miss || !(e.profit >= Math.max(2, e.herbs * 0.1)) || (r && !r.units)) return;  /* worth the effort: 10% more than selling the herbs */
-      RX[rid][4].forEach(function (x) {
+      r0[4].forEach(function (x) {
         var u = use[x[0]] || (use[x[0]] = {});
+        if (st === 'later') { if (!u.later || e.profit > u.later.profit) u.later = { rid: rid, profit: e.profit }; return; }
         if (st === 'known' && (!u.known || e.profit > u.known.profit)) u.known = { rid: rid, profit: e.profit };
         if (!u.any || e.profit > u.any.profit) u.any = { rid: rid, profit: e.profit };
       });
@@ -1307,24 +1414,31 @@
     /* The best recipe you know; one you can learn only when you know none, or as a note when it would pay clearly more. */
     ids.forEach(function (id) {
       var n = now(id), s = n ? sellNet(id) : null, v = SELL[id] || 0, u = use[id], x = { id: id, n: n, value: s, p: pos(id) };
-      if (u) {
+      if (u && (u.known || u.any)) {
         var k = u.known || u.any;
         x.act = 'craft'; x.rid = k.rid; x.profit = k.profit;
         if (u.known && u.any.rid !== u.known.rid && u.any.profit > u.known.profit * 1.1 + 2) x.better = u.any;
       }
       else if (v > 0 && s != null && v > s) { x.act = 'vendor'; x.value = v; }
       else x.act = 'sell';
+      if (u && u.later && !(x.profit && u.later.profit <= x.profit * 1.1 + 2)) x.later = u.later;
       out[id] = x;
     });
     return out;
   }
   function sellWhy(x) {
     var v;
-    if (x.act === 'craft') v = '<span class="chip mk-verdict blue">Craft</span> ' + esc('into ' + RX[x.rid][0] + ', +' + money(x.profit) + ' a craft' +
-      (rxState(x.rid) === 'learn' ? ' once you learn it' : '') + (x.better ? '. ' + RX[x.better.rid][0] + ' would make +' + money(x.better.profit) + ' once you learn it' : ''));
+    if (x.act === 'craft') v = '<span class="chip mk-verdict blue">Craft</span> into ' + rxLink(x.rid) + esc(', +' + money(x.profit) + ' a craft' + (rxState(x.rid) === 'learn' ? ' once you learn it' : ''));
     else if (x.act === 'vendor') v = '<span class="chip mk-verdict gold">Vendor</span> ' + esc('a vendor pays ' + money(x.value) + ', more than the Auction House');
     else v = '<span class="chip mk-verdict ok">Sell</span> ' + esc(x.n ? money(x.value) + ' each after the cut' : 'none listed, so no price yet');
     return v + (x.p ? ' · ' + posHtml(x.p) : '');
+  }
+  function sellExtra(x) {
+    var h = '';
+    if (x.act === 'craft' && rxState(x.rid) === 'learn') h += learnHtml(x.rid, x.id, x.profit);
+    if (x.better) h += learnHtml(x.better.rid, x.id, x.better.profit, 'Better once you learn it');
+    if (x.later) h += learnHtml(x.later.rid, x.id, x.later.profit, 'Coming up');
+    return h;
   }
   function renderSell() {
     if (!gsList || !gsStat) return;
@@ -1335,8 +1449,8 @@
     sell.sort(function (a, b) { return up(b) - up(a) || (b.value || 0) - (a.value || 0); });
     craft.sort(function (a, b) { return b.profit - a.profit; });
     var h = '';
-    if (sell.length) h += '<li class="mk-group"><span class="label">Sell, highest against usual first</span></li>' + sell.map(function (x) { return matRow(x.id, '', sellWhy(x)); }).join('');
-    if (craft.length) h += '<li class="mk-group"><span class="label">Craft into potions</span></li>' + craft.map(function (x) { return matRow(x.id, '', sellWhy(x)); }).join('');
+    if (sell.length) h += '<li class="mk-group"><span class="label">Sell, highest against usual first</span></li>' + sell.map(function (x) { return matRow(x.id, sellExtra(x), sellWhy(x)); }).join('');
+    if (craft.length) h += '<li class="mk-group"><span class="label">Craft into potions</span></li>' + craft.map(function (x) { return matRow(x.id, sellExtra(x), sellWhy(x)); }).join('');
     gsList.innerHTML = h;
     gsStat.textContent = 'At Herbalism ' + herbSkill() + ': ' + sell.length + ' to sell and ' + craft.length + ' to craft into potions' +
       (high ? '. ' + (high === 1 ? 'One is' : high + ' are') + ' selling high.' : '.');
@@ -1375,7 +1489,7 @@
       var off = Math.round((1 - x.n.min / x.u) * 100);
       return '<li><span class="mk-name">' + itemBtn(x.id) + '</span><span class="mk-price">' + money(x.n.min) + '</span>' +
         '<span class="mk-chg">−' + off + '%<span class="vh"> below its usual cheapest</span>' + spark(x.id) + '</span>' +
-        '<span class="mk-sub">' + esc(dealSub(x)) + '</span></li>';
+        '<span class="mk-sub">' + esc(dealSub(x)) + '</span><span class="mk-sub">' + whyHtml(x.id, -1, { deal: true }) + '</span></li>';
     }).join('');
     dealsNote.textContent = list.length ? 'From the ' + snap + ' snapshot. Cheap listings go fast, so some may have sold since.' : 'Nothing far below its usual price in the ' + snap + ' snapshot.';
   }
@@ -1390,7 +1504,7 @@
     if (!latest()) { glanceEl.innerHTML = '<li class="note">No prices yet.</li>'; return; }
     var dl = deals(), hi = sellHigh(), tc = topCrafts(99), b = dl[0], t = tc[0], h = '';
     h += glanceRow('Buy to resell', !dealsStarted() ? 'Starts once there are three days of prices to compare.' : !b ? 'Nothing far below its usual price in the latest snapshot.'
-      : esc(plural(dl.length, 'listing') + ' far below usual. Best: ') + itemBtn(b.id) + esc(' at ' + money(b.n.min) + ', usually ' + money(b.u) + ', about +' + money(b.gain) + ' each after the cut' + (b.units > 1 ? ' on up to ' + Math.min(b.units, 20) : '') + '.'),
+      : esc(plural(dl.length, 'listing') + ' far below usual. Best: ') + itemBtn(b.id) + esc(' at ' + money(b.n.min) + ', usually ' + money(b.u) + ', about +' + money(b.gain) + ' each after the cut' + (b.units > 1 ? ' on up to ' + Math.min(b.units, 20) : '') + '.' + dealCaution(b.id)),
       '#mk-deals-block', 'Under-priced listings');
     h += glanceRow('Selling high', days.length < 4 ? 'Starts once there are a few days of prices to compare.' : !hi.length ? 'None of your herbs or potions is 15% or more above its usual price.'
       : hi.slice(0, 4).map(function (x) { return itemBtn(x.id) + ' <span class="mk-up"><span aria-hidden="true">▲</span>' + Math.round(x.c.pct * 100) + '%<span class="vh"> above usual</span></span>'; }).join(', ') +
@@ -1809,6 +1923,7 @@
     } catch (e) {}
     return Promise.resolve(null);
   }
+  loadNotes();
   Promise.all([loadFiles().then(null, function () { return null; }), liveDb()]).then(function (r) {
     var files = r[0], db = fileDb(files, r[1]);
     DBH = db; LIVE = !!r[1];

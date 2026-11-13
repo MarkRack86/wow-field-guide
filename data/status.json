@@ -1,21 +1,23 @@
 {
  "refresh": {
-  "at": "2026-11-13T19:55:20Z",
+  "at": "2026-11-13T20:55:08Z",
   "ok": true,
   "date": "2026-11-13",
-  "snapshot": "2026-11-13T18:25:27Z",
+  "snapshot": "2026-11-13T20:19:00Z",
   "new": true,
-  "items": 405,
+  "items": 408,
   "of": 463,
-  "alerts": 18,
+  "alerts": 17,
   "phone": "nothing to send",
   "character": "synced",
   "level": 18,
   "notes": []
  },
  "speed": {
-  "at": "2026-11-13T19:55:20Z",
-  "ok": false,
-  "reason": "the last run was 300 minutes earlier; sell speed needs runs 30 minutes to 3 hours apart"
+  "at": "2026-11-13T20:55:08Z",
+  "ok": true,
+  "id": "2026-11-13T20",
+  "units": 58162,
+  "minutes": 114
  }
 }

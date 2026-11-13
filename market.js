@@ -463,12 +463,71 @@
     var more = $('#mk-alert-more');
     if (more) more.addEventListener('click', function () { alertAll = !alertAll; renderAlerts(); more.focus(); });
   })();
+  /* ---------- Yours, and where today's price sits against its usual ---------- */
+  /* Your herbs and potions: the herbs you can pick at your skill (and what turns up while picking), and what your known Alchemy recipes make. */
+  var HIGH = 0.15;
+  function mine() {
+    var out = {}, sk = herbSkill();
+    Object.keys(HERB).forEach(function (k) { if (HERB[k] <= sk && NAMES[k]) out[k] = 'pick'; });
+    BONUS.forEach(function (b) { if (b[2] && sk >= b[2] && NAMES[b[0]] && !out[b[0]]) out[b[0]] = 'pick'; });
+    Object.keys(RX).forEach(function (rid) { var o = RX[rid][2]; if (RX[rid][1] === 'alch' && rxState(rid) === 'known' && NAMES[o] && !out[o]) out[o] = 'make'; });
+    return out;
+  }
+  /* High from 15% above its usual price, Low from 15% below. */
+  function pos(id) {
+    var c = change(id);
+    return c ? { k: c.pct >= HIGH ? 'high' : c.pct <= -HIGH ? 'low' : 'usual', c: c } : null;
+  }
+  function posHtml(p) {
+    if (!p) return '';
+    var r = Math.round(Math.abs(p.c.pct) * 100);
+    if (p.k === 'high') return '<span class="chip ok">High</span> ' + esc(r + '% above its usual ' + money(p.c.base));
+    if (p.k === 'low') return '<span class="chip">Low</span> ' + esc(r + '% below its usual ' + money(p.c.base));
+    return '<span class="chip">Normal</span> ' + esc('usually ' + money(p.c.base));
+  }
+  /* Yours and selling high: 15% and 5c or more above usual, with at least ten listed. */
+  function sellHigh() {
+    var m = mine(), out = [];
+    Object.keys(m).forEach(function (k) {
+      var id = +k, n = now(id), c = change(id);
+      if (!n || !c || c.pct < HIGH || c.diff < 5 || (n.qty || 0) < 10) return;
+      out.push({ id: id, c: c, n: n, how: m[k] });
+    });
+    return out.sort(function (a, b) { return b.c.pct - a.c.pct; });
+  }
+  /* The best known recipe for an item, at today's prices. */
+  function makeBest(id) {
+    var best = null;
+    Object.keys(RX).forEach(function (rid) {
+      if (RX[rid][2] !== id || rxState(rid) !== 'known') return;
+      var e = rxEval(rid);
+      if (e && !e.miss && (!best || e.profit > best.profit)) best = { rid: rid, profit: e.profit };
+    });
+    return best;
+  }
+  function highWhy(x, plan) {
+    var up = Math.round(x.c.pct * 100) + '% above its usual ' + money(x.c.base), h = plan[x.id];
+    if (h && h.act === 'craft') return '<span class="chip mk-verdict blue">Craft</span> ' + esc('into ' + RX[h.rid][0] + ' (+' + money(h.profit) + ' a craft' +
+      (rxState(h.rid) === 'learn' ? ', once you learn it' : '') + '): still worth more than selling, even ' + up);
+    if (h && h.act === 'vendor') return '<span class="chip mk-verdict gold">Vendor</span> ' + esc('a vendor pays ' + money(h.value) + ', more than the Auction House, even ' + up);
+    var b = x.how === 'make' ? makeBest(x.id) : null;
+    return '<span class="chip mk-verdict ok">Sell</span> ' + esc(money(sellNet(x.id)) + ' each after the cut, ' + up +
+      (b ? (b.profit > 0 ? '. Crafting more makes +' + money(b.profit) + ' a craft' : '. Crafting more costs ' + money(-b.profit) + ' more than it makes, so sell what you have') : ''));
+  }
+  var highEl = $('#mk-high'), highNote = $('#mk-high-note');
   function renderAlerts() {
-    var hits = tracked().map(function (id) { return { id: id, a: alertFor(id) }; }).filter(function (x) { return x.a; })
+    var hi = latest() ? sellHigh() : [], skip = {}, plan = hi.length ? herbPlan() : {};
+    hi.forEach(function (x) { skip[x.id] = 1; });
+    if (highEl && highNote) {
+      highEl.innerHTML = hi.map(function (x) { return matRow(x.id, '', highWhy(x, plan)); }).join('');
+      highNote.textContent = !loaded ? 'Waiting for prices…' : !latest() ? 'No prices yet.' : days.length < 4 ? 'This starts once there are a few days of prices to compare.'
+        : hi.length ? (hi.length === 1 ? 'One of yours is' : hi.length + ' of yours are') + ' selling 15% or more above usual, highest first.' : 'None of your herbs or potions is selling 15% or more above its usual price.';
+    }
+    var hits = tracked().filter(function (id) { return !skip[id]; }).map(function (id) { return { id: id, a: alertFor(id) }; }).filter(function (x) { return x.a; })
       .sort(function (x, y) { return (WATCH[y.id] ? 1 : 0) - (WATCH[x.id] ? 1 : 0) || (y.a.c ? Math.abs(y.a.c.pct) : 9) - (x.a.c ? Math.abs(x.a.c.pct) : 9); });
     var h = '', more = $('#mk-alert-more');
     hits.slice(0, alertAll ? 12 : 5).forEach(function (x) { h += '<li>' + alertLine(x.id, x.a) + '</li>'; });
-    if (!h) h = '<li>' + (days.length < 4 ? 'Alerts start once there are a few days of prices to compare. Prices you set on starred items work from today.' : 'Nothing unusual today.') + '</li>';
+    if (!h) h = '<li>' + (days.length < 4 ? 'Alerts start once there are a few days of prices to compare. Prices you set on starred items work from today.' : hi.length ? 'Nothing else unusual today.' : 'Nothing unusual today.') + '</li>';
     alertList.innerHTML = h;
     if (more) {
       more.hidden = hits.length <= 5;
@@ -551,7 +610,8 @@
     });
     watchEl.innerHTML = h;
   }
-  function renderPrices() { renderStatus(); renderAlerts(); renderCraftList(); renderSell(); renderDeals(); renderWatch(); renderMats(); renderCrafts(); drawChart(); }
+  function renderPrices() { renderStatus(); renderAlerts(); renderDeals(); renderCraftList(); renderSell(); renderGlance(); renderWatch(); renderMats(); renderCrafts(); drawChart(); }
+  function renderGold() { renderAlerts(); renderSell(); renderGlance(); }
 
   /* ---------- Chart: up to six items, as prices or rebased to 100 on each item's first day ---------- */
   var modeEls = $$('input[name="mkmode"]'), legendEl = $('#mk-legend'), tableEl = $('#mk-table'), chartNote = $('#mk-chart-note'), liveEl = $('#mk-live');
@@ -1044,7 +1104,7 @@
     if (!b) return;
     var id = +b.getAttribute('data-item');
     if (!mPanel.contains(b)) { choose(id, true); return; }
-    if (alertList.contains(b) || (dealsEl && dealsEl.contains(b)) || (gcList && gcList.contains(b)) || (gsList && gsList.contains(b))) {
+    if (alertList.contains(b) || (dealsEl && dealsEl.contains(b)) || (gcList && gcList.contains(b)) || (gsList && gsList.contains(b)) || (highEl && highEl.contains(b)) || (glanceEl && glanceEl.contains(b))) {
       var owner = OTHER.filter(function (p) { return p.mats.indexOf(id) >= 0 || p.crafts.indexOf(id) >= 0; })[0];
       if (owner && owner.k !== prof && P().mats.indexOf(id) < 0 && P().crafts.indexOf(id) < 0) { prof = owner.k; profSel.value = prof; store.set('wowf-mkprof', prof); }
       choose(id, false);
@@ -1068,15 +1128,15 @@
       var t = e.target;
       if (!t) return;
       if (t === suProf) { skprof = suProf.value; store.set('wowf-skprof', skprof); suCur.value = String(curFor(skprof)); renderSkill(); return; }
-      if (t.classList.contains('sk-alt')) { var o = store.get('wowf-skopt-' + skprof, {}) || {}; o[t.getAttribute('data-step')] = +t.value; store.set('wowf-skopt-' + skprof, o); renderSkill(); renderSell(); return; }
-      if (t === suCur) { suCur.value = String(clampSkill(suCur.value)); store.set('wowf-skcur-' + skprof, { v: clampSkill(suCur.value), at: CH ? CH.at : '' }); renderSkill(); renderCraftList(); renderSell(); return; }
+      if (t.classList.contains('sk-alt')) { var o = store.get('wowf-skopt-' + skprof, {}) || {}; o[t.getAttribute('data-step')] = +t.value; store.set('wowf-skopt-' + skprof, o); renderSkill(); return; }
+      if (t === suCur) { suCur.value = String(clampSkill(suCur.value)); store.set('wowf-skcur-' + skprof, { v: clampSkill(suCur.value), at: CH ? CH.at : '' }); renderSkill(); renderCraftList(); renderGold(); return; }
       if (t === suPick) { store.set('wowf-skpick', suPick.checked); renderSkill(); }
     });
   }
   if (hPanel) {
     hPanel.addEventListener('change', function (e) {
       var t = e.target;
-      if (t === hzSkill) { hzSkill.value = String(clampSkill(hzSkill.value)); store.set('wowf-hzskill', { v: clampSkill(hzSkill.value), at: CH ? CH.at : '' }); renderZones(); renderBonus(); renderSell(); }
+      if (t === hzSkill) { hzSkill.value = String(clampSkill(hzSkill.value)); store.set('wowf-hzskill', { v: clampSkill(hzSkill.value), at: CH ? CH.at : '' }); renderZones(); renderBonus(); renderGold(); }
       else if (t === hzAll) { store.set('wowf-hzall', hzAll.checked); renderZones(); }
     });
   }
@@ -1192,9 +1252,9 @@
   }
   /* Badges, as on the price lists: blue is something you know, green is money, gold is a vendor. */
   function rxRow(rid, e) {
-    var r = RX[rid], st = rxState(rid), vend = (SELL[r[2]] || 0) > (sellNet(r[2]) || 0);
+    var r = RX[rid], st = rxState(rid), vend = (SELL[r[2]] || 0) > (sellNet(r[2]) || 0), pp = pos(r[2]);
     var chip = (st === 'known' ? '<span class="chip blue">Known</span>' : st === 'learn' ? '<span class="chip">Can learn</span>' : '<span class="chip">From skill ' + r[5] + '</span>') +
-      (vend ? '<span class="chip gold">Vendor it</span>' : '');
+      (vend ? '<span class="chip gold">Vendor it</span>' : '') + (pp && pp.k === 'high' ? '<span class="chip ok">Price high</span>' : pp && pp.k === 'low' ? '<span class="chip">Price low</span>' : '');
     var fig = '<span class="chip ok gc-profit"><span class="nc">+' + money(e.profit) + '</span> profit<span class="vh"> a craft</span></span>';
     var mats = r[4].map(function (x) { return (x[1] > 1 ? x[1] + ' ' : '') + nm(x[0]); }).join(', ') + (e.n.qty != null && e.n.qty < 10 ? ' · only ' + e.n.qty + ' listed' : '');
     var sp = sparkSvg(evalSeries(function () { var x = rxEval(rid); return x && !x.miss ? x.profit : null; }), 'Profit on ' + r[0]);
@@ -1227,81 +1287,59 @@
       : 'None of these ' + plural(seen, 'recipe') + ' make a profit at prices from ' + when + ', so sell your herbs instead.';
   }
 
-  /* ---------- What to sell: the herbs you pick, sorted into sell and keep ---------- */
-  /* Herbs a skill-up route still needs, from your skill to the cap your rank allows, using the recipes picked on the Skill-up tab. */
-  function routeNeeds(key) {
-    var r = ROUTES[key], p = r ? profSkill(r.n) : null, out = {};
-    if (!r || !p) return out;
-    var cur = +p.sk || 1, cap = +p.max || 75, opts = store.get('wowf-skopt-' + key, {}) || {};
-    r.s.forEach(function (st, i) {
-      if (st[0] === 'T') return;
-      var a = st[0], b = st[1], top = Math.min(b, cap), o = st[2];
-      if (cur >= top || a >= cap) return;
-      var ci = Math.min(o.length - 1, Math.max(0, +opts[i] || 0)), rec = RCP[o[ci][0]], n = o[ci][1];
-      var left = Math.ceil(n * (top - Math.max(a, cur)) / (b - a));
-      if (!rec || left <= 0) return;
-      rec[3].forEach(function (x) { if (HERB[x[0]] != null) out[x[0]] = (out[x[0]] || 0) + x[1] * left; });
+  /* ---------- What to sell: each herb you pick, crafted or sold ---------- */
+  /* Craft when a recipe you know or can learn uses it, earns at least 10% more than selling its herbs, and people buy what it makes (or there's no sales data yet). */
+  function herbPlan() {
+    var sk = herbSkill(), ids = [], seen = {}, use = {}, out = {};
+    Object.keys(HERB).forEach(function (k) { var id = +k; if (HERB[id] <= sk && NAMES[id]) { ids.push(id); seen[id] = 1; } });
+    BONUS.forEach(function (b) { if (b[2] && sk >= b[2] && NAMES[b[0]] && !seen[b[0]]) ids.push(b[0]); });
+    Object.keys(RX).forEach(function (rid) {
+      var st = rxState(rid);
+      if (st === 'later') return;
+      var e = rxEval(rid), r = rate(RX[rid][2]);
+      if (!e || e.miss || !(e.profit >= Math.max(2, e.herbs * 0.1)) || (r && !r.units)) return;  /* worth the effort: 10% more than selling the herbs */
+      RX[rid][4].forEach(function (x) {
+        var u = use[x[0]] || (use[x[0]] = {});
+        if (st === 'known' && (!u.known || e.profit > u.known.profit)) u.known = { rid: rid, profit: e.profit };
+        if (!u.any || e.profit > u.any.profit) u.any = { rid: rid, profit: e.profit };
+      });
+    });
+    /* The best recipe you know; one you can learn only when you know none, or as a note when it would pay clearly more. */
+    ids.forEach(function (id) {
+      var n = now(id), s = n ? sellNet(id) : null, v = SELL[id] || 0, u = use[id], x = { id: id, n: n, value: s, p: pos(id) };
+      if (u) {
+        var k = u.known || u.any;
+        x.act = 'craft'; x.rid = k.rid; x.profit = k.profit;
+        if (u.known && u.any.rid !== u.known.rid && u.any.profit > u.known.profit * 1.1 + 2) x.better = u.any;
+      }
+      else if (v > 0 && s != null && v > s) { x.act = 'vendor'; x.value = v; }
+      else x.act = 'sell';
+      out[id] = x;
     });
     return out;
   }
-  /* Crafts worth making for the market at a time: about a day's sales, from 5 to 20, and none if nobody bought any. */
-  function craftsFor(id) {
-    var r = rate(id);
-    if (!r) return 10;
-    if (!r.units) return 0;
-    return Math.max(5, Math.min(20, Math.round(r.perDay)));
-  }
-  function sellPlan() {
-    var sk = herbSkill(), ids = [], seen = {};
-    Object.keys(HERB).forEach(function (k) { var id = +k; if (HERB[id] <= sk && NAMES[id]) { ids.push(id); seen[id] = 1; } });
-    BONUS.forEach(function (b) { if (b[2] && sk >= b[2] && NAMES[b[0]] && !seen[b[0]]) ids.push(b[0]); });
-    var needs = {}, caps = {};
-    ['alch', 'fa'].forEach(function (k) {
-      var nd = routeNeeds(k), p = profSkill(ROUTES[k].n);
-      Object.keys(nd).forEach(function (id) { needs[id] = (needs[id] || 0) + nd[id]; if (!caps[id]) caps[id] = { pn: ROUTES[k].n, cap: p ? p.max : 0 }; });
-    });
-    var use = {};
-    Object.keys(RX).forEach(function (rid) {
-      if (rxState(rid) === 'later') return;
-      var e = rxEval(rid), c;
-      if (!e || e.miss || !(e.profit > 0) || !(c = craftsFor(RX[rid][2]))) return;
-      RX[rid][4].forEach(function (x) {
-        var u = use[x[0]] || (use[x[0]] = { n: 0, profit: 0, k: 0 });
-        u.n += x[1] * c; u.k++;
-        if (e.profit > u.profit) { u.rid = rid; u.profit = e.profit; u.crafts = c; }
-      });
-    });
-    return ids.map(function (id) {
-      var n = now(id), s = n ? sellNet(id) : null, v = SELL[id] || 0, u = use[id], x = { id: id, n: n, value: s, need: needs[id] || 0, cap: caps[id] };
-      x.keep = (u ? u.n : 0) + x.need;
-      if (u) { x.act = 'craft'; x.rid = u.rid; x.profit = u.profit; x.crafts = u.crafts; x.forCraft = u.n; x.recipes = u.k; }
-      else if (x.need) x.act = 'skill';
-      else if (v > 0 && s != null && v > s) { x.act = 'vendor'; x.value = v; }
-      else x.act = 'sell';
-      return x;
-    });
-  }
   function sellWhy(x) {
-    var skill = x.need && x.cap ? x.cap.pn + ' skill-ups to ' + x.cap.cap : '';
-    if (x.act === 'craft') return '<span class="chip mk-verdict blue">Keep ' + x.keep.toLocaleString('en-GB') + '</span> ' +
-      esc((x.recipes > 1 ? 'for ' + x.recipes + ' profitable crafts (best: ' + RX[x.rid][0] + ', +' + money(x.profit) + ' each)'
-        : 'for ' + x.crafts + ' ' + RX[x.rid][0] + ' at +' + money(x.profit) + ' each') + (skill ? ' and ' + skill : '') + '. Sell any more');
-    if (x.act === 'skill') return '<span class="chip mk-verdict blue">Keep ' + x.keep.toLocaleString('en-GB') + '</span> ' + esc('for ' + x.cap.pn + ' skill-ups to ' + x.cap.cap + '. Sell any more');
-    if (x.act === 'vendor') return '<span class="chip mk-verdict gold">Vendor</span> ' + esc('a vendor pays ' + money(x.value) + ', more than the Auction House');
-    return '<span class="chip mk-verdict ok">Sell</span> ' + esc(x.n ? money(x.value) + ' each after the cut' : 'none listed, so no price yet');
+    var v;
+    if (x.act === 'craft') v = '<span class="chip mk-verdict blue">Craft</span> ' + esc('into ' + RX[x.rid][0] + ', +' + money(x.profit) + ' a craft' +
+      (rxState(x.rid) === 'learn' ? ' once you learn it' : '') + (x.better ? '. ' + RX[x.better.rid][0] + ' would make +' + money(x.better.profit) + ' once you learn it' : ''));
+    else if (x.act === 'vendor') v = '<span class="chip mk-verdict gold">Vendor</span> ' + esc('a vendor pays ' + money(x.value) + ', more than the Auction House');
+    else v = '<span class="chip mk-verdict ok">Sell</span> ' + esc(x.n ? money(x.value) + ' each after the cut' : 'none listed, so no price yet');
+    return v + (x.p ? ' · ' + posHtml(x.p) : '');
   }
   function renderSell() {
     if (!gsList || !gsStat) return;
     if (!latest()) { gsList.innerHTML = ''; gsStat.textContent = loaded ? 'No prices yet.' : 'Waiting for prices…'; return; }
-    var plan = sellPlan(), sell = [], keep = [];
-    plan.forEach(function (x) { (x.act === 'craft' || x.act === 'skill' ? keep : sell).push(x); });
-    sell.sort(function (a, b) { return (b.value || 0) - (a.value || 0); });
-    keep.sort(function (a, b) { return (b.profit || 0) - (a.profit || 0) || b.need - a.need; });
+    var plan = herbPlan(), sell = [], craft = [], high = 0;
+    Object.keys(plan).forEach(function (k) { var x = plan[k]; (x.act === 'craft' ? craft : sell).push(x); if (x.p && x.p.k === 'high') high++; });
+    var up = function (x) { return x.p ? x.p.c.pct : -9; };
+    sell.sort(function (a, b) { return up(b) - up(a) || (b.value || 0) - (a.value || 0); });
+    craft.sort(function (a, b) { return b.profit - a.profit; });
     var h = '';
-    if (sell.length) h += '<li class="mk-group"><span class="label">Sell them all</span></li>' + sell.map(function (x) { return matRow(x.id, '', sellWhy(x)); }).join('');
-    if (keep.length) h += '<li class="mk-group"><span class="label">Keep some for crafting, sell the rest</span></li>' + keep.map(function (x) { return matRow(x.id, '', sellWhy(x)); }).join('');
+    if (sell.length) h += '<li class="mk-group"><span class="label">Sell, highest against usual first</span></li>' + sell.map(function (x) { return matRow(x.id, '', sellWhy(x)); }).join('');
+    if (craft.length) h += '<li class="mk-group"><span class="label">Craft into potions</span></li>' + craft.map(function (x) { return matRow(x.id, '', sellWhy(x)); }).join('');
     gsList.innerHTML = h;
-    gsStat.textContent = 'At Herbalism ' + herbSkill() + ': ' + plural(sell.length, 'herb or find', 'herbs and finds') + ' only worth selling, and ' + keep.length + ' to keep a few of.';
+    gsStat.textContent = 'At Herbalism ' + herbSkill() + ': ' + sell.length + ' to sell and ' + craft.length + ' to craft into potions' +
+      (high ? '. ' + (high === 1 ? 'One is' : high + ' are') + ' selling high.' : '.');
   }
 
   if (gPanel) {
@@ -1340,6 +1378,28 @@
         '<span class="mk-sub">' + esc(dealSub(x)) + '</span></li>';
     }).join('');
     dealsNote.textContent = list.length ? 'From the ' + snap + ' snapshot. Cheap listings go fast, so some may have sold since.' : 'Nothing far below its usual price in the ' + snap + ' snapshot.';
+  }
+
+  /* ---------- At a glance: the best of each list, at the top of the Gold tab ---------- */
+  var glanceEl = $('#mk-glance-list');
+  function glanceRow(k, body, at, go) {
+    return '<li><span class="td-k">' + k + '</span><span class="td-n">' + body + ' <button type="button" class="linkish" data-goto="gold" data-at="' + at + '">' + go + '</button></span></li>';
+  }
+  function renderGlance() {
+    if (!glanceEl || !loaded) return;
+    if (!latest()) { glanceEl.innerHTML = '<li class="note">No prices yet.</li>'; return; }
+    var dl = deals(), hi = sellHigh(), tc = topCrafts(99), b = dl[0], t = tc[0], h = '';
+    h += glanceRow('Buy to resell', !dealsStarted() ? 'Starts once there are three days of prices to compare.' : !b ? 'Nothing far below its usual price in the latest snapshot.'
+      : esc(plural(dl.length, 'listing') + ' far below usual. Best: ') + itemBtn(b.id) + esc(' at ' + money(b.n.min) + ', usually ' + money(b.u) + ', about +' + money(b.gain) + ' each after the cut' + (b.units > 1 ? ' on up to ' + Math.min(b.units, 20) : '') + '.'),
+      '#mk-deals-block', 'Under-priced listings');
+    h += glanceRow('Selling high', days.length < 4 ? 'Starts once there are a few days of prices to compare.' : !hi.length ? 'None of your herbs or potions is 15% or more above its usual price.'
+      : hi.slice(0, 4).map(function (x) { return itemBtn(x.id) + ' <span class="mk-up"><span aria-hidden="true">▲</span>' + Math.round(x.c.pct * 100) + '%<span class="vh"> above usual</span></span>'; }).join(', ') +
+        (hi.length > 4 ? esc(' and ' + (hi.length - 4) + ' more') : '') + '.',
+      '#mk-alerts-block', 'Price alerts');
+    h += glanceRow('Best craft', !t ? 'Nothing you know or can learn makes a profit right now, so sell your herbs.'
+      : '<button type="button" class="linkish" data-rxgo="' + t.rid + '">' + esc(RX[t.rid][0]) + '</button>' + esc(', +' + money(t.e.profit) + ' a craft' + (tc.length > 1 ? '. ' + tc.length + ' crafts make a profit.' : '.')),
+      '#gc', 'What to craft');
+    glanceEl.innerHTML = h;
   }
 
   /* ---------- Freshness (under the timers): when prices, your character and the hotfix notes were last refreshed ---------- */
@@ -1616,7 +1676,7 @@
   }
   renderAll();
   /* The page's class, faction and level can change while this runs: re-read them for the herb zones and skill-up rows. */
-  document.addEventListener('wowf:char-changed', function () { renderZones(); renderSkill(); renderCraftList(); renderSell(); renderToday(); });
+  document.addEventListener('wowf:char-changed', function () { renderZones(); renderSkill(); renderCraftList(); renderGold(); renderToday(); });
   document.addEventListener('wowf:tab', function (e) { if (e && e.detail && e.detail.token === 'today') renderToday(); });
   document.addEventListener('wowf:updates', function () { renderFresh(); renderToday(); });
 
@@ -1656,7 +1716,7 @@
   function onSpeed(snap) {
     SPD = snap.docs.map(function (doc) { var v = doc.data() || {}; return { at: String(v.at || ''), w: num(v.w), u: v.u && typeof v.u === 'object' ? v.u : {} }; })
       .filter(function (x) { return x.w && x.w <= 180 && !isNaN(Date.parse(x.at)); });
-    renderMats(); renderWatch(); renderCrafts(); renderCraftList(); renderSell();
+    renderMats(); renderWatch(); renderCrafts(); renderCraftList(); renderGold();
   }
   function onHourly(snap) {
     var d = snap && snap.exists ? snap.data() : null, t = [], b = {};

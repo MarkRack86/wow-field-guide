@@ -416,6 +416,12 @@ input[type=range]:focus-visible{outline:3px solid var(--focus);outline-offset:2p
 .tc-sync .switch{justify-self:start}
 .mk-pick{max-width:22rem}
 .mk-alerts .plain{gap:.35rem}
+.mk-glance .td-list{gap:.75rem}
+@media (min-width:40em){.mk-glance .td-list li{grid-template-columns:8.5rem minmax(0,1fr);column-gap:1rem;align-items:baseline}}
+.mk-up{color:var(--good);font-weight:700;white-space:nowrap}
+#mk-alerts-block .sub-block{display:grid;gap:.5rem;margin-top:1rem}
+#mk-alerts-block .sub-block:first-of-type{margin-top:.25rem}
+#mk-high:empty{display:none}
 .mk-char-h{font-size:1.5rem}
 .mk-char-grid{display:grid;gap:1.25rem}
 @media (min-width:40em){.mk-char-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:1.5rem}}
@@ -975,8 +981,35 @@ ol.td-list{counter-reset:td}
 <section class="panel" id="panel-market" role="tabpanel" aria-labelledby="tab-market" tabindex="0" hidden>
   <div class="intro">
     <h2>Gold</h2>
-    <p>What to craft, what to sell and what things cost, from Blizzard’s Auction House data for the Normal ruleset, Horde side, in Europe. It’s read every hour from about 5am to 6.30am and 8pm to 11pm UK time, and each read replaces the last as that day’s price.</p>
+    <p>Where the gold is on the Auction House right now, then what to craft and what to sell, from Blizzard’s Auction House data for the Normal ruleset, Horde side, in Europe. It’s read every hour from about 5am to 6.30am and 8pm to 11pm UK time, and each read replaces the last as that day’s price.</p>
     <p class="note" id="mk-status" aria-live="polite">Loading prices…</p>
+  </div>
+
+  <div class="now-box mk-glance" id="mk-glance">
+    <p class="label">At a glance</p>
+    <ul class="td-list" id="mk-glance-list"><li class="note">Waiting for prices…</li></ul>
+  </div>
+
+  <div class="block" id="mk-alerts-block">
+    <h3>Price alerts</h3>
+    <div class="sub-block" id="mk-high-block">
+      <h4>Your herbs and potions, selling high</h4>
+      <p class="note" id="mk-high-note">Waiting for prices…</p>
+      <ul class="mk-list" id="mk-high"></ul>
+    </div>
+    <div class="sub-block mk-alerts">
+      <h4>Big moves</h4>
+      <ul class="plain" id="mk-alert-list"><li>Alerts start once there are a few days of prices to compare.</li></ul>
+      <p><button type="button" class="linkish" id="mk-alert-more" aria-controls="mk-alert-list" aria-expanded="false" hidden>Show all</button></p>
+    </div>
+    <p class="note">Both lists compare today’s price with its usual price, the middle of the previous seven days. Your herbs and potions are the herbs you can pick at your Herbalism skill and what your known Alchemy recipes make; they show here from 15% and 5c above usual, with at least ten listed. A big move is any other item at least 40% away from usual, by 25c or more, with at least ten listed. Starred items alert sooner: at 20% and 10c, or when the cheapest listing reaches a price you set.</p>
+  </div>
+
+  <div class="block" id="mk-deals-block">
+    <h3>Under-priced listings</h3>
+    <p class="note" id="mk-deals-note">Checking the latest listings…</p>
+    <ul class="mk-list mk-deals" id="mk-deals"></ul>
+    <p class="note">A listing shows here when it costs at most 60% of that item’s usual cheapest price (the middle of the previous seven days with at least ten listed), and buying up to 20 at that price to relist at the usual price would clear at least 1s after the Auction House cut, before the deposit. When the whole market has dropped, not just a few listings, it’s left out.</p>
   </div>
 
   <div class="block" id="gc">
@@ -997,23 +1030,9 @@ ol.td-list{counter-reset:td}
 
   <div class="block" id="gs">
     <h3>What to sell</h3>
-    <p class="note">The herbs you can pick at your Herbalism skill, and what turns up while you pick them. Sell the ones none of your profitable crafts or skill-ups need. For the rest, keep the number shown and sell any more: it allows for about a day’s sales of each craft (5 to 20 crafts) and your skill-ups to your current cap. Tap a name for its price chart, and the star to watch it.</p>
+    <p class="note">The herbs you can pick at your Herbalism skill, and what turns up while you pick them. Craft means a recipe uses it that earns at least 10% more than selling its herbs, and people are buying what it makes. It names the best recipe you know, or one you can learn when you know none. The rest are worth more sold, on the Auction House or to a vendor when one pays more. High, Normal and Low compare today’s price with its usual, the middle of the previous seven days: High is 15% or more above it, a good time to sell, and Low 15% or more below. Tap a name for its price chart, and the star to watch it.</p>
     <p class="note" id="gs-status">Waiting for prices…</p>
     <ul class="mk-list" id="gs-list"></ul>
-  </div>
-
-  <div class="now-box mk-alerts">
-    <p class="label">Price alerts</p>
-    <ul class="plain" id="mk-alert-list"><li>Alerts start once there are a few days of prices to compare.</li></ul>
-    <p><button type="button" class="linkish" id="mk-alert-more" aria-controls="mk-alert-list" aria-expanded="false" hidden>Show all</button></p>
-    <p class="note">An alert means today's price is at least 40% away from its usual price (the middle of the previous seven days), by 25c or more, with at least ten listed. Starred items alert sooner: at 20% and 10c, or when the cheapest listing reaches a price you set.</p>
-  </div>
-
-  <div class="block" id="mk-deals-block">
-    <h3>Under-priced listings</h3>
-    <p class="note" id="mk-deals-note">Checking the latest listings…</p>
-    <ul class="mk-list mk-deals" id="mk-deals"></ul>
-    <p class="note">A listing shows here when it costs at most 60% of that item’s usual cheapest price (the middle of the previous seven days with at least ten listed), and buying up to 20 at that price to relist at the usual price would clear at least 1s after the Auction House cut, before the deposit. When the whole market has dropped, not just a few listings, it’s left out.</p>
   </div>
 
   <div class="block">

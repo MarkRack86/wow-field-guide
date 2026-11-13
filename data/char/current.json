@@ -1,5 +1,5 @@
 {
-  "at": "2026-11-13T20:55:03Z",
+  "at": "2026-11-13T21:55:03Z",
   "cls": "Shaman",
   "faction": "Horde",
   "gear": {
@@ -15,7 +15,7 @@
             "Double-Stitched Woolen Shoulders",
             "U",
             17,
-            405,
+            400,
             2.5,
             "+4 Sta, +4 spell power, 27 armor"
           ]
@@ -24,7 +24,7 @@
       "BACK": {
         "cur": [[1733,"Worn Cloak","P",15,0.3]],
         "up": [
-          [2308,"Fine Leather Cloak","U",10,267,0.7,"+2 Sta, 14 armor"],
+          [2308,"Fine Leather Cloak","U",10,264,0.7,"+2 Sta, 14 armor"],
           [2316,"Dark Leather Cloak","U",17,405,3.6,"+2 Str, +3 Agi, 18 armor"]
         ]
       },
@@ -42,15 +42,15 @@
       "HANDS": {
         "cur": [[3286,"Tribal Gloves","C",12,0.7]],
         "up": [
-          [4239,"Embossed Leather Gloves","U",8,110,1.0,"+1 Agi, +1 Sta, 41 armor"],
-          [7285,"Nimble Leather Gloves","U",19,588,3.7,"+4 Agi, +4 Sta, 52 armor"],
-          [7348,"Fletcher's Gloves","U",20,1100,17.2,"1.4% crit, 53 armor"]
+          [4239,"Embossed Leather Gloves","U",8,100,1.0,"+1 Agi, +1 Sta, 41 armor"],
+          [7285,"Nimble Leather Gloves","U",19,585,3.7,"+4 Agi, +4 Sta, 52 armor"],
+          [7348,"Fletcher's Gloves","U",20,1098,17.2,"1.4% crit, 53 armor"]
         ]
       },
       "WAIST": {
         "cur": [[5275,"Binding Girdle","U",15,1.2]],
         "up": [
-          [4246,"Fine Leather Belt","U",11,198,1.3,"+2 Agi, +2 Sta, 40 armor"],
+          [4246,"Fine Leather Belt","U",11,200,1.3,"+2 Agi, +2 Sta, 40 armor"],
           [4249,"Dark Leather Belt","U",20,704,3.2,"+4 Agi, +4 Sta, 48 armor"],
           [6468,"Deviate Scale Belt","R",18,10099,7.4,"+3 Str, +5 Agi, +6 Sta, 51 armor"]
         ]
@@ -58,7 +58,7 @@
       "LEGS": {
         "cur": [[15450,"Dredgemire Leggings","U",18,2.6]],
         "up": [
-          [7282,"Light Leather Pants","U",14,598,2.3,"+5 Agi, +3 Sta, 66 armor"],
+          [7282,"Light Leather Pants","U",14,599,2.3,"+5 Agi, +3 Sta, 66 armor"],
           [5961,"Dark Leather Pants","U",18,1089,2.8,"+8 Agi, 72 armor"]
         ]
       },
@@ -69,7 +69,7 @@
       "FINGER": {"cur":[[281268,"Depleted Ritual Band","C",9,0.0]],"up":[]},
       "MAIN_HAND": {
         "cur": [[276887,"Big Bad Basher","U",24,86.1]],
-        "up": [[7956,"Bronze Warhammer","U",20,1700,6.5,"16.9 DPS, +6 Str, +6 Sta"]]
+        "up": [[7956,"Bronze Warhammer","U",20,1600,6.5,"16.9 DPS, +6 Str, +6 Sta"]]
       },
       "RANGED": {"cur":[[263412,"Totem of Charged Flames","U",10,0]],"up":[]}
     }
@@ -77,7 +77,7 @@
   "guild": null,
   "ilvl": 8,
   "level": 18,
-  "login": 1794528448000,
+  "login": 1794606289000,
   "name": "Brakka",
   "profs": [
     [
@@ -85,23 +85,23 @@
       101,
       150,
       [
-        54211,
-        4393,
         1814,
+        1832,
         1378,
         1379,
-        4178,
         1380,
-        54655,
-        54552,
         1382,
-        54210,
-        54456,
-        1832,
-        4176,
-        54453,
+        4393,
         4395,
-        52646
+        4176,
+        4178,
+        52646,
+        54453,
+        54456,
+        54552,
+        54655,
+        54210,
+        54211
       ]
     ],
     ["Herbalism",126,150,[1419,54115,52642]],
@@ -109,10 +109,10 @@
       "Cooking",
       93,
       150,
-      [3964,4786,1543,52640,4355,1538,1545,1536,4391,3927,3930,1537,1535,4354]
+      [1535,1536,1537,1538,1543,1545,3927,3930,4354,4355,4391,3964,4786,52640]
     ],
     ["Fishing",96,150,[4345,52639]],
-    ["First Aid",88,150,[4417,1839,54192,54191,1840,1838,52641]]
+    ["First Aid",88,150,[4417,1838,1839,1840,52641,54191,54192]]
   ],
   "qdone": [
     "A Missing Hand",
@@ -234,7 +234,6 @@
     ["Orgrimmar","Honored",1113,12000],
     ["Darkspear Trolls","Friendly",4832,6000],
     ["Booty Bay","Neutral",910,3000],
-    ["Warsong Outriders","Neutral",0,3000],
     ["Durotar Supply and Logistics","Neutral",2000,3000],
     ["Gadgetzan","Neutral",910,3000],
     ["Undercity","Neutral",1100,3000],

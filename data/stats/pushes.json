@@ -22,6 +22,14 @@
         "Mageroyal: 44c each, down 27% since 8.08am (7,221 listed)"
       ],
       "why": "no NTFY_TOPIC secret"
+    },
+    {
+      "at": "2026-11-14T05:00:22Z",
+      "snap": "2026-11-14T04:18:53Z",
+      "sent": false,
+      "items": [{"id":2450,"kind":"up"}],
+      "lines": ["Briarthorn: 1s 29c each, up 37% since 10.55pm yesterday (452 listed)"],
+      "why": "no NTFY_TOPIC secret"
     }
   ]
 }

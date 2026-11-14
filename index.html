@@ -203,11 +203,44 @@ input[type=range]:focus-visible{outline:3px solid var(--focus);outline-offset:2p
 .class-pick .seg-opts,.seg-opts.three{grid-template-columns:repeat(3,minmax(0,1fr))}
 .class-pick .seg-box{min-height:2.875rem}
 .tree-pick .seg-box small{white-space:pre-line}
-.tc-plan{display:grid;gap:.85rem;padding:1rem 1.1rem;border-radius:var(--radius);border:1.5px dashed var(--gold-fill);background:var(--surface)}
-.tc-plan.is-off{border-style:solid;border-color:var(--line)}
-.tc-plan.is-off .tc-plan-body{display:none}
-.tc-plan-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:.5rem 1rem}
-.tc-plan-body{display:grid;gap:.85rem}
+.tc-vs{display:grid;gap:1rem;padding:1.1rem 1.15rem;border-radius:var(--radius);border:1.5px solid var(--line);background:var(--surface);scroll-margin-top:7rem}
+.tc-vs-head{display:grid;gap:.25rem;min-width:0}
+.tc-vs-title{font-family:var(--font-display);font-size:1.75rem;font-weight:400;line-height:1.15}
+.tc-vs.is-on .tc-vs-title{color:var(--good)}
+.tc-vs.is-off .tc-vs-title{color:var(--bad)}
+.tc-vs-wrap:empty{display:none}
+.tc-vs-table{width:100%;border-collapse:collapse;font-size:.9375rem}
+.tc-vs-table th,.tc-vs-table td{padding:.5rem .35rem;border-top:1px solid var(--line);text-align:left;vertical-align:baseline;font-weight:400}
+.tc-vs-table th:first-child{padding-left:0}
+.tc-vs-table th:last-child,.tc-vs-table td:last-child{padding-right:0}
+.tc-vs-table thead th{border-top:0;padding-top:0;font-family:var(--font-mono);font-size:.75rem;line-height:1.25;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-soft);font-weight:600;vertical-align:bottom}
+.tc-vs-table .num{width:3.6rem;text-align:right;font-family:var(--font-mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+.tc-vs-table .chg{width:3.4rem;text-align:right}
+.tc-at{display:block}
+.tc-vs-table .grp th,.tc-vs-table .grp td{padding-top:.9rem;font-family:var(--font-mono);font-size:.75rem;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-soft);font-weight:600}
+.tc-vs-table tbody:first-of-type .grp th,.tc-vs-table tbody:first-of-type .grp td{padding-top:.5rem}
+.tc-vs-table tr.ok .tc-go{font-weight:400}
+.tc-go{appearance:none;-webkit-appearance:none;background:none;border:0;padding:0;font:inherit;font-weight:700;color:var(--ink);text-align:left;cursor:pointer;text-decoration:underline dotted var(--ink-soft);text-underline-offset:.22em}
+.tc-go:hover{text-decoration-style:solid}
+.tc-why{display:block;margin-top:.1rem;font-size:.8125rem;color:var(--ink-soft)}
+.tc-d{display:inline-block;min-width:2.5rem;padding:0 .3rem;border:1.5px solid transparent;border-radius:6px;text-align:center;font-family:var(--font-mono);font-size:.875rem;font-weight:700;line-height:1.45}
+.tc-d.ok{color:var(--good)}
+.tc-d.add{background:var(--gold-fill);border-color:var(--gold-fill);color:var(--on-gold)}
+.tc-d.take{border-color:var(--bad);color:var(--bad)}
+.tc-fix{display:grid;gap:.6rem}
+.tc-opts{display:grid;gap:.6rem}
+@media (min-width:40em){.tc-opts{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.tc-opt{display:grid;gap:.3rem;align-content:start;padding:.85rem 1rem;border-radius:12px;border:1.5px solid var(--line)}
+.tc-opt-h{font-weight:700;font-size:1.0625rem}
+.tc-opt-k{font-family:var(--font-mono);font-size:.75rem;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-soft);font-weight:600}
+.tc-vs .tc-actions{margin-top:-.25rem}
+.tc-vs .tc-status{min-height:0}
+.tc-about{border-top:1px solid var(--line);margin-bottom:-.6rem}
+.tc-about>p{margin-bottom:.6rem}
+.tc-legend{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:.45rem 1.1rem;font-size:.8125rem;color:var(--ink-soft)}
+.tc-legend li{display:inline-flex;align-items:center;gap:.4rem}
+.tc-lg-ring{display:inline-block;width:1rem;height:1rem;margin:0 .2rem;border-radius:4px;border:1.5px solid var(--ink-soft);box-shadow:0 0 0 2px var(--bg),0 0 0 4px var(--gold-fill)}
+.tc-board:not(.ov) .tc-legend{display:none}
 .switch{position:relative;display:inline-flex;align-items:center;gap:.7rem;cursor:pointer;font-weight:700;min-height:2.75rem}
 .switch input{position:absolute;opacity:0;width:1px;height:1px;margin:0}
 .sw-track{position:relative;width:3rem;height:1.75rem;border-radius:999px;background:var(--ink-soft);transition:background-color .2s ease;flex:none}
@@ -215,17 +248,22 @@ input[type=range]:focus-visible{outline:3px solid var(--focus);outline-offset:2p
 .switch input:checked+.sw-track{background:var(--gold)}
 .switch input:checked+.sw-track::after{transform:translateX(1.25rem)}
 .switch input:focus-visible+.sw-track{outline:3px solid var(--focus);outline-offset:2px}
-.tc-next{display:grid;gap:.25rem;padding:.85rem 1rem;border-radius:12px;background:var(--sunken)}
+.tc-next{display:grid;gap:.3rem;padding:.9rem 1rem;border-radius:12px;background:var(--sunken)}
 .tc-next-main{font-size:1.125rem;line-height:1.35}
 .tc-next-main b{color:var(--gold)}
-.tc-bar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:.75rem 1rem;padding:1rem;border-radius:var(--radius);background:var(--sunken)}
-.tc-sum{display:grid;gap:.15rem;min-width:0}
-.tc-dist{font-family:var(--font-display);font-size:2rem;line-height:1.1;font-variant-numeric:tabular-nums}
+.tc-next-what{font-size:.9375rem}
+.tc-next-what:empty{display:none}
+.tc-next-what b{color:var(--gold);font-weight:700}
+.tc-then{display:grid;gap:.3rem;margin-top:.4rem}
+.tc-then:empty{display:none}
+.tc-soon{list-style:none;margin:0;padding:0;display:grid;gap:.25rem}
+.tc-soon li{display:grid;grid-template-columns:4.75rem minmax(0,1fr);gap:.5rem;align-items:baseline}
+.tc-soon-lv{font-family:var(--font-mono);font-size:.8125rem;color:var(--ink-soft);font-variant-numeric:tabular-nums;white-space:nowrap}
 .tc-actions{display:flex;flex-wrap:wrap;gap:.5rem}
 .tc-status{display:flex;flex-wrap:wrap;align-items:baseline;gap:.5rem;font-size:.9375rem;min-height:1.5rem}
 .tc-fallback{width:100%;min-height:8rem;font:inherit;font-size:.875rem;padding:.6rem;border-radius:10px;border:1.5px solid var(--field);background:var(--surface);color:var(--ink);resize:vertical}
 .tc-board{display:grid;gap:1rem;scroll-margin-top:7rem}
-.tc-grid-head{display:flex;justify-content:space-between;align-items:baseline;gap:1rem;flex-wrap:wrap}
+.tc-grid-head{display:flex;justify-content:space-between;align-items:center;gap:.5rem 1rem;flex-wrap:wrap}
 .tc-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));grid-template-rows:repeat(7,minmax(4.75rem,auto));column-gap:.625rem;row-gap:1rem}
 .tc-conn{position:relative;z-index:0;pointer-events:none}
 .tc-conn::before{content:"";position:absolute;background:var(--line)}
@@ -243,11 +281,15 @@ input[type=range]:focus-visible{outline:3px solid var(--focus);outline-offset:2p
 .tal.some,.tal.full{border:2px solid var(--gold-fill)}
 .tal.full{background:var(--gold-tint)}
 .tal.some .tal-rank,.tal.full .tal-rank{background:var(--gold-fill);border-color:var(--gold-fill);color:var(--on-gold)}
-.ov .tal.todo{border:2px dashed var(--gold-fill)}
-.ov .tal.todo.some{border-style:solid}
+.ov .tal.todo:not(.some){border:1.5px dashed var(--gold-fill);border-color:color-mix(in srgb,var(--gold-fill) 60%,var(--surface))}
 .ov .tal.off:not(.some):not(.full){border-color:var(--line);color:var(--ink-soft)}
 .ov .tal.off:not(.some):not(.full) .tal-rank{color:var(--ink-soft);background:transparent}
 .ov .tal.nextpt{box-shadow:0 0 0 3px var(--bg),0 0 0 5.5px var(--gold-fill)}
+.ov .tal.vs-add{border:2px dashed var(--gold-fill)}
+.ov .tal.vs-take{border:2px dashed var(--bad)}
+.tal-plan.ok{color:var(--good)}
+.tal-plan.add{padding:.12rem .3rem;border-radius:5px;background:var(--gold-fill);color:var(--on-gold)}
+.tal-plan.take{padding:.08rem .26rem;border-radius:5px;border:1px solid var(--bad);color:var(--bad)}
 .tal.sel,.ov .tal.sel{box-shadow:0 0 0 3px var(--bg),0 0 0 5.5px var(--ink)}
 .tal.from-up::before,.tal.from-left::before,.tal.from-right::before{content:"";position:absolute;width:0;height:0;border:6px solid transparent}
 .tal.from-up::before{top:-8px;left:50%;transform:translateX(-50%);border-bottom-width:0;border-top-color:var(--conn)}
@@ -781,6 +823,37 @@ ol.td-list{counter-reset:td}
     <p class="note" id="tc-sync-note" aria-live="polite"></p>
   </div>
 
+  <div class="tc-vs" id="tc-vs">
+    <div class="tc-vs-head">
+      <p class="label" id="tc-vs-who">Your build</p>
+      <h3 class="tc-vs-title" id="tc-vs-title">Not started</h3>
+      <p class="note" id="tc-vs-sum"></p>
+    </div>
+    <div class="tc-vs-wrap" id="tc-vs-wrap"></div>
+    <div class="tc-fix" id="tc-fix" hidden></div>
+    <div class="tc-next" aria-live="polite">
+      <p class="label" id="tc-next-label">Next up</p>
+      <p class="tc-next-main" id="tc-next-main">Level 10: <b>Thundering Strikes</b> 1/5</p>
+      <p class="tc-next-what" id="tc-next-what"></p>
+      <p class="note" id="tc-next-note">Your first talent point arrives at level 10.</p>
+      <div class="tc-then" id="tc-then"></div>
+    </div>
+    <div class="tc-actions">
+      <button type="button" class="btn small" id="tc-next-add">Add this point</button>
+      <button type="button" class="btn ghost small" id="tc-next-show">Show in tree</button>
+      <button type="button" class="btn ghost small" id="tc-match">Match plan to my level</button>
+      <button type="button" class="btn ghost small" id="tc-copy">Copy build</button>
+      <button type="button" class="btn ghost small" id="tc-reset-all">Reset build</button>
+    </div>
+    <p class="tc-status" aria-live="polite" hidden><span id="tc-status-text"></span><button type="button" class="linkish" id="tc-undo" hidden>Undo</button></p>
+    <textarea class="tc-fallback" id="tc-fallback" aria-label="Build text to copy" readonly hidden></textarea>
+    <details class="more tc-about">
+      <summary>About this plan</summary>
+      <p><strong id="tc-plan-name">The plan</strong></p>
+      <p class="note" id="tc-plan-src">Plan source</p>
+    </details>
+  </div>
+
   <fieldset class="seg class-pick">
     <legend>Class</legend>
     <div class="seg-opts">
@@ -805,47 +878,6 @@ ol.td-list{counter-reset:td}
     <p class="note" id="tcs-note">Each spec keeps its own build, like Dual Specialization in game.</p>
   </fieldset>
 
-  <div class="tc-plan" id="tc-plan">
-    <div class="tc-plan-head">
-      <label class="switch" for="tc-ov"><input type="checkbox" id="tc-ov" role="switch" checked><span class="sw-track" aria-hidden="true"></span><span>Show the plan on the tree</span></label>
-      <span class="chip" id="tc-onplan">Not started</span>
-    </div>
-    <div class="tc-plan-body">
-      <div class="tc-sum">
-        <p class="label" id="tc-plan-label">Recommended levelling spec</p>
-        <p><strong id="tc-plan-name">Enhancement · 0 / 43 / 8</strong></p>
-        <p class="note" id="tc-plan-src">Plan source</p>
-      </div>
-      <div class="tc-next" aria-live="polite">
-        <p class="label">Next point</p>
-        <p class="tc-next-main" id="tc-next-main">Level 10: <b>Thundering Strikes</b> 1/5</p>
-        <p class="note" id="tc-next-note">Your first talent point arrives at level 10.</p>
-      </div>
-      <div class="tc-actions">
-        <button type="button" class="btn small" id="tc-next-add">Add this point</button>
-        <button type="button" class="btn ghost small" id="tc-next-show">Show in tree</button>
-        <button type="button" class="btn ghost small" id="tc-match">Match plan to my level</button>
-      </div>
-      <p class="note">Dashed gold talents are in the plan, with the level for their next point. The gold ring marks the next point.</p>
-    </div>
-  </div>
-
-  <div class="block">
-    <div class="tc-bar">
-      <div class="tc-sum">
-        <p class="label" id="tc-class-label">Shaman · questing spec</p>
-        <p class="tc-dist" id="tc-dist">0 / 0 / 0</p>
-        <p class="note" id="tc-points">No points spent yet.</p>
-      </div>
-      <div class="tc-actions">
-        <button type="button" class="btn ghost small" id="tc-copy">Copy build</button>
-        <button type="button" class="btn ghost small" id="tc-reset-all">Reset build</button>
-      </div>
-    </div>
-    <p class="tc-status" aria-live="polite"><span id="tc-status-text"></span><button type="button" class="linkish" id="tc-undo" hidden>Undo</button></p>
-    <textarea class="tc-fallback" id="tc-fallback" aria-label="Build text to copy" readonly hidden></textarea>
-  </div>
-
   <fieldset class="seg tree-pick">
     <legend>Tree</legend>
     <div class="seg-opts three">
@@ -857,9 +889,17 @@ ol.td-list{counter-reset:td}
 
   <div class="tc-board ov" id="tc-board">
     <div class="tc-grid-head">
-      <p class="note" id="tc-grid-note">Tap a talent to read it. Tap it again, or press +, to add a point.</p>
+      <label class="switch" for="tc-ov"><input type="checkbox" id="tc-ov" role="switch" checked><span class="sw-track" aria-hidden="true"></span><span>Show the plan on the tree</span></label>
       <button type="button" class="linkish" id="tc-reset-tree">Reset this tree</button>
     </div>
+    <ul class="tc-legend" id="tc-legend" aria-label="What the marks on the tree mean">
+      <li><span class="tal-plan ok" aria-hidden="true">✓</span><span>matches the plan</span></li>
+      <li><span class="tal-plan add" aria-hidden="true">+2</span><span>the plan has more <span class="tc-lg-by"></span></span></li>
+      <li><span class="tal-plan take" aria-hidden="true">−2</span><span>more than the plan has <span class="tc-lg-by"></span></span></li>
+      <li><span class="tal-plan" aria-hidden="true">Lv 25</span><span>the plan’s next point there</span></li>
+      <li><span class="tc-lg-ring" aria-hidden="true"></span><span>your next point</span></li>
+    </ul>
+    <p class="note" id="tc-grid-note">Tap a talent to read it. Tap it again, or press +, to add a point.</p>
     <div class="tc-grid" id="tc-grid" role="group" aria-label="Talent tree"></div>
     <div class="tc-detail" id="tc-detail">
       <div class="tcd-top">
@@ -1686,18 +1726,18 @@ ol.td-list{counter-reset:td}
     var GRID_NOTE = gridNote ? gridNote.textContent : '', syFmt = null;
     try { syFmt = new Intl.DateTimeFormat('en-GB', { weekday: 'short', day: 'numeric', month: 'short', hour: 'numeric', minute: '2-digit', hour12: true }); } catch (e) {}
 
-    var board = $('#tc-board'), planBox = $('#tc-plan'), ovBox = $('#tc-ov');
+    var board = $('#tc-board'), vsBox = $('#tc-vs'), ovBox = $('#tc-ov'), fixEl = $('#tc-fix');
     var nameEl = $('#tcd-name'), metaEl = $('#tcd-meta'), msgEl = $('#tcd-msg'), bodyEl = $('#tcd-body');
     var plusBtn = $('#tcd-plus'), minusBtn = $('#tcd-minus');
-    var distEl = $('#tc-dist'), ptsEl = $('#tc-points'), clsLabel = $('#tc-class-label');
     var statusEl = $('#tc-status-text'), undoBtn = $('#tc-undo'), fallback = $('#tc-fallback');
     var nextMain = $('#tc-next-main'), nextNote = $('#tc-next-note'), nextAdd = $('#tc-next-add'), nextShow = $('#tc-next-show');
-    var matchBtn = $('#tc-match'), onPlanChip = $('#tc-onplan');
+    var nextLabel = $('#tc-next-label'), nextWhat = $('#tc-next-what'), thenEl = $('#tc-then');
+    var matchBtn = $('#tc-match'), resetAll = $('#tc-reset-all'), resetTree = $('#tc-reset-tree'), todayNote = '';
     var specQ = $('#tcs-q'), specH = $('#tcs-h');
     var narrow = null;
     try { narrow = window.matchMedia('(max-width: 34em)'); } catch (e) {}
 
-    var cls, spec = 'q', T, P, ranks, tree = 0, sel = -1, cells = {}, conns = [], undo = null, nx = null;
+    var cls, spec = 'q', T, P, ranks, tree = 0, sel = -1, cells = {}, conns = [], undo = null, nx = null, V = null;
     function skey() { return cls + '|' + spec; }
     function syncRanks() {
       if (!SY || !DB.data[SY.cls]) return null;
@@ -1767,7 +1807,7 @@ ol.td-list{counter-reset:td}
       store.set('wowf-tc', state);
     }
     function firstIn(k) { for (var i = 0; i < T.length; i++) if (T[i][0] === k) return i; return -1; }
-    function setStatus(text, canUndo) { statusEl.textContent = text || ''; undoBtn.hidden = !canUndo; }
+    function setStatus(text, canUndo) { statusEl.textContent = text || ''; undoBtn.hidden = !canUndo; statusEl.parentNode.hidden = !text; }
     function msg(text) { msgEl.textContent = text || ''; }
     function havePts() { return Math.max(0, Math.min(CAP, CHAR.lvl - 9)); }
 
@@ -1858,11 +1898,11 @@ ol.td-list{counter-reset:td}
         h += line(max > 1 ? 'Maxed' : 'Learned', fmt(t[10], max, max - 1));
       }
       if (P) {
-        var pr = P.rank[sel];
-        var runs = pr ? lvRuns(P, sel) : '';
+        var pr = P.rank[sel], w = V ? V.want[sel] : 0, by = byText();
         h += line(spec === 'h' ? 'Healing plan' : 'Levelling plan', pr
-          ? esc(pr + '/' + max + ' · ' + (runs.indexOf('–') >= 0 || runs.indexOf(',') >= 0 ? 'levels ' : 'level ') + runs)
+          ? esc((by ? w + '/' + max + ' ' + by + ' · ' : '') + pr + '/' + max + ' at ' + atLv(sel))
           : 'Not in the plan');
+        if (V && by && r !== w) h += line('Against the plan', esc(r > w ? 'You have ' + (r - w) + ' more than the plan has ' + by + '.' : 'The plan has ' + (w - r) + ' more ' + by + '.'));
       }
       if (t[1] > 1) {
         var need = (t[1] - 1) * 5, have = tcRowsAbove(T, ranks, t[0], t[1]);
@@ -1890,12 +1930,99 @@ ol.td-list{counter-reset:td}
       }
       return null;
     }
-    function onPlan() {
-      if (!P) return false;
-      var n = tcTotal(ranks), want = zeros(T.length);
-      for (var k = 0; k < n && k < P.lv.length; k++) want[P.lv[k]]++;
-      for (var i = 0; i < T.length; i++) if (want[i] !== ranks[i]) return false;
-      return true;
+    /* ---------- Against the plan ----------
+       The build is compared with the plan's first n points: the points you have at your level, or the build's own points
+       when it plans further ahead. Before 40 the healing spec compares only what's planned, since it opens then. */
+    function preHeal() { return spec === 'h' && CHAR.lvl < 40; }
+    function planUpTo(n) { var w = zeros(T.length); for (var k = 0; k < n && k < P.lv.length; k++) w[P.lv[k]]++; return w; }
+    function splitOf(r) { return [0, 1, 2].map(function (k) { var s = 0; for (var i = 0; i < T.length; i++) if (T[i][0] === k) s += r[i]; return s; }); }
+    /* Following the plan from this build: the plan's points it doesn't have yet, each with the level it comes at. */
+    function keepPath(total) {
+      var cnt = zeros(T.length), out = [];
+      for (var k = 0; k < P.lv.length; k++) {
+        var i = P.lv[k];
+        if (++cnt[i] <= ranks[i]) continue;
+        if (total + out.length >= CAP) break;
+        out.push({ i: i, r: cnt[i], plan: P.lvlAt(k), lvl: total + 10 + out.length });
+      }
+      return out;
+    }
+    function vsCompute() {
+      if (!P) return null;
+      var total = tcTotal(ranks), n = preHeal() ? total : Math.min(P.lv.length, Math.max(total, havePts()));
+      var want = planUpTo(n), rows = [], extra = 0, got = 0;
+      for (var i = 0; i < T.length; i++) {
+        got += Math.min(ranks[i], P.rank[i]);
+        if (!ranks[i] && !want[i]) continue;
+        rows.push({ i: i, have: ranks[i], want: want[i], full: P.rank[i] });
+        if (ranks[i] > want[i]) extra += ranks[i] - want[i];
+      }
+      return { n: n, total: total, want: want, rows: rows, extra: extra, got: got, unspent: Math.max(0, n - total),
+        wsplit: splitOf(want), hsplit: splitOf(ranks), path: keepPath(total) };
+    }
+    function byText() { return V && V.n ? (preHeal() ? 'at ' + plural(V.n, 'point') : 'by level ' + (V.n + 9)) : ''; }
+    function atLv(i) { var runs = lvRuns(P, i); return (runs.indexOf('–') >= 0 || runs.indexOf(',') >= 0 ? 'levels ' : 'level ') + runs; }
+    function andList(a) { return a.length < 2 ? (a[0] || '') : a.slice(0, -1).join(', ') + ' and ' + a[a.length - 1]; }
+    function tgo(i, tail) { return '<button type="button" class="tc-go" data-tgo="' + i + '">' + esc(T[i][3] + (tail || '')) + '</button>'; }
+    function whenOf(x, j) { return preHeal() ? (j ? 'Point ' + (V.total + 1 + j) : 'Next') : x.lvl <= CHAR.lvl ? 'Now' : 'Level ' + x.lvl; }
+    function vsRow(x) {
+      var t = T[x.i], d = x.have - x.want, k = d > 0 ? 'take' : d < 0 ? 'add' : 'ok', why = '';
+      if (d > 0) why = !x.full ? 'Not in the plan.' : x.full < x.have ? 'The plan takes only ' + x.full + '.' : 'The plan takes it at ' + atLv(x.i) + '.';
+      var badge = d > 0 ? '<span aria-hidden="true">−' + d + '</span><span class="vh">' + d + ' to take out</span>'
+        : d < 0 ? '<span aria-hidden="true">+' + (-d) + '</span><span class="vh">' + (-d) + ' to add</span>'
+        : '<span aria-hidden="true">✓</span><span class="vh">matches</span>';
+      return '<tr class="' + k + '"><th scope="row">' + tgo(x.i) + (why ? '<span class="tc-why">' + esc(why) + '</span>' : '') + '</th>' +
+        '<td class="num">' + (x.have ? x.have + '/' + t[4] : '–') + '</td><td class="num">' + (x.want ? x.want + '/' + t[4] : '–') + '</td>' +
+        '<td class="chg"><span class="tc-d ' + k + '">' + badge + '</span></td></tr>';
+    }
+    function vsTable() {
+      if (!V.rows.length) return '';
+      var trees = DB.data[cls].trees, by = byText(), lock = synced();
+      var order = [0, 1, 2].sort(function (a, b) { return P.split[b] - P.split[a] || a - b; });
+      var h = '<table class="tc-vs-table"><caption class="vh">' + esc((lock ? syWho() + '’s' : 'Your') + ' talents against the plan' + (by ? ' ' + by : '')) + '</caption>' +
+        '<thead><tr><th scope="col">Talent</th><th scope="col" class="num">You</th><th scope="col" class="num">Plan' +
+        (by ? '<span class="tc-at">' + esc(preHeal() ? 'at ' + V.n : 'at ' + (V.n + 9)) + '</span>' : '') + '</th><th scope="col" class="chg"><span class="vh">Difference</span></th></tr></thead>';
+      order.forEach(function (k) {
+        var rs = V.rows.filter(function (x) { return T[x.i][0] === k; });
+        if (!rs.length) return;
+        h += '<tbody><tr class="grp"><th scope="rowgroup">' + esc(trees[k]) + '</th><td class="num">' + V.hsplit[k] + '</td><td class="num">' + V.wsplit[k] + '</td><td class="chg"></td></tr>' +
+          rs.map(vsRow).join('') + '</tbody>';
+      });
+      return h + '</table>';
+    }
+    /* Two ways back to the plan: respec now, or keep the points and follow the plan from here, later than it says. */
+    function vsFix() {
+      var lock = synced(), pre = preHeal();
+      var take = V.rows.filter(function (x) { return x.have > x.want; }), add = V.rows.filter(function (x) { return x.want > x.have; });
+      var o1 = 'Take ' + andList(take.map(function (x) { return (x.have - x.want) + ' out of ' + T[x.i][3]; })) +
+        (add.length ? ', then put ' + andList(add.map(function (x) { return (x.want - x.have) + ' in ' + T[x.i][3]; })) : '') + '.';
+      o1 += lock ? ' In game that’s a full reset at your class trainer (1 gold the first time, more after that), then you spend your ' + plural(V.n, 'point') + ' as the Plan column shows.'
+        : ' Match plan to level ' + CHAR.lvl + ', below, sets this build to the plan at your level.';
+      if (V.n < P.lv.length && !pre) {
+        var ni = P.lv[V.n], na = null;
+        for (var k = V.n; k < P.lv.length; k++) if (T[P.lv[k]][7]) { na = { i: P.lv[k], lvl: P.lvlAt(k) }; break; }
+        o1 += ' After that, your next point is ' + T[ni][3] + ' ' + (V.want[ni] + 1) + '/' + T[ni][4] + ' at level ' + P.lvlAt(V.n) +
+          (na && na.i !== ni ? ', and ' + T[na.i][3] + ' comes at ' + na.lvl : '') + '.';
+      }
+      var early = take.filter(function (x) { return x.full >= x.have; }), outside = take.filter(function (x) { return x.full < x.have; }), o2 = '', k2 = '';
+      if (early.length === 1) o2 += T[early[0].i][3] + ' is in the plan anyway, at ' + atLv(early[0].i) + '. ';
+      else if (early.length) o2 += andList(early.map(function (x) { return T[x.i][3]; })) + ' are in the plan anyway, later on. ';
+      if (outside.length) o2 += 'The plan has no place for ' + andList(outside.map(function (x) { return x.full ? (x.have - x.full) + ' of your ' + T[x.i][3] + ' points' : 'your ' + T[x.i][3] + ' points'; })) + '. ';
+      var pth = V.path, d0 = pth.length ? pth[0].lvl - pth[0].plan : 0;
+      if (pth.length && d0 > 0 && !pre) {
+        var last = pth[pth.length - 1], fin = last.lvl - last.plan, at = pth[0].lvl, lost = P.lv.length - V.got - pth.length;
+        for (var j = 0; j < pth.length; j++) if (pth[j].lvl - pth[j].plan <= fin) { at = pth[j].lvl; break; }
+        var late = 'Each new point comes ' + plural(d0, 'level') + ' later than the plan says';
+        if (fin <= 0) { o2 += late + ', until you’re back in step at ' + at + '.'; k2 = plural(d0, 'level') + ' behind until ' + at; }
+        else if (fin >= d0) { o2 += late + ', all the way to 60.'; k2 = plural(d0, 'level') + ' behind to the end'; }
+        else { o2 += late + ', then ' + plural(fin, 'level') + ' later from ' + at + '.'; k2 = plural(d0, 'level') + ' behind, then ' + fin; }
+        var keys = pth.filter(function (x) { return T[x.i][7] && x.lvl > x.plan; }).slice(0, 2);
+        if (keys.length) o2 += ' That puts ' + andList(keys.map(function (x) { return T[x.i][3] + ' at ' + x.lvl + ' instead of ' + x.plan; })) + '.';
+        if (lost > 0) o2 += lost > 1 ? ' The plan’s last ' + lost + ' points don’t fit by 60.' : ' The plan’s last point doesn’t fit by 60.';
+      }
+      return '<p class="label">To get back on plan</p><div class="tc-opts">' +
+        '<div class="tc-opt"><p class="tc-opt-h">' + (lock ? 'Respec' : 'Match the plan') + '</p><p class="tc-opt-k">On plan straight away</p><p>' + esc(o1) + '</p></div>' +
+        '<div class="tc-opt"><p class="tc-opt-h">Or keep them</p>' + (k2 ? '<p class="tc-opt-k">' + esc(k2) + '</p>' : '') + '<p>' + esc(o2.trim()) + '</p></div></div>';
     }
     function renderSpecPick() {
       var lvP = planOf(cls, 'lv'), hvP = planOf(cls, 'hv');
@@ -1909,93 +2036,116 @@ ol.td-list{counter-reset:td}
         : cls + 's don’t heal, so there’s one spec to plan.';
     }
     function renderPlan() {
-      planBox.classList.toggle('is-off', !ov);
       board.classList.toggle('ov', ov);
       ovBox.checked = ov;
-      if (!P) return;
-      var trees = DB.data[cls].trees, total = tcTotal(ranks), have = havePts();
-      $('#tc-plan-label').textContent = spec === 'h' ? 'Recommended healing spec' : 'Recommended levelling spec';
+      var lock = synced(), trees = DB.data[cls].trees, pre = preHeal();
+      $('#tc-vs-who').textContent = (lock ? syWho() + ' · level ' + CHAR.lvl : cls + ' · your build') + ' · ' + (spec === 'h' ? 'healing spec' : 'questing spec');
+      nextAdd.hidden = lock; matchBtn.hidden = lock; resetAll.hidden = lock; resetTree.hidden = lock;
+      matchBtn.textContent = 'Match plan to level ' + CHAR.lvl;
+      todayNote = '';
+      if (!P || !V) {
+        vsBox.className = 'tc-vs';
+        $('#tc-vs-title').textContent = 'No plan for this spec';
+        $('#tc-vs-sum').textContent = '';
+        $('#tc-vs-wrap').innerHTML = ''; fixEl.innerHTML = ''; fixEl.hidden = true;
+        nextMain.textContent = ''; nextWhat.innerHTML = ''; nextNote.textContent = ''; thenEl.innerHTML = '';
+        return;
+      }
+      var title, state = '', by = byText();
+      if (!V.total) title = V.n ? plural(V.n, 'point') + ' to spend' : (pre ? 'Not started' : 'Talents start at level 10');
+      else if (!V.extra) { state = 'on'; title = V.unspent ? 'On plan, ' + plural(V.unspent, 'point') + ' to spend' : 'On plan'; }
+      else { state = 'off'; title = plural(V.extra, 'point') + ' off the plan' + (V.unspent ? ', ' + V.unspent + ' to spend' : ''); }
+      vsBox.className = 'tc-vs' + (state ? ' is-' + state : '');
+      $('#tc-vs-title').textContent = title;
+      $('#tc-vs-sum').textContent = 'The plan: ' + P.spec.replace(' healer', '') + ', ' + P.split.join(' / ') + ' by level 60.' +
+        (by ? ' ' + by.charAt(0).toUpperCase() + by.slice(1) + ' it has ' + V.wsplit.join(' / ') + (V.total ? ', and you have ' + V.hsplit.join(' / ') : '') + '.' : '') +
+        (pre ? ' Your second spec opens at level 40, with 31 points.' : '');
+      $('#tc-vs-wrap').innerHTML = vsTable();
+      if (V.extra) { fixEl.innerHTML = vsFix(); fixEl.hidden = false; } else { fixEl.innerHTML = ''; fixEl.hidden = true; }
       $('#tc-plan-name').textContent = P.spec.replace(' healer', '') + ' · ' + P.split.join(' / ');
       $('#tc-plan-src').textContent = P.note + '. Checked point by point against the launch data.' +
         (spec === 'h' ? ' Set it up as your second spec at 40, when you have 31 points.' : '') +
         (P.rs ? (P.rs.ph === 1 ? ' The tree shows the plan up to level ' + (P.rs.at - 1) + '; at ' + P.rs.at + ' it switches to the build after the respec.'
           : ' The tree shows the build after the respec at ' + P.rs.at + '.') : '');
-      var on = total > 0 && onPlan();
-      var lock = synced();
-      onPlanChip.textContent = total === 0 ? 'Not started' : (on ? 'On plan' : (lock ? 'Off plan' : 'Your own build'));
-      onPlanChip.className = 'chip' + (on ? ' ok' : '');
-      matchBtn.textContent = 'Match plan to level ' + CHAR.lvl;
-      matchBtn.setAttribute('aria-disabled', lock ? 'true' : 'false');
-      if (!nx && P.rs && P.rs.ph === 1 && total >= P.lv.length && on) {
-        nextMain.innerHTML = 'Level ' + P.rs.at + ': <b>respec</b>';
-        nextNote.textContent = 'That’s the plan up to ' + (P.rs.at - 1) + '. At ' + P.rs.at + ', reset your talents at your class trainer, then rebuild into Enhancement: the tree shows how once you’re ' + P.rs.at + '.';
-        nextAdd.setAttribute('aria-disabled', 'true');
-        nextShow.setAttribute('aria-disabled', 'true');
-        return;
+      nextLabel.textContent = V.extra ? 'Next up, if you keep your points' : 'Next up';
+      var first = V.path[0] || null, total = V.total, have = havePts();
+      nextAdd.setAttribute('aria-disabled', nx ? 'false' : 'true');
+      nextShow.setAttribute('aria-disabled', first ? 'false' : 'true');
+      if (!first) {
+        nextWhat.innerHTML = ''; thenEl.innerHTML = '';
+        if (P.rs && P.rs.ph === 1 && total >= P.lv.length && !V.extra) {
+          nextMain.innerHTML = 'Level ' + P.rs.at + ': <b>respec</b>';
+          nextNote.textContent = 'That’s the plan up to ' + (P.rs.at - 1) + '. At ' + P.rs.at + ', reset your talents at your class trainer, then rebuild: the tree shows how once you’re ' + P.rs.at + '.';
+        } else {
+          nextMain.textContent = total >= CAP ? 'Plan complete.' : 'Nothing in the plan fits next.';
+          nextNote.textContent = total >= CAP ? 'All 51 points are spent.' : 'Match plan to my level starts again from the plan.';
+        }
+      } else {
+        var t = T[first.i], note;
+        nextMain.innerHTML = esc(whenOf(first, 0)) + ': <b>' + esc(t[3]) + '</b> ' + first.r + '/' + t[4];
+        nextWhat.innerHTML = fmt(t[10], t[4], first.r - 1);
+        if (pre) note = 'Your second spec opens at level 40 with 31 points, so you can plan it now and fill it then.';
+        else if (CHAR.lvl < 10) note = 'Your first talent point arrives at level 10.';
+        else if (total < have) note = 'You have ' + plural(have - total, 'unspent point') + '.' + (lock ? (have - total > 1 ? ' Spend them in game and they show here after the next sync.' : ' Spend it in game and it shows here after the next sync.') : '');
+        else if (total === have) note = 'That one comes with your next level.';
+        else note = 'This build already uses ' + plural(total, 'point') + ', more than the ' + have + ' you have at level ' + CHAR.lvl + ', so that one needs level ' + (total + 10) + '.';
+        if (t[0] !== tree) note += ' It’s in the ' + trees[t[0]] + ' tree.';
+        if (P.rs && P.rs.ph === 2 && total > 0 && V.extra) note += ' The plan respecs at ' + P.rs.at + ': if you haven’t yet, reset your talents at your class trainer and follow it from the top.';
+        if (P.rs && P.rs.ph === 1 && total > 0 && V.extra) note += ' Your points so far aren’t in this plan. You can keep them and put new points here: the respec at ' + P.rs.at + ' resets everything anyway.';
+        nextNote.textContent = note;
+        var more = V.path.slice(1, 5), th = '';
+        if (more.length) th += '<p class="label">Then</p><ol class="tc-soon">' + more.map(function (x, j) {
+          return '<li><span class="tc-soon-lv">' + esc(whenOf(x, j + 1)) + '</span><span>' + tgo(x.i, ' ' + x.r + '/' + T[x.i][4]) + '</span></li>';
+        }).join('') + '</ol>';
+        var keys = V.path.slice(5).filter(function (x) { return T[x.i][7]; }).slice(0, 3);
+        if (keys.length && !pre) th += '<p class="note">' + esc('Later: ' + andList(keys.map(function (x) { return T[x.i][3] + ' at ' + x.lvl; })) + '.') + '</p>';
+        thenEl.innerHTML = th;
       }
-      if (!nx) {
-        nextMain.textContent = total >= CAP ? 'Plan complete.' : 'Nothing in the plan fits next.';
-        nextNote.textContent = total >= CAP ? 'All 51 points are spent.' : 'Your build has moved away from the plan. Match plan to my level starts again from the plan.';
-        nextAdd.setAttribute('aria-disabled', 'true');
-        nextShow.setAttribute('aria-disabled', 'true');
-        return;
-      }
-      var t = T[nx.i];
-      nextMain.innerHTML = 'Level ' + Math.max(nx.lvl, total + 10) + ': <b>' + esc(t[3]) + '</b> ' + nx.r + '/' + t[4];
-      var note;
-      if (spec === 'h' && CHAR.lvl < 40) note = 'Your second spec opens at level 40 with 31 points, so you can plan it now and fill it then.';
-      else if (CHAR.lvl < 10) note = 'Your first talent point arrives at level 10.';
-      else if (total < have) note = 'You have ' + plural(have - total, 'unspent point') + ' at level ' + CHAR.lvl + '.' + (lock ? (have - total > 1 ? ' Spend them in game and they show here after the next sync.' : ' Spend it in game and it shows here after the next sync.') : '');
-      else if (total === have) note = 'That one comes with your next level. You’ve spent all ' + plural(have, 'point') + ' you have at level ' + CHAR.lvl + '.';
-      else note = 'This build already uses ' + plural(total, 'point') + ', more than the ' + have + ' you have at level ' + CHAR.lvl + ', so that one needs level ' + (total + 10) + '.';
-      if (t[0] !== tree) note += ' It’s in the ' + trees[t[0]] + ' tree.';
-      if (P.rs && P.rs.ph === 2 && total > 0 && !on) note += ' The plan respecs at ' + P.rs.at + ': if you haven’t yet, reset your talents at your class trainer and follow it from the top.';
-      if (P.rs && P.rs.ph === 1 && total > 0 && !on) note += ' Your points so far aren’t in this plan. You can keep them and put new points here: the respec at ' + P.rs.at + ' resets everything anyway.';
-      nextNote.textContent = note;
-      nextAdd.setAttribute('aria-disabled', lock ? 'true' : 'false');
-      nextShow.setAttribute('aria-disabled', 'false');
+      todayNote = V.extra ? plural(V.extra, 'point') + ' off the plan: the Talents tab shows how to get back on it.' : nextNote.textContent;
     }
 
     function refresh() {
-      var total = tcTotal(ranks);
       nx = planNext();
+      V = vsCompute();
+      var by = byText();
       Object.keys(cells).forEach(function (k) {
         var i = +k, t = T[i], c = cells[k], r = ranks[i];
         var locked = r === 0 && !(tcRowOk(T, ranks, i) && tcReqOk(T, ranks, i));
-        var pr = P ? P.rank[i] : 0;
+        var pr = P ? P.rank[i] : 0, d = V ? r - V.want[i] : 0, mark = ov && !!V;
         c.b.classList.toggle('locked', locked);
         c.b.classList.toggle('some', r > 0 && r < t[4]);
         c.b.classList.toggle('full', r === t[4]);
         c.b.classList.toggle('sel', i === sel);
-        c.b.classList.toggle('todo', pr > 0 && r < pr);
+        c.b.classList.toggle('vs-take', mark && d > 0);
+        c.b.classList.toggle('vs-add', mark && d < 0);
+        c.b.classList.toggle('todo', !(mark && d) && pr > r);
         c.b.classList.toggle('off', pr === 0);
         c.b.classList.toggle('nextpt', !!nx && nx.i === i);
         c.rk.textContent = r + '/' + t[4];
-        c.pl.textContent = ov && pr > 0 ? (r < pr ? 'Lv ' + levelForRank(P, i, r + 1) : '✓') : '';
+        var lab = '', lc = '', al = t[3] + ', ' + r + ' of ' + t[4] + (locked ? ', locked' : '');
+        if (mark) {
+          if (d > 0) { lab = '−' + d; lc = ' take'; al += ', ' + d + ' more than the plan has ' + by; }
+          else if (d < 0) { lab = '+' + (-d); lc = ' add'; al += ', the plan has ' + (-d) + ' more ' + by; }
+          else if (pr > r) { var lv = levelForRank(P, i, r + 1); lab = 'Lv ' + lv; al += ', in the plan, next point at level ' + lv; }
+          else if (r > 0) { lab = '✓'; lc = ' ok'; al += ', matches the plan'; }
+        }
+        if (mark && nx && nx.i === i) al += ', next point in the plan';
+        c.pl.textContent = lab;
+        c.pl.className = 'tal-plan' + lc;
         if (t[5] >= 0) c.b.style.setProperty('--conn', tcReqOk(T, ranks, i) ? 'var(--gold-fill)' : 'var(--line)');
-        var lab = t[3] + ', ' + r + ' of ' + t[4] + (locked ? ', locked' : '');
-        if (ov && pr > 0) lab += r < pr ? ', in the plan, next point at level ' + levelForRank(P, i, r + 1) : ', plan done';
-        if (ov && nx && nx.i === i) lab += ', next point in the plan';
-        c.b.setAttribute('aria-label', lab);
+        c.b.setAttribute('aria-label', al);
         if (i === sel) c.b.setAttribute('aria-current', 'true'); else c.b.removeAttribute('aria-current');
       });
       conns.forEach(function (c) { c.classList.toggle('on', tcReqOk(T, ranks, +c.getAttribute('data-i'))); });
       var tp = [tcTreePts(T, ranks, 0), tcTreePts(T, ranks, 1), tcTreePts(T, ranks, 2)];
       for (var k = 0; k < 3; k++) {
         $('#tct-name-' + k).textContent = DB.data[cls].trees[k];
-        $('#tct-pts-' + k).textContent = plural(tp[k], 'point') + (ov && P ? '\nplan ' + P.psplit[k] : '');
+        $('#tct-pts-' + k).textContent = plural(tp[k], 'point') + (ov && V ? '\nplan ' + (by ? V.wsplit[k] + ' ' + by.replace('by level ', 'by ') : P.split[k] + ' by 60') : '');
       }
-      clsLabel.textContent = cls + ' · ' + (spec === 'h' ? 'healing spec' : 'questing spec');
-      distEl.textContent = tp.join(' / ');
-      var have = havePts();
-      var head = total ? total + ' of ' + CAP + ' points spent, which needs level ' + (total + 9) + '.' : 'No points spent yet.';
-      ptsEl.textContent = head + (CHAR.lvl >= 10 ? ' At level ' + CHAR.lvl + ' you have ' + plural(have, 'point') + '.' : ' Points start at level 10.');
+      $$('.tc-lg-by').forEach(function (e) { e.textContent = by; });
       renderDetail();
       renderPlan();
       renderSync();
-      var lock = synced();
-      $('#tc-reset-tree').setAttribute('aria-disabled', lock ? 'true' : 'false');
-      $('#tc-reset-all').setAttribute('aria-disabled', lock ? 'true' : 'false');
       save();
       try { document.dispatchEvent(new CustomEvent('wowf:plan')); } catch (e) {}
     }
@@ -2105,7 +2255,8 @@ ol.td-list{counter-reset:td}
       else sel = i;
       add(i);
     });
-    nextShow.addEventListener('click', function () { if (nx) showTalent(nx.i); });
+    nextShow.addEventListener('click', function () { var f = V && V.path[0]; if (f) showTalent(f.i); });
+    vsBox.addEventListener('click', function (e) { var b = e.target.closest ? e.target.closest('[data-tgo]') : null; if (b) showTalent(+b.getAttribute('data-tgo')); });
     matchBtn.addEventListener('click', function () {
       if (synced()) { setStatus(lockMsg()); return; }
       if (!P) return;
@@ -2197,9 +2348,9 @@ ol.td-list{counter-reset:td}
       next: function () {
         if (!P) return null;
         var t = nx ? T[nx.i] : null;
-        return { main: nextMain.textContent, note: nextNote.textContent, name: t ? t[3] : '', spec: spec };
+        return { main: nextMain.textContent, note: todayNote || nextNote.textContent, name: t ? t[3] : '', spec: spec };
       },
-      useSpec: function (s) { setSpec(s); try { planBox.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' }); } catch (e) {} }
+      useSpec: function (s) { setSpec(s); try { vsBox.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' }); } catch (e) {} }
     };
   })();
   /* Your character's talents arrive from the page's database (market.js), each time the morning sync updates them. */

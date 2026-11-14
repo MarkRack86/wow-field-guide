@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Build data/latest.json, the one file the page loads.
 
-It holds the last 120 days of prices, the last day of hourly reads, the character, the last 14 sell-speed samples
-and the settings files, as {"v": 1, "built": "<UTC time>", "docs": {"prices/2026-11-09": {...}, "char/current": {...}, ...}}.
+It holds the last 120 days of prices, the last day of hourly reads, the character, the last 24 sell-speed samples (a
+day of hourly reads) and the settings files, as {"v": 1, "built": "<UTC time>", "docs": {"prices/2026-11-09": {...}, "char/current": {...}, ...}}.
 Each key is the document's old path in the Claude artifact's database, except "hourly/recent", which is new:
 {"at": newest snapshot, "t": [snapshot times, oldest first], "b": {"<item id>": [price at each, or null]}},
 the price being what the cheapest 20 cost each.
@@ -15,7 +15,7 @@ import json
 import os
 import sys
 
-PRICE_DAYS, SPEED_SAMPLES, HOURLY_SPAN = 120, 14, datetime.timedelta(hours=24, minutes=30)
+PRICE_DAYS, SPEED_SAMPLES, HOURLY_SPAN = 120, 24, datetime.timedelta(hours=24, minutes=30)
 
 
 def load(path):

@@ -444,7 +444,7 @@
   function renderStatus() {
     if (!loaded) return;
     var d = latest();
-    if (!d) { statusEl.textContent = 'No prices yet. They’re read every hour from about 5am to 6.30am and 8pm to 11pm UK time.'; return; }
+    if (!d) { statusEl.textContent = 'No prices yet. They’re read at five to every hour.'; return; }
     var when = d.at && !isNaN(Date.parse(d.at)) ? stampFmt.format(new Date(d.at)) : dayLabel(d.d);
     var snap = d.snap && !isNaN(Date.parse(d.snap)) ? ', from Blizzard’s snapshot of ' + clockFmt.format(new Date(d.snap)) : '';
     statusEl.textContent = 'Updated ' + when + snap + ' · ' + plural(days.length, 'day') + ' of prices · from ' + (d.src === 'blizzard' ? 'Blizzard’s Auction House data' : 'AHledger’s player scans') + '.';
@@ -703,9 +703,7 @@
       return;
     }
     watchNote.textContent = (readOnly ? 'Only the page’s owner can change the watchlist. ' : '') + 'Set a price to be told when the cheapest listing reaches it. Write prices like 1s 50c; a plain number means silver. ' +
-      (ids.some(function (id) { return hourSeries(id).length > 1; }) ? 'Hourly shows the price at each hourly read over the last day. ' : '') +
-      'Phone alerts cover these items too: a price you set, or a move of 25% or more since the last hourly read, at most once in three hours.' +
-      (LIVE ? '' : ' They follow the watchlist saved in the Claude app, not the one in this browser.');
+      (ids.some(function (id) { return hourSeries(id).length > 1; }) ? 'Hourly shows the price at each hourly read over the last day.' : '');
     var h = '';
     ids.sort(function (a, b) { return nm(a) < nm(b) ? -1 : 1; }).forEach(function (id) {
       var w = WATCH[id] || {};
@@ -1558,8 +1556,8 @@
         ' <span class="fr-t">' + esc(when(t)) + '</span>' + (late ? ' <span class="fr-l">late</span>' : '') + (extra || '') + '</button>';
     }
     if (!loaded) parts.push('<span class="fr">Prices <span class="fr-t">loading</span></span>');
-    else parts.push(part('Prices', d ? Date.parse(d.at || (d.d + 'T04:00:00Z')) : null, 16, 'market', d && d.src !== 'blizzard' ? ' <span class="fr-l">from the backup source</span>' : ''));
-    if (CH || loaded) parts.push(part('Character', CH && CH.at ? Date.parse(CH.at) : null, 16, 'build'));
+    else parts.push(part('Prices', d ? Date.parse(d.at || (d.d + 'T04:00:00Z')) : null, 3, 'market', d && d.src !== 'blizzard' ? ' <span class="fr-l">from the backup source</span>' : ''));
+    if (CH || loaded) parts.push(part('Character', CH && CH.at ? Date.parse(CH.at) : null, 3, 'build'));
     parts.push(part('Hotfixes', hotfixAt(), 30, 'updates'));
     var h = parts.join('<span class="fr-sep" aria-hidden="true">·</span>');
     if (h !== lastFresh) { lastFresh = h; freshEl.innerHTML = h; }
@@ -1859,7 +1857,7 @@
   });
   /* ---------- Where the data comes from ----------
      Prices, the hourly reads, the character and the sell-speed samples are read from data/latest.json, next to this
-     page. The GitHub Actions refresh writes it every hour from about 5am to 6.30am and 8pm to 11pm UK time. (The
+     page. The GitHub Actions refresh writes it at five to every hour, day and night. (The
      Claude artifact copy is no longer updated, since 12 Nov 2026.) Settings (watchlist,
      gear stat, quest ticks) are saved in the artifact's database when the page runs inside Claude. Anywhere else
      they start from the copies in data/latest.json, and changes stay in this browser. */
@@ -1930,7 +1928,7 @@
     if (files) {
       db.collection('prices').orderBy('d', 'desc').limit(120).onSnapshot(onDays, function () { fail('Prices couldn’t load. Try opening the page again later.'); });
       db.doc('char/current').onSnapshot(onChar, function () {});
-      db.collection('speed').orderBy('at', 'desc').limit(14).onSnapshot(onSpeed, function () {});
+      db.collection('speed').orderBy('at', 'desc').limit(24).onSnapshot(onSpeed, function () {});
       db.doc('hourly/recent').onSnapshot(onHourly, function () {});
     } else fail('Prices couldn’t load. Try opening the page again later.');
     db.doc('config/watch').onSnapshot(onWatch, function () {});

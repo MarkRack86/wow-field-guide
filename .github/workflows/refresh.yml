@@ -1,13 +1,17 @@
 name: Refresh prices and character
 
 on:
-  workflow_dispatch:              # the "Run workflow" button
+  workflow_dispatch:              # the "Run workflow" button, and each run starting the next one
+    inputs:
+      chain:
+        description: "Started by the previous run: skip the first read if prices were read in the last 40 minutes"
+        type: boolean
+        default: false
   schedule:
-    # A backup for Claude's nudge: GitHub often starts scheduled runs hours late, or skips them. These hours cover UK
-    # winter and summer time; --if-stale stops at once outside about 4.30 to 6.45am and 7.30 to 11.15pm UK time,
-    # or when prices were read in the last 40 minutes.
-    - cron: '55 3,4,5,18,19,20,21,22 * * *'
-  push:                           # a change to the refresh, or Claude's nudge at the start of each session, runs it now
+    # A backup that restarts the hourly reads if the chain of runs ever stops. GitHub often starts scheduled runs
+    # hours late, or skips them. While a run is going, this one waits in the queue and is replaced by the next run.
+    - cron: '25 */3 * * *'
+  push:                           # a change to the refresh, or Claude's nudge (config/refresh-request), runs it now
     branches: [main]
     paths:
       - '.github/workflows/refresh.yml'
@@ -17,6 +21,7 @@ on:
 
 permissions:
   contents: write
+  actions: write                  # to start the next run
 
 concurrency:
   group: refresh
@@ -25,7 +30,7 @@ concurrency:
 jobs:
   refresh:
     runs-on: ubuntu-latest
-    timeout-minutes: 240          # with --hourly one run lasts the whole session, up to about 3.5 hours
+    timeout-minutes: 355          # one run reads hourly for about 5 hours, then starts the next (GitHub's limit is 6 hours)
     steps:
       - uses: actions/checkout@v5
 
@@ -36,17 +41,16 @@ jobs:
           key: auctions-${{ github.run_id }}-${{ github.run_attempt }}
           restore-keys: auctions-
 
-      - name: Refresh prices and character, sell speed and phone alerts, hourly until the session ends
+      - name: Refresh prices, character and sell speed at five to every hour
         id: refresh
         env:
           BNET_ID: ${{ secrets.BNET_ID }}
           BNET_SECRET: ${{ secrets.BNET_SECRET }}
-          NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
           PYTHONUNBUFFERED: "1"
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          python3 tools/ci_refresh.py --hourly ${{ github.event_name == 'schedule' && '--if-stale' || '' }}
+          python3 tools/ci_refresh.py --hourly ${{ (github.event_name == 'schedule' || inputs.chain) && '--if-stale' || '' }}
 
       - name: Keep this run's listings for the next run
         if: always() && steps.refresh.outputs.snapshot == 'new'
@@ -54,3 +58,9 @@ jobs:
         with:
           path: .cache/auctions.json
           key: auctions-${{ github.run_id }}-${{ github.run_attempt }}
+
+      - name: Start the next run, which carries on the hourly reads
+        if: always() && steps.refresh.outputs.handoff == 'yes'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run refresh.yml --repo "$GITHUB_REPOSITORY" --ref main -f chain=true

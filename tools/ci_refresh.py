@@ -6,22 +6,19 @@ Each run:
    latest hourly Auction House snapshot, the character and its gear check.
 2. Files the output under data/: that day's prices (each run replaces the day's file), this snapshot's prices under
    data/hourly/ (two days kept, for the watchlist's 24-hour line), the price history and the character.
-3. Works out how fast things sell by comparing this snapshot with the previous run's, when that was 30 minutes to
+3. Works out how fast things sell by comparing this snapshot with the previous read's, when that was 30 minutes to
    3 hours earlier. The workflow keeps the previous run's listings in the Actions cache (.cache/auctions.json).
-4. Sends a phone alert through ntfy.sh (the NTFY_TOPIC secret) when a watched item's price moved a lot since the
-   previous read, or crossed a price set on the watchlist, in the online hours only (the rule is refresh.py's PUSH_*).
-5. Rebuilds data/latest.json (what the page reads) and data/status.json, and commits it all to main in one commit.
+4. Rebuilds data/latest.json (what the page reads) and data/status.json, and commits it all to main in one commit.
 
-Nothing here prints or saves the keys or the ntfy topic. data/status.json and data/stats/pushes.json are public, so
-they only hold short, checked messages.
+Nothing here prints or saves the keys. data/status.json is public, so it only holds short, checked messages.
 
-Claude's sync starts a run at the start of each online session (about 4.55am and 7.55pm UK time) by pushing
-config/refresh-request. With --hourly, the run then waits and reads again at five to each hour while that read still
-falls in the online hours, so one run covers the session (4.55 and 5.55am, or 7.55 to 10.55pm). GitHub's own
-schedule is a backup and adds --if-stale: it stops straight away outside the online hours or when the last read was
-under 40 minutes ago.
+Reads happen at five to every hour, day and night. With --hourly, a run reads, then waits and reads again at five to
+each hour for about RUN_MINUTES, and then says "handoff" so the workflow starts the next run, which carries on (GitHub
+stops a job after 6 hours). A run started that way, or by GitHub's own schedule (a backup that restarts the chain if
+it ever stops), passes --if-stale: it skips its first read when prices were read under STALE_MINUTES ago. A run
+started by a push (Claude's nudge to config/refresh-request, or a change to the refresh) reads straight away.
 
-Usage: python3 tools/ci_refresh.py [--if-stale] [--hourly] [--no-git] [--no-push]
+Usage: python3 tools/ci_refresh.py [--if-stale] [--hourly] [--no-git]
 """
 import datetime
 import glob
@@ -34,7 +31,6 @@ import subprocess
 import sys
 import tempfile
 import time
-import urllib.request
 from zoneinfo import ZoneInfo
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -43,19 +39,17 @@ import build_latest  # noqa: E402
 ROOT = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
 SCRIPT = os.environ.get("WOWF_REFRESH_SCRIPT", os.path.join(ROOT, "refresh.py"))
 CACHE = os.environ.get("WOWF_CACHE", os.path.join(ROOT, ".cache", "auctions.json"))
-NTFY = os.environ.get("NTFY_SERVER", "https://ntfy.sh").rstrip("/")
-PAGE = "https://markrack86.github.io/wow-field-guide/#gold"
 USE_GIT = "--no-git" not in sys.argv
 IF_STALE = "--if-stale" in sys.argv
 HOURLY = "--hourly" in sys.argv
-NO_PUSH = "--no-push" in sys.argv
 PARTIAL = ("Character", "Quest log", "Gear check", "Non-commodity")
 UK = ZoneInfo("Europe/London")
-# The player is usually online from 5 to 6.30am and 8 to 11pm UK time; the reads run at five to each hour from 4.55.
-ONLINE = ((4, 30, 6, 45), (19, 30, 23, 15))
 KEEP_HOURS, STALE_MINUTES = 48, 40
-# With --hourly, the next read is at this minute past the hour (UK time), and at least GAP_MINUTES after the last.
+# With --hourly, the next read is at this minute past the hour, and at least GAP_MINUTES after the last read.
 READ_MINUTE, GAP_MINUTES = 55, 30
+# One run reads for about this long, then hands over to the next run. Its last read starts at least FINISH_MINUTES
+# before the end, so the run ends well inside the workflow's timeout (355 minutes; GitHub's limit is 360).
+RUN_MINUTES, FINISH_MINUTES = 320, 5
 
 
 def path(*parts):
@@ -82,12 +76,6 @@ def parse(text):
         return None
 
 
-def online(t):
-    uk = t.astimezone(UK)
-    m = uk.hour * 60 + uk.minute
-    return any(h1 * 60 + m1 <= m < h2 * 60 + m2 for h1, m1, h2, m2 in ONLINE)
-
-
 def last_saved():
     """When prices were last read, from the newest price files."""
     best = None
@@ -101,9 +89,6 @@ def last_saved():
 def safe(text, n=200):
     """Short text for the public files. The keys never reach these messages; long tokens are hidden anyway."""
     text = str(text or "")
-    topic = os.environ.get("NTFY_TOPIC")
-    if topic:
-        text = text.replace(topic, "[topic]")
     text = re.sub(r"[A-Za-z0-9_\-]{24,}", "[hidden]", text)
     return " ".join(text.split())[:n]
 
@@ -153,7 +138,7 @@ def last_line(text):
 
 
 def refresh_module():
-    """refresh.py's functions (pair, hourly_alerts), loaded without running it."""
+    """refresh.py's functions (pair), loaded without running it."""
     spec = importlib.util.spec_from_file_location("wowf_refresh", SCRIPT)
     mod = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(mod)
@@ -169,17 +154,10 @@ def hour_of(name):
 
 def save_hourly(prices):
     """Keep this read under data/hourly/, named by the UTC hour of Blizzard's snapshot, and drop those over two days
-    old. Returns (new, previous): new is False when the snapshot was already saved; previous is the read before it."""
+    old. Returns False when the snapshot was already saved."""
     t = parse(prices.get("snap") or prices.get("at"))
     folder = path("data", "hourly")
     target = os.path.join(folder, t.strftime("%Y-%m-%dT%H") + ".json")
-    prev = None
-    for p in sorted(glob.glob(os.path.join(folder, "*.json")), reverse=True):
-        d = load(p) or {}
-        s = parse(d.get("snap") or d.get("at"))
-        if s and s < t and isinstance(d.get("m"), dict):
-            prev = d
-            break
     same = load(target) or {}
     new = not (prices.get("snap") and same.get("snap") == prices.get("snap"))
     if new:
@@ -188,7 +166,7 @@ def save_hourly(prices):
         h = hour_of(p)
         if h and h < t - datetime.timedelta(hours=KEEP_HOURS):
             os.remove(p)
-    return new, prev
+    return new
 
 
 def github_output(name, value):
@@ -222,46 +200,6 @@ def speed_pair(rf, out):
         shutil.copyfile(os.path.join(out, "auctions.json"), CACHE)
         github_output("snapshot", "new")
     return status, info
-
-
-def ntfy(topic, title, lines):
-    body = json.dumps({"topic": topic, "title": title, "message": "\n".join(lines), "tags": ["moneybag"], "priority": 3,
-                       "click": PAGE}).encode("utf-8")
-    req = urllib.request.Request(NTFY + "/", data=body, method="POST",
-                                 headers={"Content-Type": "application/json", "User-Agent": "wow-field-guide-refresh"})
-    with urllib.request.urlopen(req, timeout=20) as r:
-        if r.status >= 300:
-            raise RuntimeError("ntfy answered HTTP %d" % r.status)
-
-
-def phone(rf, prices, prev):
-    """Phone alerts for this read. Returns a short note for the status, or None when nothing was worth sending."""
-    log_path = path("data", "stats", "pushes.json")
-    t = utcnow()
-    sent = [s for s in (load(log_path, {}) or {}).get("sent", [])
-            if isinstance(s, dict) and parse(s.get("at", "")) and t - parse(s["at"]) < datetime.timedelta(hours=KEEP_HOURS)]
-    found = rf.hourly_alerts(prices, prev, load(path("config", "watch.json"), {}) or {}, sent)
-    if not found:
-        return None
-    lines = [a["line"] for a in found]
-    shown = lines[:5] + (["and %d more: see the watchlist" % (len(lines) - 5)] if len(lines) > 5 else [])
-    entry = {"at": now(), "snap": prices.get("snap"), "sent": False, "items": [{"id": a["id"], "kind": a["kind"]} for a in found], "lines": lines}
-    topic = os.environ.get("NTFY_TOPIC", "").strip()
-    if not online(t):
-        entry["why"] = "outside the online hours"
-    elif not topic:
-        entry["why"] = "no NTFY_TOPIC secret"
-    elif NO_PUSH:
-        entry["why"] = "sending switched off for this run"
-    else:
-        try:
-            ntfy(topic, "WoW Forever: %d price alert%s" % (len(lines), "" if len(lines) == 1 else "s"), shown)
-            entry["sent"] = True
-        except Exception as e:  # a failed alert never stops the refresh
-            entry["why"] = safe(str(e) or type(e).__name__, 120)
-    build_latest.save_pretty(log_path, {"v": 1, "sent": sent + [entry]})
-    n = "%d alert%s" % (len(lines), "" if len(lines) == 1 else "s")
-    return n + " sent" if entry["sent"] else n + " not sent: " + entry["why"]
 
 
 def refresh(tmp, env):
@@ -299,75 +237,68 @@ def refresh(tmp, env):
         level, char_state = current.get("level"), "synced"
 
     rf = refresh_module()
-    new, prev = save_hourly(prices)
+    new = save_hourly(prices)
     spd, spd_info = speed_pair(rf, out)
-    note = None
-    if new:
-        try:
-            note = phone(rf, prices, prev)
-        except Exception as e:  # never lose the prices over an alert
-            note = "alerts failed: " + safe(str(e) or type(e).__name__, 120)
     build_latest.build(ROOT)
     snap = parse(prices.get("snap") or prices.get("at"))
     set_status("refresh", {"at": now(), "ok": True, "date": day, "snapshot": prices.get("snap"), "new": new,
                            "items": summary.get("items"), "of": summary.get("of"), "alerts": summary.get("alerts"),
-                           "phone": note or "nothing to send", "character": char_state, "level": level, "notes": notes})
+                           "character": char_state, "level": level, "notes": notes})
     set_status("speed", spd)
     extra = ([", level %s" % level] if level else []) + ([", speed over %s min" % spd_info["minutes"]] if spd_info else []) + \
-        ([", " + note.split(":")[0]] if note else []) + ([] if new else [", same snapshot"])
+        ([] if new else [", same snapshot"])
     commit("Prices for %s %s: %s items%s" % (day, snap.astimezone(UK).strftime("%H:%M"), summary.get("items"), "".join(extra)), [path("data")])
-    print("Saved %s prices for %s (snapshot %s UTC); character %s; sell speed: %s; phone: %s." % (
+    print("Saved %s prices for %s (snapshot %s UTC); character %s; sell speed: %s." % (
         summary.get("items"), day, prices.get("snap") or "time unknown", char_state,
-        "%s units over %s minutes" % (spd_info["units"], spd_info["minutes"]) if spd_info else spd.get("reason"),
-        note or "nothing to send"))
+        "%s units over %s minutes" % (spd_info["units"], spd_info["minutes"]) if spd_info else spd.get("reason")), flush=True)
     return True
 
 
-def stale_reason(t):
-    """Why a scheduled (backup) run has nothing to do, or None."""
-    if not online(t):
-        return "Outside the online hours (%s UK time); nothing to do." % t.astimezone(UK).strftime("%H:%M")
-    last = last_saved()
-    if last and t - last < datetime.timedelta(minutes=STALE_MINUTES):
-        return "Prices were read %d minutes ago; nothing to do." % ((t - last).total_seconds() // 60)
-    return None
+def read_once(env):
+    """One read. A failure is logged and the hourly loop carries on: the next hour tries again."""
+    try:
+        return refresh(tempfile.mkdtemp(prefix="wowf-"), env)
+    except Exception as e:
+        print("This read failed: " + safe(str(e) or type(e).__name__, 300), flush=True)
+        return False
 
 
-def next_read(t):
-    """With --hourly: when to read next, the first five to the hour (UK time) at least GAP_MINUTES after t, or None
-    when that falls outside the online hours, so the session is over."""
-    uk = t.astimezone(UK)
-    nxt = uk.replace(minute=READ_MINUTE, second=0, microsecond=0)
-    while nxt < uk + datetime.timedelta(minutes=GAP_MINUTES):
+def next_read(after):
+    """With --hourly: the first five to the hour at least GAP_MINUTES after the last read and at least a minute from
+    now. after is the last read's time (or now, when there's none)."""
+    t = max(after + datetime.timedelta(minutes=GAP_MINUTES), utcnow() + datetime.timedelta(minutes=1))
+    nxt = t.replace(minute=READ_MINUTE, second=0, microsecond=0)
+    while nxt < t:
         nxt += datetime.timedelta(hours=1)
-    return nxt.astimezone(datetime.timezone.utc) if online(nxt) else None
+    return nxt
 
 
 def main():
-    if IF_STALE:
-        reason = stale_reason(utcnow())
-        if reason:
-            print(reason)
-            return 0
+    start = utcnow()
     env = dict(os.environ)
     if not (env.get("BNET_ID") and env.get("BNET_SECRET")):
+        # No handoff: a chain of runs that can't read would only fail again. The backup schedule tries later.
         set_status("refresh", {"at": now(), "ok": False, "error": "The BNET_ID and BNET_SECRET secrets aren't set in the repository."})
         commit("Refresh failed: Blizzard secrets missing", [path("data", "status.json")])
         print("The BNET_ID and BNET_SECRET secrets aren't set in the repository.")
         return 1
-    env.pop("NTFY_TOPIC", None)  # refresh.py doesn't need it
-    ok = refresh(tempfile.mkdtemp(prefix="wowf-"), env)
+    ok, last = True, last_saved()
+    if IF_STALE and last and start - last < datetime.timedelta(minutes=STALE_MINUTES):
+        print("Prices were read %d minutes ago, so the first read waits for the next hour." % ((start - last).total_seconds() // 60), flush=True)
+    else:
+        ok, last = read_once(env), utcnow()
     while HOURLY:
-        nxt = next_read(utcnow())
-        if not nxt:
-            print("The next read would fall outside the online hours, so this run is done.", flush=True)
+        nxt = next_read(last or utcnow())
+        if nxt + datetime.timedelta(minutes=FINISH_MINUTES) > start + datetime.timedelta(minutes=RUN_MINUTES):
+            print("This run has done its share. The next run carries on from the read at %s UK time." % nxt.astimezone(UK).strftime("%H:%M"), flush=True)
+            github_output("handoff", "yes")
             break
         print("Next read at %s UK time." % nxt.astimezone(UK).strftime("%H:%M"), flush=True)
         time.sleep(max(0, (nxt - utcnow()).total_seconds()))
         # Pick up anything pushed meanwhile (settings, Claude's notes). If this fails, the next commit retries.
         if USE_GIT and git("pull", "-q", "--rebase", "origin", "main", check=False).returncode:
             git("rebase", "--abort", check=False)
-        ok = refresh(tempfile.mkdtemp(prefix="wowf-"), env)
+        ok, last = read_once(env), utcnow()
     return 0 if ok else 1
 
 

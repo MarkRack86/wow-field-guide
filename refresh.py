@@ -1,5 +1,5 @@
-"""Market refresh for the WoW Forever Field Guide, run by GitHub Actions (tools/ci_refresh.py) every hour while the
-player is usually online. Reads the Normal-ruleset Horde Auction House (EU) from Blizzard's API and writes JSON files:
+"""Market refresh for the WoW Forever Field Guide, run by GitHub Actions (tools/ci_refresh.py) at five to every hour.
+Reads the Normal-ruleset Horde Auction House (EU) from Blizzard's API and writes JSON files:
 prices.json, recent.json, alerts.json, char.json and auctions.json (the tracked commodity listings, for sell speed).
 usage: refresh.py <out_dir> [recent.json] [watch.json] [char.json] [gear.json]
        refresh.py speed <out_dir>   (waits for Blizzard's next hourly snapshot and counts the units sold in between)
@@ -20,11 +20,6 @@ ALERT_IDS = {2447, 765, 2449, 785, 2450, 2452, 3820, 2453, 3355, 3369, 3356, 335
              268415, 268416, 268417, 268418, 3371, 3372, 8925, 18256, 2678, 2692, 3713,
              247754, 247755, 5997, 2454, 3382, 2455, 2456, 2458, 2457, 4596, 2459, 3383, 3385, 247239, 3390, 6371, 6373, 3827, 3825,
              8951, 6052, 6149, 1251, 2581, 3530, 3531, 6450, 6451, 8544, 8545, 14529, 14530, 118, 858, 929, 1710}
-# Phone alerts from the hourly reads cover watched items only: the price (what the cheapest 20 cost each) moving by
-# PUSH_MOVE or more since the previous read, by at least PUSH_MIN_GAIN copper over 20 (1s), with PUSH_MIN_LISTED or
-# more listed both times, at most once per item in PUSH_QUIET_H hours; and the cheapest listing crossing a price
-# the player set, every time it crosses.
-PUSH_MOVE, PUSH_MIN_GAIN, PUSH_MIN_LISTED, PUSH_QUIET_H = 0.25, 100, 20, 3
 # Sell speed compares two runs' snapshots taken 30 minutes to 3 hours apart (the page ignores longer samples).
 PAIR_MINUTES = (30, 180)
 # Gear: who can use what (Classic rules; mail and plate from level 40), and stat weights per playstyle.
@@ -471,54 +466,6 @@ def pair(prev, cur):
         return None, 'the last run was %d minutes earlier; sell speed needs runs %d minutes to %d hours apart' % (
             round(mins), PAIR_MINUTES[0], PAIR_MINUTES[1] // 60)
     return compare(A, B, ta, tb)
-
-def clock(t, ref):
-    """UK time like 8.55pm, with "yesterday" or the day when t isn't on ref's day."""
-    tz = ZoneInfo('Europe/London')
-    lt, lr = t.astimezone(tz), ref.astimezone(tz)
-    h = lt.hour % 12 or 12
-    s = '%d%s%s' % (h, ('.%02d' % lt.minute) if lt.minute else '', 'am' if lt.hour < 12 else 'pm')
-    days = (lr.date() - lt.date()).days
-    return s if days == 0 else s + ' yesterday' if days == 1 else lt.strftime('%a ') + s
-
-def hourly_alerts(cur, prev, watch, sent):
-    """Phone alerts for one hourly read (see PUSH_MOVE). cur and prev are this read's and the previous read's prices.json;
-    watch is config/watch.json; sent lists earlier pushes as [{"at": UTC time, "sent": true, "items": [{"id", "kind"}]}].
-    Returns [{"id", "kind" (lo, hi, up or down), "line"}], prices the player set first, then the biggest moves."""
-    wl = watch.get('items') if isinstance(watch, dict) and isinstance(watch.get('items'), dict) else {}
-    cm, pm = cur.get('m') or {}, (prev or {}).get('m') or {}
-    tc = datetime.datetime.fromisoformat(cur['at'].replace('Z', '+00:00'))
-    tp = datetime.datetime.fromisoformat(prev['at'].replace('Z', '+00:00')) if prev and prev.get('at') else None
-    stale = not tp or tc - tp > datetime.timedelta(hours=24)  # moves only count against a read from the last day
-    quiet = set()
-    for s in sent or []:
-        try:
-            ts = datetime.datetime.fromisoformat(s['at'].replace('Z', '+00:00'))
-        except (KeyError, AttributeError, ValueError):
-            continue
-        if s.get('sent') and datetime.timedelta(0) <= tc - ts < datetime.timedelta(hours=PUSH_QUIET_H):
-            quiet |= {str(x.get('id')) for x in s.get('items', []) if x.get('kind') in ('up', 'down')}
-    out = []
-    for k, w in wl.items():
-        c, p = cm.get(k), pm.get(k)
-        if not c or len(c) < 5:
-            continue
-        w, name = w if isinstance(w, dict) else {}, NAMES.get(k, 'Item ' + k)
-        lo, hi = w.get('lo'), w.get('hi')
-        was = p[0] if p else None
-        if isinstance(lo, (int, float)) and lo > 0 and c[0] <= lo and (was is None or was > lo):
-            out.append({'id': int(k), 'kind': 'lo', 'size': 9, 'line': '%s: cheapest listing %s, at or below your %s' % (name, money(c[0]), money(lo))})
-        elif isinstance(hi, (int, float)) and hi > 0 and c[0] >= hi and (was is None or was < hi):
-            out.append({'id': int(k), 'kind': 'hi', 'size': 9, 'line': '%s: cheapest listing %s, at or above your %s' % (name, money(c[0]), money(hi))})
-        if not p or len(p) < 5 or k in quiet or c[2] < PUSH_MIN_LISTED or p[2] < PUSH_MIN_LISTED or not p[3] or stale:
-            continue
-        ch = (c[3] - p[3]) / p[3]
-        if abs(ch) >= PUSH_MOVE and abs(c[3] - p[3]) * 20 >= PUSH_MIN_GAIN:
-            out.append({'id': int(k), 'kind': 'up' if ch > 0 else 'down', 'size': abs(ch),
-                        'line': '%s: %s each, %s %d%% since %s (%s listed)' % (name, money(c[3]), 'up' if ch > 0 else 'down',
-                                round(abs(ch) * 100), clock(tp, tc), '{:,}'.format(c[2]))})
-    out.sort(key=lambda a: (a['kind'] not in ('lo', 'hi'), -a['size'], a['line']))
-    return [{'id': a['id'], 'kind': a['kind'], 'line': a['line']} for a in out]
 
 if __name__ == '__main__':
     if len(sys.argv) > 2 and sys.argv[1] == 'speed':

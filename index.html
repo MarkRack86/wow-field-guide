@@ -873,7 +873,7 @@ ol.td-list{counter-reset:td}
           <li>A gold border means some points and a gold fill means maxed. A faded talent is still locked.</li>
           <li>Dual Specialization arrives at level 40, when you have 31 points. Each healing plan's first 31 points make a complete healing spec, and the rest go in as you level.</li>
           <li>Every plan was checked point by point, so each step is legal at its level. Match plan to my level sets the build to the plan's first points for your level, and Undo puts your own build back.</li>
-          <li>Once your character is synced from Blizzard, the questing spec shows the talents you really have, and the tree can’t be changed while that’s on. Turn it off to plan freely: your own build is kept separately, and the sync updates from your last logout every hour from about 5am to 6.30am and 8pm to 11pm UK time (in the Claude app, at about 5am and 8pm).</li>
+          <li>Once your character is synced from Blizzard, the questing spec shows the talents you really have, and the tree can’t be changed while that’s on. Turn it off to plan freely: your own build is kept separately, and the sync updates from your last logout every hour.</li>
           <li>Builds are saved in this browser only.</li>
         </ul>
       </div>
@@ -984,7 +984,7 @@ ol.td-list{counter-reset:td}
 <section class="panel" id="panel-market" role="tabpanel" aria-labelledby="tab-market" tabindex="0" hidden>
   <div class="intro">
     <h2>Gold</h2>
-    <p>Where the gold is on the Auction House right now, then what to craft and what to sell, from Blizzard’s Auction House data for the Normal ruleset, Horde side, in Europe. It’s read every hour from about 5am to 6.30am and 8pm to 11pm UK time, and each read replaces the last as that day’s price.</p>
+    <p>Where the gold is on the Auction House right now, then what to craft and what to sell, from Blizzard’s Auction House data for the Normal ruleset, Horde side, in Europe. It’s read at five to every hour, day and night, and each read replaces the last as that day’s price.</p>
     <p class="note" id="mk-status" aria-live="polite">Loading prices…</p>
   </div>
 
@@ -1100,7 +1100,7 @@ ol.td-list{counter-reset:td}
         <summary>Making gold at every level</summary>
         <div class="more-body">
           <ul>
-            <li>Look up prices before you sell or craft. This tab reads Blizzard’s Auction House data every hour in the early morning and the evening, and What to sell says which herbs are worth more sold than crafted. <a href="https://ahledger.com" rel="noopener">AHledger</a> shows prices for the other factions and rulesets.</li>
+            <li>Look up prices before you sell or craft. This tab reads Blizzard’s Auction House data every hour, and What to sell says which herbs are worth more sold than crafted. <a href="https://ahledger.com" rel="noopener">AHledger</a> shows prices for the other factions and rulesets.</li>
             <li>Sell to the players who are buying. Low-level herbs sell in the first weeks after launch, while top-end materials listed early mostly sit.</li>
             <li>Craft only when it pays: a potion has to sell for more than its herbs and vial would. What to craft, on this tab, does the sums with the latest prices.</li>
             <li>Post short auctions and match the cheapest price rather than undercutting it. On Forever the newest listing at a price sells first, and the market covers everyone on your ruleset, so a fair price sells within hours. Longer auctions cost a bigger deposit.</li>
@@ -1158,7 +1158,7 @@ ol.td-list{counter-reset:td}
         <summary>Where these prices come from</summary>
         <div class="more-body">
           <ul>
-            <li>Blizzard's own Auction House data for the Horde house on the Normal ruleset. Blizzard takes a new snapshot about once an hour. The refresh reads it at five to each hour from 4.55 to 5.55am and 7.55 to 10.55pm UK time, keeping the latest read as that day’s price and every read for two days, for the watchlist’s hourly line.</li>
+            <li>Blizzard's own Auction House data for the Horde house on the Normal ruleset. Blizzard takes a new snapshot about once an hour. The refresh reads it at five to every hour, day and night, keeping the latest read as that day’s price and every read for two days, for the watchlist’s hourly line.</li>
             <li>How fast things sell is an estimate from the last 14 one-hour samples. Each compares one hourly read’s snapshot with the one before and counts the listings that shrank or vanished while they still had hours to run. Buyers take the cheapest first, so a listing that vanished while a cheaper one stayed untouched counts as cancelled, not sold. A cancelled listing at the cheap end still counts, so treat it as a rough upper guide.</li>
             <li>Each price is the average of the cheapest 20 listed: close to what a small stack costs, and to the price you'd match to sell. "Lowest" is the cheapest single listing.</li>
             <li>The middle of everything listed isn't used, because big stacks posted far above the market drag it up without selling. One morning a big stack of Earthroot at 1s 99c put the middle at four times what Earthroot really cost.</li>

@@ -12,7 +12,7 @@ The private Claude artifact copy is no longer updated (since 12 Nov 2026).
 - **Cost.** Nothing: Actions minutes are free for public repositories, and each read adds only about 20 to 30 KB to the repository once GitHub packs it.
 - **Data.** `data/latest.json` holds the prices, the last day of hourly reads, the character and the settings the page loads. `data/updates.json` holds the Updates tab's notes. `data/status.json` says how the last refresh went.
 - **Site.** GitHub Pages serves `index.html` and `market.js` straight from main.
-- **Settings.** The watchlist, gear stat and quest ticks are saved in the Claude artifact's database, and Claude copies them into `config/`. On the GitHub site, setting changes stay in your browser.
+- **Settings.** The gear stat and quest ticks are saved in the Claude artifact's database, and Claude copies them into `config/`. On the GitHub site, setting changes stay in your browser.
 - **Claude.** This repo is the master copy. Claude's sync task, at about 4.52am and 7.52pm UK time, copies settings in from the Claude artifact's database, checks the hourly reads are arriving (and restarts them if not), and adds hotfix notes to `data/updates.json` each morning. It no longer publishes to the Claude artifact. Code changes are made here first.
 
 ## Files

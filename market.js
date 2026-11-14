@@ -1,5 +1,5 @@
-/* WoW Forever Field Guide: data-driven tabs. Market prices and watchlist, your synced character on the Build tab,
-   the Skill-up and Herb zones tabs, all fed by the artifact's database (daily Auction House prices and your character). */
+/* WoW Forever Field Guide: data-driven tabs. The Gold tab's prices, your synced character on the Build tab,
+   the Skill-up and Herb zones tabs, all fed by data/latest.json (hourly Auction House prices and your character). */
 (function () {
   'use strict';
   var $ = function (s, r) { return (r || document).querySelector(s); };
@@ -61,8 +61,7 @@
   /* ---------- State ---------- */
   var statusEl = $('#mk-status'), alertList = $('#mk-alert-list'), profSel = $('#mk-prof');
   var chartEl = $('#mk-chart'), tipEl = $('#mk-tip'), titleEl = $('#mk-chart-title'), matsEl = $('#mk-mats'), craftsEl = $('#mk-crafts');
-  var watchEl = $('#mk-watch'), watchNote = $('#mk-watch-note');
-  var days = [], loaded = false, DBH = null, CH = null, WATCH = {}, readOnly = false, saving = false, again = false, LIVE = false;
+  var days = [], loaded = false, DBH = null, CH = null, readOnly = false, LIVE = false;
   var KNOWN = {}, KNOWNR = {};
   /* Herbalism, Alchemy and First Aid have What to craft and What to sell; the picker covers the other professions. */
   var OTHER = PROFS.filter(function (p) { return p.k !== 'alch' && p.k !== 'fa'; });
@@ -294,7 +293,7 @@
   }
   function spark(id) { return sparkSvg(priceSeries(id), nm(id)); }
 
-  /* ---------- The last day of hourly reads: a line and the change, on the watchlist ---------- */
+  /* ---------- The last day of hourly reads: a line and the change, in Herb search ---------- */
   var HOURLY = { t: [], b: {} };
   function hourSeries(id) {
     var v = HOURLY.b[id] || [], out = [];
@@ -362,19 +361,10 @@
     return t;
   }
 
-  /* ---------- Alerts (the same rules as the scheduled refresh) ---------- */
+  /* ---------- Big moves: 40% and 25c or more from usual, with at least ten listed ---------- */
   function alertFor(id) {
-    var n = now(id); if (!n) return null;
-    var w = WATCH[id], c = change(id), out = null;
-    if (c) {
-      var big = Math.abs(c.pct) >= (w ? 0.2 : 0.4) && Math.abs(c.diff) >= (w ? 10 : 25) && (n.qty || 0) >= (w ? 5 : 10);
-      if (big) out = { kind: 'move', c: c, n: n };
-    }
-    if (w && n.min != null) {
-      if (w.lo > 0 && n.min <= w.lo) out = { kind: 'lo', v: w.lo, n: n };
-      else if (w.hi > 0 && n.min >= w.hi) out = { kind: 'hi', v: w.hi, n: n };
-    }
-    return out;
+    var n = now(id), c = n ? change(id) : null;
+    return c && Math.abs(c.pct) >= 0.4 && Math.abs(c.diff) >= 25 && (n.qty || 0) >= 10 ? { kind: 'move', c: c, n: n } : null;
   }
 
   /* ---------- Your character (top of the Build tab) ---------- */
@@ -453,10 +443,8 @@
     return '<button type="button" class="mk-item" data-item="' + id + '"' + (pressed != null ? ' aria-pressed="' + pressed + '"' : '') + '>' + esc(nm(id)) + '</button>';
   }
   function alertLine(id, a) {
-    var head = itemBtn(id) + (WATCH[id] ? ' <span class="vh">(watched)</span><span aria-hidden="true">★</span>' : '') + ': ';
-    if (a.kind === 'move') return head + money(a.n.price) + ', ' + (a.c.pct >= 0 ? 'up ' : 'down ') + Math.round(Math.abs(a.c.pct) * 100) + '% on its usual ' + money(a.c.base) +
+    return itemBtn(id) + ': ' + money(a.n.price) + ', ' + (a.c.pct >= 0 ? 'up ' : 'down ') + Math.round(Math.abs(a.c.pct) * 100) + '% on its usual ' + money(a.c.base) +
       (a.n.qty != null ? ' (' + a.n.qty.toLocaleString('en-GB') + ' listed)' : '') + '.';
-    return head + 'cheapest listing ' + money(a.n.min) + ', at or ' + (a.kind === 'lo' ? 'below' : 'above') + ' your ' + money(a.v) + '.';
   }
   var alertAll = false;
   (function () {
@@ -505,10 +493,25 @@
     });
     return best;
   }
+  /* What one craft earns over selling its reagents (or the herbs) separately: a net profit, or a net loss. */
+  function netHtml(p, what, cap) {
+    var t = p >= 0 ? 'net +' + money(p) + ' a craft' : 'a net loss of ' + money(-p) + ' a craft';
+    return '<b>' + esc(cap ? t.charAt(0).toUpperCase() + t.slice(1) : t) + '</b>' + esc((p >= 0 ? ' over' : ' against') + ' selling ' + what + ' separately');
+  }
   function highWhy(x, plan) {
     var up = Math.round(x.c.pct * 100) + '% above its usual ' + money(x.c.base), h = plan[x.id];
-    if (h && h.act === 'craft') return '<span class="chip mk-verdict blue">Craft</span> into ' + rxLink(h.rid) + esc(' (+' + money(h.profit) + ' a craft' +
-      (rxState(h.rid) === 'learn' ? ', once you learn it' : '') + '): still worth more than selling, even ' + up);
+    if (x.how === 'make') {
+      var mb = makeBest(x.id);
+      return '<span class="chip mk-verdict ok">Sell</span> ' + esc(money(sellNet(x.id)) + ' each after the cut, ' + up + '.') +
+        (mb ? ' ' + netHtml(mb.profit, 'its reagents', true) + esc(mb.profit >= 0 ? ', so making more pays.' : ', so sell only what you have.') : '');
+    }
+    if (h && h.act === 'sell') {
+      var k = herbUses(x.id).known;
+      return '<span class="chip mk-verdict ok">Sell</span> ' + esc(money(sellNet(x.id)) + ' each after the cut, ' + up + '.') +
+        (k ? ' ' + esc('Making ' + RX[k.rid][0] + ' instead: ') + netHtml(k.e.profit, 'the herbs') + '.' : '');
+    }
+    if (h && h.act === 'craft') return '<span class="chip mk-verdict blue">Craft</span> into ' + rxLink(h.rid) + ': ' + netHtml(h.profit, 'the herbs') +
+      esc((rxState(h.rid) === 'learn' ? ', once you learn it' : '') + ', even ' + up + '.');
     if (h && h.act === 'vendor') return '<span class="chip mk-verdict gold">Vendor</span> ' + esc('a vendor pays ' + money(h.value) + ', more than the Auction House, even ' + up);
     var b = x.how === 'make' ? makeBest(x.id) : null;
     return '<span class="chip mk-verdict ok">Sell</span> ' + esc(money(sellNet(x.id)) + ' each after the cut, ' + up +
@@ -622,18 +625,18 @@
     return out + (w ? '<span class="mk-sub">' + w + '</span>' : '');
   }
   function renderAlerts() {
-    var hi = latest() ? sellHigh() : [], skip = {}, plan = hi.length ? herbPlan() : {};
+    var hi = latest() ? sellHigh().slice(0, 3) : [], skip = {}, plan = hi.length ? herbPlan() : {};
     hi.forEach(function (x) { skip[x.id] = 1; });
     if (highEl && highNote) {
       highEl.innerHTML = hi.map(function (x) { return matRow(x.id, highExtra(x, plan), highWhy(x, plan)); }).join('');
       highNote.textContent = !loaded ? 'Waiting for prices…' : !latest() ? 'No prices yet.' : days.length < 4 ? 'This starts once there are a few days of prices to compare.'
-        : hi.length ? (hi.length === 1 ? 'One of yours is' : hi.length + ' of yours are') + ' selling 15% or more above usual, highest first.' : 'None of your herbs or potions is selling 15% or more above its usual price.';
+        : hi.length ? (hi.length === 1 ? 'One of yours is selling' : 'Your top ' + hi.length + ' selling') + ' 15% or more above usual, highest first.' : 'None of your herbs or potions is selling 15% or more above its usual price.';
     }
     var hits = tracked().filter(function (id) { return !skip[id]; }).map(function (id) { return { id: id, a: alertFor(id) }; }).filter(function (x) { return x.a; })
-      .sort(function (x, y) { return (WATCH[y.id] ? 1 : 0) - (WATCH[x.id] ? 1 : 0) || (y.a.c ? Math.abs(y.a.c.pct) : 9) - (x.a.c ? Math.abs(x.a.c.pct) : 9); });
+      .sort(function (x, y) { return Math.abs(y.a.c.pct) - Math.abs(x.a.c.pct); });
     var h = '', more = $('#mk-alert-more');
-    hits.slice(0, alertAll ? 12 : 5).forEach(function (x) { h += '<li>' + alertLine(x.id, x.a) + (x.a.kind === 'move' ? whyHtml(x.id, x.a.c.pct) : '') + '</li>'; });
-    if (!h) h = '<li>' + (days.length < 4 ? 'Alerts start once there are a few days of prices to compare. Prices you set on starred items work from today.' : hi.length ? 'Nothing else unusual today.' : 'Nothing unusual today.') + '</li>';
+    hits.slice(0, alertAll ? 12 : 5).forEach(function (x) { h += '<li>' + alertLine(x.id, x.a) + whyHtml(x.id, x.a.c.pct) + '</li>'; });
+    if (!h) h = '<li>' + (days.length < 4 ? 'Big moves start once there are a few days of prices to compare.' : 'Nothing unusual today.') + '</li>';
     alertList.innerHTML = h;
     if (more) {
       more.hidden = hits.length <= 5;
@@ -647,19 +650,6 @@
     var p = pct(c.pct);
     return '<span class="mk-chg">' + (p === '0%' ? '0%<span class="vh"> change on usual</span>' : (c.pct >= 0 ? '▲ ' : '▼ ') + p.slice(1) + '<span class="vh">' + (c.pct >= 0 ? ' up' : ' down') + ' on usual</span>') + sp + '</span>';
   }
-  /* Watch buttons inside What to craft keep their place (the rows stay open), so they're updated where they are. */
-  function syncStars(id) {
-    $$('.gc-watch[data-star="' + id + '"]').forEach(function (b) {
-      var on = !!WATCH[id];
-      b.setAttribute('aria-pressed', on ? 'true' : 'false');
-      b.innerHTML = watchLabel(id);
-    });
-  }
-  function watchLabel(id) { return WATCH[id] ? '<span aria-hidden="true">★</span> Watching ' + esc(nm(id)) : '<span aria-hidden="true">☆</span> Watch ' + esc(nm(id)); }
-  function star(id) {
-    var on = !!WATCH[id];
-    return '<button type="button" class="mk-star" data-star="' + id + '" aria-pressed="' + on + '" aria-label="Watch ' + esc(nm(id)) + '">' + (on ? '★' : '☆') + '</button>';
-  }
   function subFor(id) {
     var n = now(id), sub = [];
     if (n && n.min != null && n.min < n.price) sub.push('cheapest listing ' + money(n.min));
@@ -672,9 +662,9 @@
   function swatch(id) { return onChart(id) ? '<span class="mk-sw s' + chartSlot[id] + '" aria-hidden="true"></span>' : ''; }
   function matRow(id, extra, why) {
     var n = now(id), al = alertFor(id), on = onChart(id), vh = why || verdictHtml(id);
-    return '<li class="' + (on ? 'on' : '') + (al ? ' alert' : '') + '">' + star(id) + '<span class="mk-name">' + swatch(id) + itemBtn(id, on) + '</span>' +
+    return '<li class="' + (on ? 'on' : '') + (al ? ' alert' : '') + '"><span class="mk-name">' + swatch(id) + itemBtn(id, on) + '</span>' +
       '<span class="mk-price">' + (n ? money(n.price) : '—') + '</span>' + chgCell(change(id), spark(id)) +
-      '<span class="mk-sub">' + (vh ? vh + ' · ' : '') + esc(subFor(id).join(' · ')) + (al ? ' · <strong>alert</strong>' : '') + '</span>' + (extra || '') + '</li>';
+      '<span class="mk-sub">' + (vh ? vh + ' · ' : '') + esc(subFor(id).join(' · ')) + (al ? ' · <strong>big move</strong>' : '') + '</span>' + (extra || '') + '</li>';
   }
   function renderMats() {
     var h = '';
@@ -690,32 +680,13 @@
         : (e.diff >= 0 ? '<span class="chip ok"><span class="nc">' + money(e.diff) + '</span> profit</span>' : '<span class="chip bad"><span class="nc">' + money(-e.diff) + '</span> loss</span>');
       var kn = CH && (prof === 'alch' || prof === 'fa') ? (knows(id) ? '<span class="chip blue">Known</span>' : '') : '';
       var sp = sparkSvg(evalSeries(function () { var x = craftEval(id); return x ? x.diff : null; }), 'Profit on ' + nm(id)), rt = rateText(id);
-      h += '<li class="' + (onChart(id) ? 'on' : '') + '">' + star(id) + '<div class="mk-craft-head"><span class="mk-name">' + swatch(id) + '<button type="button" class="mk-item" data-item="' + id + '" aria-pressed="' + onChart(id) + '">' + esc(name) + '</button></span><span class="mk-chips">' + kn + chip + sp + '</span></div>' +
+      h += '<li class="' + (onChart(id) ? 'on' : '') + '"><div class="mk-craft-head"><span class="mk-name">' + swatch(id) + '<button type="button" class="mk-item" data-item="' + id + '" aria-pressed="' + onChart(id) + '">' + esc(name) + '</button></span><span class="mk-chips">' + kn + chip + sp + '</span></div>' +
         '<span class="mk-sub">' + (e ? (e.vendor ? 'A vendor pays ' : 'Sells for ') + money(e.value) + (e.vendor ? '' : ' after the cut') + ' · materials ' + money(e.cost) + ' · ' : '') + esc(parts) + (rt ? ' · ' + esc(rt) : '') + '</span></li>';
     });
     craftsEl.innerHTML = h;
   }
-  function renderWatch() {
-    var ids = Object.keys(WATCH).map(Number).filter(function (id) { return NAMES[id]; });
-    if (!ids.length) {
-      watchEl.innerHTML = '';
-      watchNote.textContent = readOnly ? 'Only the page’s owner can change the watchlist.' : 'Tap the star next to any item to pin it here. Starred items alert at a smaller move, and at prices you set.';
-      return;
-    }
-    watchNote.textContent = (readOnly ? 'Only the page’s owner can change the watchlist. ' : '') + 'Set a price to be told when the cheapest listing reaches it. Write prices like 1s 50c; a plain number means silver. ' +
-      (ids.some(function (id) { return hourSeries(id).length > 1; }) ? 'Hourly shows the price at each hourly read over the last day.' : '');
-    var h = '';
-    ids.sort(function (a, b) { return nm(a) < nm(b) ? -1 : 1; }).forEach(function (id) {
-      var w = WATCH[id] || {};
-      var set = '<div class="mk-wset">' +
-        '<label>Alert below<input class="mk-money" type="text" inputmode="decimal" autocomplete="off" data-w="lo" data-wid="' + id + '" value="' + (w.lo ? esc(money(w.lo)) : '') + '" placeholder="e.g. 1s 50c"' + (readOnly ? ' disabled' : '') + '></label>' +
-        '<label>Alert above<input class="mk-money" type="text" inputmode="decimal" autocomplete="off" data-w="hi" data-wid="' + id + '" value="' + (w.hi ? esc(money(w.hi)) : '') + '" placeholder="e.g. 4s"' + (readOnly ? ' disabled' : '') + '></label></div>';
-      h += matRow(id, dayLine(id) + set);
-    });
-    watchEl.innerHTML = h;
-  }
-  function renderPrices() { renderStatus(); renderAlerts(); renderDeals(); renderCraftList(); renderSell(); renderGlance(); renderWatch(); renderMats(); renderCrafts(); drawChart(); }
-  function renderGold() { renderAlerts(); renderSell(); renderGlance(); }
+  function renderPrices() { renderStatus(); renderAlerts(); renderDeals(); renderCraftList(); renderSell(); renderGlance(); renderHerb(); renderMats(); renderCrafts(); drawChart(); }
+  function renderGold() { renderAlerts(); renderSell(); renderGlance(); renderHerb(); }
 
   /* ---------- Chart: up to six items, as prices or rebased to 100 on each item's first day ---------- */
   var modeEls = $$('input[name="mkmode"]'), legendEl = $('#mk-legend'), tableEl = $('#mk-table'), chartNote = $('#mk-chart-note'), liveEl = $('#mk-live');
@@ -1122,43 +1093,9 @@
     el.innerHTML = h;
   }
 
-  /* ---------- Watchlist storage ---------- */
-  function cleanWatch(o) {
-    var out = {};
-    if (o && typeof o === 'object') Object.keys(o).forEach(function (k) {
-      if (!NAMES[k]) return;
-      var w = o[k] && typeof o[k] === 'object' ? o[k] : {};
-      out[k] = { lo: num(w.lo) || null, hi: num(w.hi) || null };
-    });
-    return out;
-  }
-  function saveWatch() {
-    if (!DBH || readOnly) { store.set('wowf-watch', WATCH); return; }
-    if (saving) { again = true; return; }
-    saving = true;
-    DBH.doc('config/watch').set({ items: cleanWatch(WATCH), at: new Date().toISOString() }).then(function () {
-      saving = false;
-      if (again) { again = false; saveWatch(); }
-    }, function (e) {
-      saving = false; again = false;
-      if (e && e.code === 'invalid_argument') { readOnly = true; WATCH = store.get('wowf-watch-server', {}) || {}; }
-      watchNote.textContent = readOnly ? 'Only the page’s owner can change the watchlist.' : 'Couldn’t save the watchlist just now. Try again in a moment.';
-      renderAlerts(); renderWatch(); renderMats(); renderCrafts();
-    });
-  }
-  function toggleWatch(id, listId) {
-    if (readOnly) return;
-    var wasIdx = listId === 'mk-watch' ? $$('#mk-watch [data-star]').map(function (b) { return +b.getAttribute('data-star'); }).indexOf(id) : -1;
-    if (WATCH[id]) delete WATCH[id]; else WATCH[id] = { lo: null, hi: null };
-    saveWatch(); renderAlerts(); renderWatch(); renderMats(); renderCrafts(); renderSell(); syncStars(id);
-    var b = listId ? $('#' + listId + ' [data-star="' + id + '"]') : null;
-    if (!b && listId === 'mk-watch') { var rest = $$('#mk-watch [data-star]'); b = rest[Math.min(Math.max(0, wasIdx), rest.length - 1)] || null; }
-    if (b) b.focus(); else if (listId === 'mk-watch') { watchNote.setAttribute('tabindex', '-1'); watchNote.focus(); }
-  }
-
   /* ---------- Events ---------- */
   function chartChanged(msg, focusSel) {
-    renderWatch(); renderMats(); renderCrafts(); drawChart();
+    renderMats(); renderCrafts(); drawChart();
     if (msg) announce(msg);
     if (focusSel) { var f = $(focusSel); if (f) f.focus(); }
   }
@@ -1191,8 +1128,6 @@
   document.addEventListener('click', function (e) {
     var t = e.target && e.target.closest ? e.target : null;
     if (!t) return;
-    var s = t.closest('[data-star]');
-    if (s && mPanel.contains(s)) { var ul = s.closest('ul'); toggleWatch(+s.getAttribute('data-star'), ul && ul.id ? ul.id : ''); return; }
     var x = t.closest('[data-unchart]');
     if (x && mPanel.contains(x)) {
       var gone = +x.getAttribute('data-unchart'), pos = chartIds.indexOf(gone);
@@ -1208,24 +1143,13 @@
     if (!b) return;
     var id = +b.getAttribute('data-item');
     if (!mPanel.contains(b)) { choose(id, true); return; }
-    if (alertList.contains(b) || (dealsEl && dealsEl.contains(b)) || (gcList && gcList.contains(b)) || (gsList && gsList.contains(b)) || (highEl && highEl.contains(b)) || (glanceEl && glanceEl.contains(b))) {
+    if (alertList.contains(b) || (dealsEl && dealsEl.contains(b)) || (gcList && gcList.contains(b)) || (gsList && gsList.contains(b)) || (highEl && highEl.contains(b)) || (glanceEl && glanceEl.contains(b)) || (herbOut && herbOut.contains(b))) {
       var owner = OTHER.filter(function (p) { return p.mats.indexOf(id) >= 0 || p.crafts.indexOf(id) >= 0; })[0];
       if (owner && owner.k !== prof && P().mats.indexOf(id) < 0 && P().crafts.indexOf(id) < 0) { prof = owner.k; profSel.value = prof; store.set('wowf-mkprof', prof); }
       choose(id, false);
       return;
     }
     toggleChart(id, b);
-  });
-  mPanel.addEventListener('change', function (e) {
-    var t = e.target;
-    if (!t || !t.classList.contains('mk-money')) return;
-    var id = +t.getAttribute('data-wid'), k = t.getAttribute('data-w'), v = parseMoney(t.value);
-    if (v === null) { t.setAttribute('aria-invalid', 'true'); watchNote.textContent = 'Write prices like 2s 50c, 75c or 1g 5s.'; return; }
-    t.removeAttribute('aria-invalid');
-    if (!WATCH[id]) return;
-    WATCH[id][k] = v || null;
-    t.value = v ? money(v) : '';
-    saveWatch(); renderAlerts();
   });
   if (sPanel) {
     sPanel.addEventListener('change', function (e) {
@@ -1350,8 +1274,7 @@
     if (rt) say.push(rt.charAt(0).toUpperCase() + rt.slice(1) + '.');
     h += '<p>' + esc(say.join(' ')) + '</p>' + rxSource(rid, e);
     var ids = [r[2]].concat(r[4].filter(function (x) { return GATHER[x[0]]; }).map(function (x) { return x[0]; }));
-    h += '<p class="gc-hist">Chart: ' + ids.map(function (id) { return itemBtn(id); }).join(' · ') + '</p>' +
-      '<p><button type="button" class="linkish gc-watch" data-star="' + r[2] + '" aria-pressed="' + !!WATCH[r[2]] + '">' + watchLabel(r[2]) + '</button></p>';
+    h += '<p class="gc-hist">Chart: ' + ids.map(function (id) { return itemBtn(id); }).join(' · ') + '</p>';
     return h;
   }
   /* Badges, as on the price lists: blue is something you know, green is money, gold is a vendor. */
@@ -1438,21 +1361,29 @@
     if (x.later) h += learnHtml(x.later.rid, x.id, x.later.profit, 'Coming up');
     return h;
   }
+  /* What one herb is worth to you: its sale value, plus its share of the craft's profit when crafting pays. */
+  function worthOf(x) {
+    if (x.act !== 'craft') return x.value || 0;
+    var use = RX[x.rid][4].filter(function (y) { return y[0] === x.id; })[0];
+    return (x.value || 0) + x.profit / (use ? use[1] : 1);
+  }
+  var gsMore = $('#gs-more'), gsAll = !!store.get('wowf-gsall', false);
   function renderSell() {
     if (!gsList || !gsStat) return;
-    if (!latest()) { gsList.innerHTML = ''; gsStat.textContent = loaded ? 'No prices yet.' : 'Waiting for prices…'; return; }
-    var plan = herbPlan(), sell = [], craft = [], high = 0;
-    Object.keys(plan).forEach(function (k) { var x = plan[k]; (x.act === 'craft' ? craft : sell).push(x); if (x.p && x.p.k === 'high') high++; });
-    var up = function (x) { return x.p ? x.p.c.pct : -9; };
-    sell.sort(function (a, b) { return up(b) - up(a) || (b.value || 0) - (a.value || 0); });
-    craft.sort(function (a, b) { return b.profit - a.profit; });
-    var h = '';
-    if (sell.length) h += '<li class="mk-group"><span class="label">Sell, highest against usual first</span></li>' + sell.map(function (x) { return matRow(x.id, sellExtra(x), sellWhy(x)); }).join('');
-    if (craft.length) h += '<li class="mk-group"><span class="label">Craft into potions</span></li>' + craft.map(function (x) { return matRow(x.id, sellExtra(x), sellWhy(x)); }).join('');
-    gsList.innerHTML = h;
-    gsStat.textContent = 'At Herbalism ' + herbSkill() + ': ' + sell.length + ' to sell and ' + craft.length + ' to craft into potions' +
-      (high ? '. ' + (high === 1 ? 'One is' : high + ' are') + ' selling high.' : '.');
+    if (!latest()) { gsList.innerHTML = ''; gsStat.textContent = loaded ? 'No prices yet.' : 'Waiting for prices…'; if (gsMore) gsMore.hidden = true; return; }
+    var plan = herbPlan(), all = Object.keys(plan).map(function (k) { return plan[k]; }), craft = 0, high = 0;
+    all.forEach(function (x) { x.w = worthOf(x); if (x.act === 'craft') craft++; if (x.p && x.p.k === 'high') high++; });
+    all.sort(function (a, b) { return b.w - a.w; });
+    gsList.innerHTML = (gsAll ? all : all.slice(0, 3)).map(function (x) { return matRow(x.id, sellExtra(x), sellWhy(x)); }).join('');
+    if (gsMore) {
+      gsMore.hidden = all.length <= 3;
+      gsMore.textContent = gsAll ? 'Show the top 3' : 'Show all ' + all.length;
+      gsMore.setAttribute('aria-expanded', gsAll ? 'true' : 'false');
+    }
+    gsStat.textContent = 'At Herbalism ' + herbSkill() + ': ' + (all.length - craft) + ' to sell and ' + craft + ' to craft into potions' +
+      (high ? ', and ' + (high === 1 ? 'one is' : high + ' are') + ' selling high' : '') + '. ' + (gsAll || all.length <= 3 ? 'All of them,' : 'The top 3,') + ' worth most first.';
   }
+  if (gsMore) gsMore.addEventListener('click', function () { gsAll = !gsAll; store.set('wowf-gsall', gsAll); renderSell(); gsMore.focus(); });
 
   if (gPanel) {
     gPanel.addEventListener('change', function (e) {
@@ -1492,6 +1423,76 @@
     dealsNote.textContent = list.length ? 'From the ' + snap + ' snapshot. Cheap listings go fast, so some may have sold since.' : 'Nothing far below its usual price in the ' + snap + ' snapshot.';
   }
 
+  /* ---------- Herb search: today's price, the best potion now and within 25 skill, and sell or make ---------- */
+  var herbForm = $('#mk-herb-form'), herbIn = $('#mk-herb-q'), herbOut = $('#mk-herb-out'), herbDl = $('#mk-herb-list');
+  var HERBS = Object.keys(HERB).map(Number).filter(function (id) { return NAMES[id]; }).sort(function (a, b) { return HERB[a] - HERB[b] || (nm(a) < nm(b) ? -1 : 1); });
+  if (herbDl) herbDl.innerHTML = HERBS.map(function (id) { return '<option value="' + esc(nm(id)) + '"></option>'; }).join('');
+  /* An exact name; with loose, the first herb whose name starts with (or holds) what was typed. */
+  function herbFind(q, loose) {
+    q = String(q || '').trim().toLowerCase();
+    if (!q) return null;
+    var hit = HERBS.filter(function (id) { return nm(id).toLowerCase() === q; })[0];
+    if (hit || !loose) return hit || null;
+    var pre = HERBS.filter(function (id) { return nm(id).toLowerCase().indexOf(q) === 0; });
+    return (pre.length ? pre : HERBS.filter(function (id) { return nm(id).toLowerCase().indexOf(q) >= 0; }))[0] || null;
+  }
+  /* The most profitable Alchemy recipe using a herb: known, learnable now, and within the next 25 skill. */
+  function herbUses(id) {
+    var cur = curFor('alch'), out = { known: null, learn: null, soon: null };
+    Object.keys(RX).forEach(function (rid) {
+      var r = RX[rid], use = r[1] === 'alch' ? r[4].filter(function (x) { return x[0] === id; })[0] : null;
+      if (!use) return;
+      var st = rxState(rid), k = st === 'known' ? 'known' : st === 'learn' ? 'learn' : r[5] > cur && r[5] <= cur + 25 ? 'soon' : null, e = k ? rxEval(rid) : null;
+      if (!e || e.miss) return;
+      if (!out[k] || e.profit > out[k].e.profit) out[k] = { rid: rid, e: e, n: use[1] };
+    });
+    return out;
+  }
+  function herbPotion(u, id, how) {
+    var r = RX[u.rid], rt = rateText(r[2]);
+    return rxLink(u.rid) + ': ' + netHtml(u.e.profit, 'its reagents') + esc(' (uses ' + u.n + ' ' + nm(id) + (r[3] > 1 ? ', makes ' + r[3] : '') + ').' +
+      (rt ? ' It ' + rt + '.' : '')) + (how ? '<span class="mk-learn">' + esc(learnText(u.rid, id, u.e.profit)) + '</span>' : '');
+  }
+  /* A recipe that would lose money: its name and the loss, and no more. */
+  function herbLoss(u, id, at) {
+    return rxLink(u.rid) + esc(at ? ' (Alchemy ' + RX[u.rid][5] + ')' : '') + ', ' + netHtml(u.e.profit, 'its reagents') + esc(' (uses ' + u.n + ' ' + nm(id) + ').');
+  }
+  function renderHerb() {
+    if (!herbOut || !herbIn) return;
+    var q = herbIn.value, id = herbFind(q, true);
+    if (!q.trim()) { herbOut.innerHTML = '<p class="note">Type a herb, like Earthroot or Briarthorn, to see its price today, the best potion you can make with it today, the best one within 25 Alchemy skill of yours, and whether to sell it or make it.</p>'; return; }
+    if (!id) { herbOut.innerHTML = '<p class="note">' + esc('No herb matches “' + q.trim() + '”. Try the start of its name.') + '</p>'; return; }
+    if (!loaded || !latest()) { herbOut.innerHTML = '<p class="note">' + (loaded ? 'No prices yet.' : 'Waiting for prices…') + '</p>'; return; }
+    var n = now(id), s = n ? sellNet(id) : null, p = pos(id), cur = curFor('alch'), u = herbUses(id), k = u.known, l = u.learn, h = '';
+    h += '<p class="mk-herb-price"><span class="mk-name">' + swatch(id) + itemBtn(id, onChart(id)) + '</span>' + (n ? ' <span class="mk-herb-p">' + money(n.price) + '</span> ' +
+      esc('each for the cheapest 20' + (n.min != null && n.min < n.price ? ', cheapest ' + money(n.min) : '') + (n.qty != null ? ', ' + n.qty.toLocaleString('en-GB') + ' listed' : '')) : ' ' + esc('None listed today.')) +
+      (p ? ' · ' + posHtml(p) : '') + '</p>' + dayLine(id);
+    var make = k && k.e.profit >= Math.max(2, k.e.herbs * 0.1), rec;
+    if (make) rec = '<span class="chip mk-verdict blue">Make</span> ' + rxLink(k.rid) + ': ' + netHtml(k.e.profit, 'its reagents') + '.';
+    else rec = '<span class="chip mk-verdict ok">Sell</span> ' + esc((s != null ? money(s) + ' each after the cut. ' : 'There’s no price to sell at today. ') +
+      (k ? 'The best potion you know with it, ' + RX[k.rid][0] + ', ' + (k.e.profit > 0 ? 'nets only +' + money(k.e.profit) + ' a craft over selling its reagents, not worth the time.' : 'is worth less than its reagents sold separately.') : 'No potion you know uses it.'));
+    if (l && l.e.profit >= Math.max(2, l.e.herbs * 0.1) && (!make || l.e.profit > k.e.profit * 1.1 + 2)) rec += ' ' + esc(make ? 'Better still, learn' : 'Or learn') + ' ' + rxLink(l.rid) + esc(' today for a net +' + money(l.e.profit) + ' a craft.');
+    h += '<p class="mk-herb-rec">' + rec + '</p><dl class="mk-herb-dl">';
+    var best = l && (!k || l.e.profit > k.e.profit) ? l : k, soon = u.soon;
+    h += '<dt>Best potion today</dt><dd>' + (!best ? esc('None you know or can learn uses it.') :
+      best.e.profit >= 0 ? herbPotion(best, id, best === l) + (best === l ? '' : esc(' You know it.')) :
+      esc('None makes a profit with ' + nm(id) + ' today. Closest: ') + herbLoss(best, id) + esc(best === l ? ' You can learn it now.' : ' You know it.')) + '</dd>';
+    if (best === l && k && l.e.profit >= 0) h += '<dt>Best you already know</dt><dd>' + (k.e.profit >= 0 ? herbPotion(k, id, false) : herbLoss(k, id)) + '</dd>';
+    h += '<dt>' + esc('Within 25 skill (Alchemy ' + (cur + 1) + ' to ' + (cur + 25) + ')') + '</dt><dd>' + (!soon ? esc('Nothing new uses ' + nm(id) + ' before Alchemy ' + (cur + 25) + '.') :
+      soon.e.profit >= 0 ? herbPotion(soon, id, true) : esc('Nothing new makes a profit with it before Alchemy ' + (cur + 25) + '. Closest: ') + herbLoss(soon, id, true)) + '</dd></dl>';
+    herbOut.innerHTML = h;
+  }
+  if (herbIn) herbIn.value = store.get('wowf-herbq', '') || '';
+  if (herbForm) herbForm.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var id = herbFind(herbIn.value, true);
+    if (id) herbIn.value = nm(id);
+    store.set('wowf-herbq', herbIn.value); renderHerb();
+  });
+  if (herbIn) herbIn.addEventListener('input', function () {
+    if (!herbIn.value.trim() || herbFind(herbIn.value, false)) { store.set('wowf-herbq', herbIn.value); renderHerb(); }
+  });
+
   /* ---------- At a glance: the best of each list, at the top of the Gold tab ---------- */
   var glanceEl = $('#mk-glance-list');
   function glanceRow(k, body, at, go) {
@@ -1505,9 +1506,8 @@
       : esc(plural(dl.length, 'listing') + ' far below usual. Best: ') + itemBtn(b.id) + esc(' at ' + money(b.n.min) + ', usually ' + money(b.u) + ', about +' + money(b.gain) + ' each after the cut' + (b.units > 1 ? ' on up to ' + Math.min(b.units, 20) : '') + '.' + dealCaution(b.id)),
       '#mk-deals-block', 'Under-priced listings');
     h += glanceRow('Selling high', days.length < 4 ? 'Starts once there are a few days of prices to compare.' : !hi.length ? 'None of your herbs or potions is 15% or more above its usual price.'
-      : hi.slice(0, 4).map(function (x) { return itemBtn(x.id) + ' <span class="mk-up"><span aria-hidden="true">▲</span>' + Math.round(x.c.pct * 100) + '%<span class="vh"> above usual</span></span>'; }).join(', ') +
-        (hi.length > 4 ? esc(' and ' + (hi.length - 4) + ' more') : '') + '.',
-      '#mk-alerts-block', 'Price alerts');
+      : hi.slice(0, 3).map(function (x) { return itemBtn(x.id) + ' <span class="mk-up"><span aria-hidden="true">▲</span>' + Math.round(x.c.pct * 100) + '%<span class="vh"> above usual</span></span>'; }).join(', ') + '.',
+      '#mk-high-block', 'Selling high');
     h += glanceRow('Best craft', !t ? 'Nothing you know or can learn makes a profit right now, so sell your herbs.'
       : '<button type="button" class="linkish" data-rxgo="' + t.rid + '">' + esc(RX[t.rid][0]) + '</button>' + esc(', +' + money(t.e.profit) + ' a craft' + (tc.length > 1 ? '. ' + tc.length + ' crafts make a profit.' : '.')),
       '#gc', 'What to craft');
@@ -1639,7 +1639,6 @@
   var tdPanel = document.getElementById('panel-today'), SEEN = null;
   function seenIds() {
     var ids = {};
-    Object.keys(WATCH).forEach(function (k) { ids[k] = 1; });
     PROFS[0].mats.concat(PROFS[0].crafts, PROFS[1].crafts).forEach(function (k) { if (typeof k === 'number') ids[k] = 1; });
     return Object.keys(ids).map(Number).filter(function (id) { return NAMES[id]; });
   }
@@ -1672,11 +1671,11 @@
       var id = +k, n = now(id), was = num(base.p[k]);
       if (!n || n.price == null || !was || (n.qty || 0) < 10) return;
       var c = (n.price - was) / was;
-      if (Math.abs(c) >= 0.15 && Math.abs(n.price - was) >= 5) moves.push({ id: id, c: c, was: was, p: n.price, w: WATCH[id] ? 1 : 0 });
+      if (Math.abs(c) >= 0.15 && Math.abs(n.price - was) >= 5) moves.push({ id: id, c: c, was: was, p: n.price });
     });
-    moves.sort(function (a, b) { return b.w - a.w || Math.abs(b.c) - Math.abs(a.c); });
+    moves.sort(function (a, b) { return Math.abs(b.c) - Math.abs(a.c); });
     moves.slice(0, 5).forEach(function (m) {
-      out.push('<li>' + itemBtn(m.id) + (m.w ? ' <span aria-hidden="true">★</span><span class="vh">(watched)</span>' : '') + ' ' + (m.c > 0 ? 'up ' : 'down ') + Math.round(Math.abs(m.c) * 100) + '%: ' + money(m.was) + ' → <b>' + money(m.p) + '</b></li>');
+      out.push('<li>' + itemBtn(m.id) + ' ' + (m.c > 0 ? 'up ' : 'down ') + Math.round(Math.abs(m.c) * 100) + '%: ' + money(m.was) + ' → <b>' + money(m.p) + '</b></li>');
     });
     var hf = hotfixAt();
     if (hf && base.hf && hf > base.hf) out.push('<li>New hotfix notes on the <button type="button" class="linkish" data-goto="updates">Updates tab</button>.</li>');
@@ -1781,7 +1780,6 @@
   }
   suPick.checked = !!store.get('wowf-skpick', false);
   hzAll.checked = !!store.get('wowf-hzall', false);
-  WATCH = cleanWatch(store.get('wowf-watch', {}));
   fillSkillProfs(); fillInputs();
   function renderAll() {
     renderChar(); renderGear(); renderPrices(); renderSkill(); renderZones(); renderBonus(); renderFresh(); renderToday();
@@ -1804,12 +1802,6 @@
       .sort(function (a, b) { return a.d < b.d ? -1 : (a.d > b.d ? 1 : 0); });
     renderAll();
   }
-  function onWatch(snap) {
-    var d = snap && snap.exists ? snap.data() : null;
-    var items = cleanWatch(d && d.items);
-    store.set('wowf-watch-server', items);
-    if (!saving && !again) { WATCH = items; store.set('wowf-watch', WATCH); renderAlerts(); renderWatch(); renderMats(); renderCrafts(); }
-  }
   function onChar(snap) {
     var d = snap && snap.exists ? snap.data() : null;
     if (!d || !d.name) return;
@@ -1828,7 +1820,7 @@
   function onSpeed(snap) {
     SPD = snap.docs.map(function (doc) { var v = doc.data() || {}; return { at: String(v.at || ''), w: num(v.w), u: v.u && typeof v.u === 'object' ? v.u : {} }; })
       .filter(function (x) { return x.w && x.w <= 180 && !isNaN(Date.parse(x.at)); });
-    renderMats(); renderWatch(); renderCrafts(); renderCraftList(); renderGold();
+    renderMats(); renderCrafts(); renderCraftList(); renderGold();
   }
   function onHourly(snap) {
     var d = snap && snap.exists ? snap.data() : null, t = [], b = {};
@@ -1838,7 +1830,7 @@
       else t = [];
     }
     HOURLY = { t: t, b: b };
-    renderWatch();
+    renderHerb();
   }
   function onGearCfg(snap) {
     var d = snap && snap.exists ? snap.data() : null;
@@ -1858,8 +1850,8 @@
   /* ---------- Where the data comes from ----------
      Prices, the hourly reads, the character and the sell-speed samples are read from data/latest.json, next to this
      page. The GitHub Actions refresh writes it at five to every hour, day and night. (The
-     Claude artifact copy is no longer updated, since 12 Nov 2026.) Settings (watchlist,
-     gear stat, quest ticks) are saved in the artifact's database when the page runs inside Claude. Anywhere else
+     Claude artifact copy is no longer updated, since 12 Nov 2026.) Settings (gear stat,
+     quest ticks) are saved in the artifact's database when the page runs inside Claude. Anywhere else
      they start from the copies in data/latest.json, and changes stay in this browser. */
   var LOCAL = 'wowf-local:';
   function fileDb(files, live) {
@@ -1931,7 +1923,6 @@
       db.collection('speed').orderBy('at', 'desc').limit(24).onSnapshot(onSpeed, function () {});
       db.doc('hourly/recent').onSnapshot(onHourly, function () {});
     } else fail('Prices couldn’t load. Try opening the page again later.');
-    db.doc('config/watch').onSnapshot(onWatch, function () {});
     db.doc('config/quests').onSnapshot(onQuests, function () {});
     db.doc('config/gear').onSnapshot(onGearCfg, function () {});
   });

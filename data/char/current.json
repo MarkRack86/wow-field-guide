@@ -1,10 +1,10 @@
 {
-  "at": "2026-11-14T05:55:03Z",
+  "at": "2026-11-14T08:43:14Z",
   "cls": "Shaman",
   "faction": "Horde",
   "gear": {
     "spec": "str",
-    "lvl": 18,
+    "lvl": 19,
     "slots": {
       "SHOULDER": {
         "cur": [],
@@ -15,56 +15,54 @@
             "Double-Stitched Woolen Shoulders",
             "U",
             17,
-            448,
+            400,
             2.5,
             "+4 Sta, +4 spell power, 27 armor"
-          ]
+          ],
+          [4251,"Hillman's Shoulders","U",21,989,3.4,"+5 Sta, +3 Spi, 65 armor"]
         ]
       },
       "BACK": {
         "cur": [[1733,"Worn Cloak","P",15,0.3]],
         "up": [
-          [2308,"Fine Leather Cloak","U",10,266,0.7,"+2 Sta, 14 armor"],
-          [2316,"Dark Leather Cloak","U",17,400,3.6,"+2 Str, +3 Agi, 18 armor"]
+          [2308,"Fine Leather Cloak","U",10,267,0.7,"+2 Sta, 14 armor"],
+          [2316,"Dark Leather Cloak","U",17,424,3.6,"+2 Str, +3 Agi, 18 armor"]
         ]
       },
       "CHEST": {
         "cur": [[15304,"Grizzly Jerkin of Strength","U",16,5.4]],
-        "up": [[5781,"Murloc Scale Breastplate","U",14,2025,2.6,"+5 Str, +3 Agi, 76 armor"]]
+        "up": [[5781,"Murloc Scale Breastplate","U",14,2000,2.6,"+5 Str, +3 Agi, 76 armor"]]
       },
       "WRIST": {
         "cur": [[15453,"Savannah Bracers","U",18,1.7]],
         "up": [
           [4795,"Bear Bracers","U",20,3000,0.8,"+5 Sta, 37 armor"],
-          [4794,"Wolf Bracers","U",20,5000,1.7,"+4 Agi, +2 Sta, 37 armor"]
+          [4794,"Wolf Bracers","U",20,10000,1.7,"+4 Agi, +2 Sta, 37 armor"]
         ]
       },
       "HANDS": {
         "cur": [[3286,"Tribal Gloves","C",12,0.7]],
         "up": [
-          [4239,"Embossed Leather Gloves","U",8,109,1.0,"+1 Agi, +1 Sta, 41 armor"],
-          [7285,"Nimble Leather Gloves","U",19,585,3.7,"+4 Agi, +4 Sta, 52 armor"],
-          [7348,"Fletcher's Gloves","U",20,999,17.2,"1.4% crit, 53 armor"]
+          [4239,"Embossed Leather Gloves","U",8,100,1.0,"+1 Agi, +1 Sta, 41 armor"],
+          [7285,"Nimble Leather Gloves","U",19,588,3.7,"+4 Agi, +4 Sta, 52 armor"],
+          [7348,"Fletcher's Gloves","U",20,997,17.2,"1.4% crit, 53 armor"]
         ]
       },
       "WAIST": {
         "cur": [[5275,"Binding Girdle","U",15,1.2]],
         "up": [
           [4246,"Fine Leather Belt","U",11,200,1.3,"+2 Agi, +2 Sta, 40 armor"],
-          [4249,"Dark Leather Belt","U",20,703,3.2,"+4 Agi, +4 Sta, 48 armor"],
+          [4249,"Dark Leather Belt","U",20,700,3.2,"+4 Agi, +4 Sta, 48 armor"],
           [6468,"Deviate Scale Belt","R",18,10100,7.4,"+3 Str, +5 Agi, +6 Sta, 51 armor"]
         ]
       },
-      "LEGS": {
-        "cur": [[15450,"Dredgemire Leggings","U",18,2.6]],
-        "up": [
-          [7282,"Light Leather Pants","U",14,595,2.3,"+5 Agi, +3 Sta, 66 armor"],
-          [5961,"Dark Leather Pants","U",18,1089,2.8,"+8 Agi, 72 armor"]
-        ]
-      },
+      "LEGS": {"cur":[[5327,"Greasy Tinker's Pants","U",18,5.8]],"up":[]},
       "FEET": {
         "cur": [[4942,"Tiger Hide Boots","C",12,0.8]],
-        "up": [[2307,"Fine Leather Boots","U",13,200,2.4,"+3 Agi, +2 Sta, 51 armor"]]
+        "up": [
+          [2309,"Embossed Leather Boots","U",10,230,1.2,"+2 Sta, +2 spell power, 48 armor"],
+          [2307,"Fine Leather Boots","U",13,300,2.4,"+3 Agi, +2 Sta, 51 armor"]
+        ]
       },
       "FINGER": {"cur":[[281268,"Depleted Ritual Band","C",9,0.0]],"up":[]},
       "MAIN_HAND": {
@@ -76,8 +74,8 @@
   },
   "guild": null,
   "ilvl": 8,
-  "level": 18,
-  "login": 1794615829000,
+  "level": 19,
+  "login": 1794637802000,
   "name": "Brakka",
   "profs": [
     [
@@ -106,7 +104,7 @@
         54211
       ]
     ],
-    ["Herbalism",134,150,[1419,54115,52642]],
+    ["Herbalism",140,150,[1419,54115,52642]],
     [
       "Cooking",
       93,
@@ -133,6 +131,7 @@
     "Camping 101: First Aid",
     "Camping 101: Fishing",
     "Carry Your Weight",
+    "Chen's Empty Keg",
     "Chol'aruk the Ravener",
     "Conscript of the Horde",
     "Crossroads Conscription",
@@ -140,6 +139,7 @@
     "Dark Storms",
     "Disrupt the Attacks",
     "Doras the Wind Rider Master",
+    "Echeyakee",
     "Encroachment",
     "Favorite Food",
     "For Honor",
@@ -147,6 +147,7 @@
     "From The Wreckage....",
     "Fungal Spores",
     "Galgar's Cactus Apple Surprise",
+    "Harpy Lieutenants",
     "Harpy Raiders",
     "Hidden Enemies",
     "Ignition",
@@ -158,9 +159,11 @@
     "Minshina's Skull",
     "Need for a Cure",
     "Neeru Fireblade",
+    "Nugget Slugs",
     "Plainstrider Menace",
     "Practical Prey",
     "Prowlers of the Barrens",
+    "Raptor Horns",
     "Raptor Thieves",
     "Report to Orgnil",
     "Report to Sen'jin Village",
@@ -186,6 +189,7 @@
     "The Adventurer",
     "The Demon Seed",
     "The Disruption Ends",
+    "The Escape",
     "The Forgotten Pools",
     "The Great Outdoors",
     "The Last Element",
@@ -197,6 +201,7 @@
     "Thwarting Kolkar Aggression",
     "Vanquish the Betrayers",
     "Vile Familiars",
+    "Vrang's Game",
     "Wayward Weapons",
     "Wenikee Boltbucket",
     "Wharfmaster Dizzywig",
@@ -210,22 +215,22 @@
     "Arachnophobia",
     "Avenge My Village",
     "Battle of Warsong Gulch",
+    "Bruised Pride and Lion Hides",
     "Consumed by Hatred",
     "Deepmoss Spider Eggs",
-    "Echeyakee",
     "Egg Hunt",
     "Goblin Invaders",
-    "Harpy Lieutenants",
     "Lost in Battle",
     "Miner's Fortune",
-    "Nugget Slugs",
     "Parts and Pieces",
-    "Raptor Horns",
     "Report to Kadrak",
+    "Rilli Greasygob",
+    "Serena Bloodfeather",
     "Serpentbloom",
+    "Smart Drinks",
     "Southsea Freebooters",
     "Stolen Silver",
-    "The Escape",
+    "The Angry Scytheclaws",
     "The Guns of Northwatch",
     "The Stagnant Oasis",
     "Tribes at War",
@@ -236,19 +241,22 @@
   ],
   "race": "Orc",
   "reps": [
-    ["Everlook","Neutral",1090,3000],
-    ["Thunder Bluff","Friendly",925,6000],
-    ["Ratchet","Neutral",2080,3000],
-    ["Orgrimmar","Honored",1282,12000],
-    ["Darkspear Trolls","Friendly",4926,6000],
-    ["Booty Bay","Neutral",1090,3000],
+    ["Everlook","Neutral",1265,3000],
+    ["Thunder Bluff","Friendly",1081,6000],
+    ["Ratchet","Neutral",2430,3000],
+    ["Orgrimmar","Honored",1757,12000],
+    ["Darkspear Trolls","Friendly",5082,6000],
+    ["Booty Bay","Neutral",1265,3000],
     ["Durotar Supply and Logistics","Neutral",2000,3000],
-    ["Gadgetzan","Neutral",1090,3000],
-    ["Undercity","Neutral",1325,3000],
-    ["Powderfuse","Neutral",1090,3000]
+    ["Gadgetzan","Neutral",1265,3000],
+    ["Undercity","Neutral",1481,3000],
+    ["Powderfuse","Neutral",1265,3000]
   ],
   "ruleset": "Normal",
   "surname": "Keltorra",
-  "talents": [["Enhancement",5,[["Thundering Strikes",5]]],["Restoration",4,[["Tidal Focus",4]]]],
-  "xp": 15939
+  "talents": [
+    ["Enhancement",6,[["Thundering Strikes",5],["Mental Dexterity",1]]],
+    ["Restoration",4,[["Tidal Focus",4]]]
+  ],
+  "xp": 10013
 }

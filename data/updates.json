@@ -1,11 +1,92 @@
 {
-  "checked": "2026-11-13T05:06:29Z",
+  "checked": "2026-11-14T05:12:25Z",
   "entries": [
+    {
+      "date": "2026-11-13",
+      "label": "Fri 13 Nov",
+      "chips": ["Hotfixes"],
+      "state": "new",
+      "title": "No dungeon XP if a monster is grey to anyone in your group, plus spawn and quest fixes",
+      "blocks": [
+        {
+          "heading": "Dungeons",
+          "items": [
+            "In dungeons, nobody in the group gets XP for a kill if the monster is grey (too low to give XP) to any member. So you get no XP from runs with a much higher-level player in the group.",
+            "The Drowned City: monsters other than bosses now respawn after 2 hours, up from 1 hour.",
+            "The Deadmines: Sneed now jumps out of Sneed's Shredder properly, even if it is stunned when it dies.",
+            "Pix Xizzix's weekly dungeon quests now leave your quest log at the weekly reset, as they should."
+          ]
+        },
+        {
+          "heading": "Classes",
+          "items": [
+            "Shaman: Windfury Totem now triggers from all melee abilities, even ones that don't involve your main-hand weapon. The off-hand strike of abilities like Whirlwind or Mutilate can't trigger it, but their main-hand strike can.",
+            "Stuns between players and creatures now have diminishing returns, as intended. If a creature stuns you again and again, each stun gets shorter. The same goes for stuns you keep putting on a creature.",
+            "Druid: For Restoration, Wild Growth can no longer be cast while moving. It now gets twice as much from your healing power: 6.6%, up from 3.3%.",
+            "Mage: Damage from procs and from Blizzard now breaks Frost Nova, as it should.",
+            "Paladin: Judgement of Command now counts as a melee attack and can set off on-hit effects. All other Judgements are still ranged attacks.",
+            "Priest: The Legacy Perk The Quick and the Dead now lowers the mana cost of Divine Spirit, as it should.",
+            "Warlock: Siphon Life Rank 1 can no longer be cast while you are silenced."
+          ]
+        },
+        {
+          "heading": "Monsters and spawns",
+          "items": [
+            "Stranglethorn Vale: tigers, panthers and raptors now spawn more often.",
+            "Badlands: Lesser Rock Elementals now spawn more often.",
+            "Gnomeregan: Techbot now respawns faster for \"Save Techbot's Brain!\".",
+            "Mulgore: Quillboar and Venture Co. now spawn less often in the starting area.",
+            "Eastern Plaguelands and Stratholme: monsters should no longer attack you unexpectedly. This happened most often when you came back to life.",
+            "Blasted Lands: the Nethergarde Keep guards no longer drop loot.",
+            "Zephras Isle: Nyalah Brightfire in Valanaar now has a wider range of cooking supplies."
+          ]
+        },
+        {
+          "heading": "Quests",
+          "items": [
+            "These quest items now drop for everyone in your group who has the quest: Deadwood Key, Drop of Stolen Life, Ring of the Fallen Soldier, Venom-dripping heart and Blackthorne Intelligence.",
+            "\"Coyote Huntin'\": Sootfur's pelt is now shared with your whole group.",
+            "\"A Quick Grocery Run\": everyone can now read Skonk's list.",
+            "\"Crate Expectations\": the Unstable Package can no longer go off while you're on a flight path, and its misfire does less damage.",
+            "\"Return to the Port\": picking it up no longer deletes nearby players' items for \"The Cook in the Cage\".",
+            "Rogue: On \"The Talisman of Kazdor\", you no longer enter the wrong version of Zul'Farrak.",
+            "Mount Hyjal: the Crow Effigy now shows up when you meet the quest's requirements.",
+            "Riverglades: Jezap Jinglesprocket now offers quests to players working towards the Bloodmaster's Ring. \"Gaseous Gold\" now shows the right amount. Woodpiles can no longer be looted unless you're on their quests.",
+            "Feralas: several problems with \"Gordunni Cobalt\" are fixed.",
+            "Undercity and Stormwind: Owen Thadd and Garion Wendell accept books again."
+          ]
+        },
+        {
+          "heading": "Items",
+          "items": [
+            "Channeler's Ring now gives spell power instead of Spirit, and Blessed Band of Light no longer gives hit. Until the raids open, you can swap a Blessed Band of Light for a Channeler's Ring. The swap is the first item on Pix Xizzix's vendor list, and it can't be undone.",
+            "Taran Icebreaker now works as a two-handed mace, as intended.",
+            "The Glimmering Mithril Insignia trinket no longer needs you to be able to wear mail.",
+            "The Horde's Darkspear signet rings now give the same mana regeneration as the matching Alliance rings.",
+            "Stats are fixed on Everstaring Abomination Eye, The Bad Hat and The Souvenir Sea Shell."
+          ]
+        },
+        {
+          "heading": "Fishing and the interface",
+          "items": [
+            "Stranglethorn Fishing Extravaganza: far more players on each ruleset can now win the weekly tournament. Blizzard is still working on the tournament's performance problems, with more fixes in the coming weeks.",
+            "If you have Secondary Talents, your action bar settings no longer reset every time you log out."
+          ]
+        },
+        {
+          "heading": "Also",
+          "items": [
+            "The Auction House and mail changes are still due with the weekly maintenance on Wed 18 Nov in Europe, and on Tue 17 Nov in the Americas. Until then the smallest deposit is 1 silver for each listing.",
+            "Still no word on the proper fix for boats and zeppelins, on restoring progress lost in the 9 Nov outage, or on when Item Restoration will be switched back on."
+          ]
+        }
+      ]
+    },
     {
       "date": "2026-11-12",
       "label": "Thu 12 Nov",
       "chips": ["Hotfixes"],
-      "state": "new",
+      "state": "",
       "title": "Shaman changes go live, two days late",
       "blocks": [
         {
@@ -403,6 +484,14 @@
     }
   ],
   "sources": [
+    {
+      "title": "Blizzard forums: WoW: Forever Hotfixes, 13 Nov 2026",
+      "url": "https://us.forums.blizzard.com/en/wow/t/wow-forever-hotfixes-november-13-2026/2403040/10"
+    },
+    {
+      "title": "Blizzard: WoW: Forever Hotfixes, 13 Nov 2026",
+      "url": "https://news.blizzard.com/en-us/article/24315281/wow-forever-hotfixes-november-13-2026"
+    },
     {
       "title": "Blizzard EU forums: the Shaman changes went live on 12 Nov",
       "url": "https://eu.forums.blizzard.com/en/wow/t/wow-forever-hotfixes-november-11-2026/639885/8"

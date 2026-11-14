@@ -1,21 +1,23 @@
 {
  "refresh": {
-  "at": "2026-11-14T05:00:22Z",
+  "at": "2026-11-14T05:55:06Z",
   "ok": true,
   "date": "2026-11-14",
-  "snapshot": "2026-11-14T04:18:53Z",
+  "snapshot": "2026-11-14T05:18:53Z",
   "new": true,
-  "items": 406,
+  "items": 408,
   "of": 463,
-  "alerts": 18,
-  "phone": "1 alert not sent: no NTFY_TOPIC secret",
+  "alerts": 15,
+  "phone": "nothing to send",
   "character": "synced",
   "level": 18,
   "notes": []
  },
  "speed": {
-  "at": "2026-11-14T05:00:22Z",
-  "ok": false,
-  "reason": "the last run was 360 minutes earlier; sell speed needs runs 30 minutes to 3 hours apart"
+  "at": "2026-11-14T05:55:06Z",
+  "ok": true,
+  "id": "2026-11-14T05",
+  "units": 37114,
+  "minutes": 60
  }
 }

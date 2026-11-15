@@ -1,5 +1,5 @@
 {
-  "at": "2026-11-15T19:55:04Z",
+  "at": "2026-11-15T20:55:04Z",
   "cls": "Shaman",
   "faction": "Horde",
   "gear": {
@@ -19,17 +19,17 @@
             2.5,
             "+4 Sta, +4 spell power, 27 armor"
           ],
-          [4251,"Hillman's Shoulders","U",21,800,3.4,"+5 Sta, +3 Spi, 65 armor"]
+          [4251,"Hillman's Shoulders","U",21,874,3.4,"+5 Sta, +3 Spi, 65 armor"]
         ]
       },
       "BACK": {
         "cur": [[5343,"Barkeeper's Cloak","U",18,1.4]],
-        "up": [[2316,"Dark Leather Cloak","U",17,400,2.5,"+2 Str, +3 Agi, 18 armor"]]
+        "up": [[2316,"Dark Leather Cloak","U",17,408,2.5,"+2 Str, +3 Agi, 18 armor"]]
       },
       "CHEST": {
         "cur": [[15304,"Grizzly Jerkin of Strength","U",16,5.4]],
         "up": [
-          [6263,"Blue Overalls","U",15,2000,0.7,"+4 Str, +4 Sta, 34 armor"],
+          [6263,"Blue Overalls","U",15,1600,0.7,"+4 Str, +4 Sta, 34 armor"],
           [5781,"Murloc Scale Breastplate","U",14,2399,2.6,"+5 Str, +3 Agi, 76 armor"]
         ]
       },
@@ -43,9 +43,9 @@
       "HANDS": {
         "cur": [[3286,"Tribal Gloves","C",12,0.7]],
         "up": [
-          [4239,"Embossed Leather Gloves","U",8,107,1.0,"+1 Agi, +1 Sta, 41 armor"],
-          [7285,"Nimble Leather Gloves","U",19,570,3.7,"+4 Agi, +4 Sta, 52 armor"],
-          [7348,"Fletcher's Gloves","U",20,670,17.2,"1.4% crit, 53 armor"]
+          [4239,"Embossed Leather Gloves","U",8,109,1.0,"+1 Agi, +1 Sta, 41 armor"],
+          [7285,"Nimble Leather Gloves","U",19,580,3.7,"+4 Agi, +4 Sta, 52 armor"],
+          [7348,"Fletcher's Gloves","U",20,689,17.2,"1.4% crit, 53 armor"]
         ]
       },
       "WAIST": {
@@ -59,7 +59,7 @@
       "LEGS": {"cur":[[5327,"Greasy Tinker's Pants","U",18,5.8]],"up":[]},
       "FEET": {
         "cur": [[4942,"Tiger Hide Boots","C",12,0.8]],
-        "up": [[2307,"Fine Leather Boots","U",13,238,2.4,"+3 Agi, +2 Sta, 51 armor"]]
+        "up": [[2307,"Fine Leather Boots","U",13,210,2.4,"+3 Agi, +2 Sta, 51 armor"]]
       },
       "FINGER": {"cur":[[281268,"Depleted Ritual Band","C",9,0.0]],"up":[]},
       "MAIN_HAND": {

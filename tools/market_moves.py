@@ -102,6 +102,7 @@ known = {r for p in ch.get("profs", []) if len(p) > 3 for r in p[3]}
 mine = {i for i, s in HERB.items() if s <= skill.get("Herbalism", 0)}
 mine |= {r[2] for rid, r in RX.items() if r[1] == "alch" and (int(rid) in known or (r[7] == "auto" and "Alchemy" in skill))}
 print(f"\nYour herbs and potions selling high (15% and 5c above usual), Herbalism {skill.get('Herbalism', 0)}:")
+print("  (The page leaves out potions that would still lose money to craft at this price; this list doesn't check that.)")
 for i in sorted(mine):
     n, u = point(cur, i), usual(i)
     if not n or not u or (n["qty"] or 0) < 10 or n["price"] - u < 5 or (n["price"] - u) / u < 0.15:

@@ -473,13 +473,15 @@
     if (p.k === 'low') return '<span class="chip">Low</span> ' + esc(r + '% below its usual ' + money(p.c.base));
     return '<span class="chip">Normal</span> ' + esc('usually ' + money(p.c.base));
   }
-  /* Yours and selling high: 15% and 5c or more above usual, with at least ten listed. */
+  /* Yours and selling high: 15% and 5c or more above usual, with at least ten listed. A potion counts only while
+     crafting it makes a profit over selling its reagents separately, even at the high price. */
   function sellHigh() {
     var m = mine(), out = [];
     Object.keys(m).forEach(function (k) {
-      var id = +k, n = now(id), c = change(id);
+      var id = +k, n = now(id), c = change(id), mb = null;
       if (!n || !c || c.pct < HIGH || c.diff < 5 || (n.qty || 0) < 10) return;
-      out.push({ id: id, c: c, n: n, how: m[k] });
+      if (m[k] === 'make' && (!(mb = makeBest(id)) || mb.profit <= 0)) return;
+      out.push({ id: id, c: c, n: n, how: m[k], mb: mb });
     });
     return out.sort(function (a, b) { return b.c.pct - a.c.pct; });
   }
@@ -500,11 +502,8 @@
   }
   function highWhy(x, plan) {
     var up = Math.round(x.c.pct * 100) + '% above its usual ' + money(x.c.base), h = plan[x.id];
-    if (x.how === 'make') {
-      var mb = makeBest(x.id);
-      return '<span class="chip mk-verdict ok">Sell</span> ' + esc(money(sellNet(x.id)) + ' each after the cut, ' + up + '.') +
-        (mb ? ' ' + netHtml(mb.profit, 'its reagents', true) + esc(mb.profit >= 0 ? ', so making more pays.' : ', so sell only what you have.') : '');
-    }
+    if (x.how === 'make') return '<span class="chip mk-verdict ok">Sell</span> ' + esc(money(sellNet(x.id)) + ' each after the cut, ' + up + '.') +
+      ' ' + netHtml(x.mb.profit, 'its reagents', true) + esc(', so making more pays.');
     if (h && h.act === 'sell') {
       var k = herbUses(x.id).known;
       return '<span class="chip mk-verdict ok">Sell</span> ' + esc(money(sellNet(x.id)) + ' each after the cut, ' + up + '.') +
@@ -630,7 +629,7 @@
     if (highEl && highNote) {
       highEl.innerHTML = hi.map(function (x) { return matRow(x.id, highExtra(x, plan), highWhy(x, plan)); }).join('');
       highNote.textContent = !loaded ? 'Waiting for prices…' : !latest() ? 'No prices yet.' : days.length < 4 ? 'This starts once there are a few days of prices to compare.'
-        : hi.length ? (hi.length === 1 ? 'One of yours is selling' : 'Your top ' + hi.length + ' selling') + ' 15% or more above usual, highest first.' : 'None of your herbs or potions is selling 15% or more above its usual price.';
+        : hi.length ? (hi.length === 1 ? 'One of yours is selling' : 'Your top ' + hi.length + ' selling') + ' 15% or more above usual, highest first.' : 'None of your herbs, or potions that pay to craft, is selling 15% or more above its usual price.';
     }
     var hits = tracked().filter(function (id) { return !skip[id]; }).map(function (id) { return { id: id, a: alertFor(id) }; }).filter(function (x) { return x.a; })
       .sort(function (x, y) { return Math.abs(y.a.c.pct) - Math.abs(x.a.c.pct); });

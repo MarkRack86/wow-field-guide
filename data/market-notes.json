@@ -1,6 +1,34 @@
 {
-  "checked": "2026-11-14T05:19:48Z",
+  "checked": "2026-11-15T05:12:45Z",
   "notes": [
+    {
+      "ids": [249726],
+      "date": "2026-11-15",
+      "text": "Forever’s new bar, smelted at Mining 275 from 2 Pitchblende and 1 Coal. Pitchblende is a scarce extra from ore nodes. Blacksmiths, Engineers and Enchanters use it. No hotfix has changed it.",
+      "source": "warcraft.wiki.gg",
+      "url": "https://warcraft.wiki.gg/wiki/Azerothium_Bar"
+    },
+    {
+      "ids": [248821],
+      "date": "2026-11-15",
+      "text": "Forever’s new herb. The wiki lists just two uses, both endgame Alchemy flasks: Natural Accuracy and Natural Aggression. No hotfix has changed it.",
+      "source": "warcraft.wiki.gg",
+      "url": "https://warcraft.wiki.gg/wiki/Demonsage"
+    },
+    {
+      "ids": [273085],
+      "date": "2026-11-15",
+      "text": "A camp blueprint that drops from Rath’mael in the Ruins of Lordaeron. It lets Alchemists with 140 skill make a Fermenter: placed at camp, it makes some reagents and works as a Mana Well. No hotfix has changed it.",
+      "source": "warcraft.wiki.gg",
+      "url": "https://warcraft.wiki.gg/wiki/Blueprint:_Fermenter"
+    },
+    {
+      "ids": [255729, 13491, 13456, 9296, 249431, 14530, 3823, 250941],
+      "date": "2026-11-15",
+      "text": "No hotfix has changed it. Blizzard’s hotfix list, up to its 13 Nov notes, doesn’t mention it, and nor does any Blizzard post since.",
+      "source": "Blizzard",
+      "url": "https://news.blizzard.com/en-us/article/24315281/wow-forever-hotfixes-november-13-2026"
+    },
     {
       "ids": [7080],
       "date": "2026-11-13",

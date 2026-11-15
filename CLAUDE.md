@@ -10,7 +10,7 @@
 
 ## The extra tabs: `plans.js` (added 15 Nov 2026)
 
-Consumables, Camp, Blueprints and Legacy are first versions built from Mark's list of ideas. Map (15 Nov, replacing a Bags tab Mark dropped) shows Wowhead's Forever world map in an iframe, loaded when the tab first opens, with an Open on Wowhead link in case Wowhead stops allowing frames. `market.js` shares its prices, recipes and character with them as `window.WOWF_M` and fires `wowf:prices` after each price render; `tools/build_offline.py` inlines `plans.js` too.
+Consumables, Camp, Blueprints and Legacy are first versions built from Mark's list of ideas. Map (15 Nov, replacing a Bags tab Mark dropped) is a link card that opens Wowhead's Forever world map in a new tab, with flight paths, boats, zeppelins, dungeons and raids switched on. Wowhead blocks its pages in frames on other sites (Mark saw a grey box on 15 Nov), so don't try an iframe again. `market.js` shares its prices, recipes and character with them as `window.WOWF_M` and fires `wowf:prices` after each price render; `tools/build_offline.py` inlines `plans.js` too.
 
 - Their facts are tables at the top of each section of `plans.js` (`KIT`, `FOOD`, `CAMP`, `SEEDS`, `LEG`, `PRESET`, `SCARCE`), each with a Sources line shown on its tab. Values marked Classic come from Classic data for recipes Forever kept; check a tooltip before relying on them.
 - Not published yet, so the tabs say so or ask: herbs per Greenhouse pick and Greenhouses per craft, what Unusual and Scarce seeds grow, each food's stat, the levels for Lesser Frenzy Potion and Elixir of Strength, Legacy tier point requirements, and the Legacy respec price (10 gold in one beta, rising per reset in another). Update the tables when guides confirm them.

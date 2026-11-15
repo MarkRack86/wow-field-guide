@@ -539,20 +539,8 @@
     ['Mobalytics: Bountiful Harvest', 'https://mobalytics.gg/wow-forever/guides/legacy-system-guide'], ['Gamerblurb: resetting Legacy', 'https://gamerblurb.com/guides/wow-forever-how-to-reset-legacy-points'],
     ['Warcraft Tavern: 8 Oct beta notes', 'https://www.warcrafttavern.com/forever/news/city-of-dalaran-dungeon-legacy-points-now-live-in-the-wow-forever-beta/']];
 
-  /* =====================================================================================================
-     Map: Wowhead's world map in a frame, loaded the first time the tab opens.
-     ===================================================================================================== */
-  var mapFrame = $('#map-frame'), mapFull = $('#map-full');
-  function loadMap() { if (mapFrame && !mapFrame.getAttribute('src')) mapFrame.setAttribute('src', mapFrame.getAttribute('data-src')); }
-  if (mapFull && !(document.fullscreenEnabled || document.webkitFullscreenEnabled)) mapFull.hidden = true;
-  if (mapFull) mapFull.addEventListener('click', function () {
-    var b = $('#map-box'), go = b && (b.requestFullscreen || b.webkitRequestFullscreen);
-    loadMap();
-    if (go) { try { go.call(b); return; } catch (x) {} }
-    window.open($('#map-open').href, '_blank', 'noopener');
-  });
-  document.addEventListener('wowf:tab', function (e) { if (e && e.detail && e.detail.token === 'map') loadMap(); });
-  if ($('#panel-map') && !$('#panel-map').hidden) loadMap();
+  /* Map: a plain link card in index.html. Wowhead won't let other sites show its map in a frame (tried 15 Nov 2026),
+     so there is no code for it here, only its search entry below. */
 
   /* ---------- Wiring ---------- */
   var PANELS = ['#panel-kit', '#panel-camp', '#panel-bp', '#panel-legacy'];
@@ -583,7 +571,7 @@
       { t: 'Crafting for tips', k: 'Blueprints', s: 'a fair tip and a trade chat line', go: go('blueprints', '#tip-rx') },
       { t: 'Legacy perks', k: 'Legacy', s: 'levelling and gathering loadouts', go: go('legacy', '#lg-trees') },
       { t: 'Bountiful Harvest', k: 'Legacy', s: 'is swapping it in worth it?', go: go('legacy', '#bh-n') },
-      { t: 'World map', k: 'Map', s: 'flight paths, boats, zeppelins, dungeons and raids', go: go('map', '#map-box') }
+      { t: 'World map', k: 'Map', s: 'flight paths, boats, zeppelins, dungeons and raids', go: go('map', '#map-open') }
     ];
     LEG.forEach(function (p) { out.push({ t: p[2], k: 'Legacy perk', s: p[5], go: go('legacy', '#lg-trees') }); });
     CAMP.forEach(function (c) { out.push({ t: c[2], k: 'Camp item', s: c[0] + ' ' + c[3], go: go(c[1] >= 2 ? 'blueprints' : 'camp', c[1] >= 2 ? '#bp-mine' : '#camp-items') }); });

@@ -20,7 +20,7 @@ The private Claude artifact copy is no longer updated (since 12 Nov 2026).
 | Path | What it is |
 |---|---|
 | `index.html`, `market.js` | The app |
-| `plans.js` | The Consumables, Camp, Blueprints, Legacy and Bags tabs (their facts and sources are in the file) |
+| `plans.js` | The Consumables, Camp, Blueprints, Legacy and Map tabs (their facts and sources are in the file; the map is Wowhead’s, in a frame) |
 | `refresh.py` | The refresh script (Python 3 standard library plus `curl`) |
 | `tools/ci_refresh.py` | What the workflow runs: refresh, file the results, commit; with `--hourly`, again at five to each hour for about five hours, then the next run takes over |
 | `tools/build_latest.py` | Rebuilds `data/latest.json` |

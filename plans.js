@@ -1,4 +1,4 @@
-/* WoW Forever Field Guide: the Consumables, Camp, Blueprints, Legacy and Bags tabs. First versions, 15 Nov 2026.
+/* WoW Forever Field Guide: the Consumables, Camp, Blueprints, Legacy and Map tabs. First versions, 15 Nov 2026.
    Prices, recipes and your character come from market.js (window.WOWF_M). Facts come from the guides in each tab's
    Sources line; where they only cover Classic, or nobody has published a number yet, the tab says so. */
 (function () {
@@ -540,126 +540,22 @@
     ['Warcraft Tavern: 8 Oct beta notes', 'https://www.warcrafttavern.com/forever/news/city-of-dalaran-dungeon-legacy-points-now-live-in-the-wow-forever-beta/']];
 
   /* =====================================================================================================
-     Bags: a stock list you type or paste, kept in this browser.
+     Map: Wowhead's world map in a frame, loaded the first time the tab opens.
      ===================================================================================================== */
-  var WHERE = { bags: 'Bags', bank: 'Bank', mail: 'Mail', ah: 'On the AH' };
-  var BG = saved('wowf-bags', null);
-  if (!BG || !Array.isArray(BG.rows)) BG = { chars: [], rows: [] };
-  function bgSave() { store.set('wowf-bags', BG); }
-  function bgChars() { var a = BG.chars.slice(); if (!a.length) a.push(M.ch() && M.ch().name ? M.ch().name : 'Main'); return a; }
-  var BYNAME = {};
-  Object.keys(M.NAMES).forEach(function (k) { BYNAME[M.NAMES[k].toLowerCase()] = +k; });
-  function findItem(t) {
-    t = String(t || '').trim().toLowerCase();
-    if (!t) return null;
-    if (BYNAME[t]) return BYNAME[t];
-    var hits = Object.keys(BYNAME).filter(function (n) { return n.indexOf(t) === 0; });
-    return hits.length === 1 ? BYNAME[hits[0]] : null;
-  }
-  function bgAdd(c, id, name, n, w) {
-    var row = BG.rows.filter(function (r) { return r.c === c && r.w === w && (id ? r.id === id : r.t === name); })[0];
-    if (row) row.n += n; else BG.rows.push(id ? { c: c, id: id, n: n, w: w } : { c: c, t: name, n: n, w: w });
-  }
-  function fillBgChars() {
-    var sel = $('#bg-char');
-    if (!sel) return;
-    var cur = sel.value, cs = bgChars();
-    sel.innerHTML = cs.map(function (c) { return '<option>' + esc(c) + '</option>'; }).join('');
-    if (cs.indexOf(cur) >= 0) sel.value = cur;
-  }
-  function renderBags() {
-    var list = $('#bg-list'), tot = $('#bg-tot');
-    if (!list) return;
-    fillBgChars();
-    var q = String(($('#bg-q') || {}).value || '').trim().toLowerCase(), groups = {}, order = [];
-    BG.rows.forEach(function (r, i) {
-      var name = r.id ? nm(r.id) : r.t, key = r.id ? 'i' + r.id : 't' + name.toLowerCase();
-      if (q && name.toLowerCase().indexOf(q) < 0) return;
-      if (!groups[key]) { groups[key] = { id: r.id, name: name, rows: [] }; order.push(key); }
-      groups[key].rows.push([r, i]);
-    });
-    var liquid = 0, onAh = 0, unpriced = 0;
-    order.sort(function (a, b) { return groups[a].name < groups[b].name ? -1 : 1; });
-    var h = '<table class="pl-table pl-stack" role="table"><caption class="vh">Everything your characters hold</caption>' +
-      thead([['Item'], ['Where'], ['Count', 'num'], ['Each', 'num'], ['Worth', 'num']]) + '<tbody>';
-    order.forEach(function (k) {
-      var g = groups[k], n = g.rows.reduce(function (a, x) { return a + x[0].n; }, 0), each = g.id ? sale(g.id) : null;
-      g.rows.forEach(function (x) { var v = each != null ? each * x[0].n : null; if (v == null) unpriced++; else if (x[0].w === 'ah') onAh += v; else liquid += v; });
-      h += '<tr role="row">' + rowh(g.id ? item(g.id) : esc(g.name)) + cell(g.rows.map(function (x) {
-        return '<span class="pl-where">' + esc(x[0].c + ', ' + WHERE[x[0].w] + ': ' + x[0].n) + ' <button type="button" class="linkish pl-del" data-del="' + x[1] + '" aria-label="' + esc('Remove ' + g.name + ' from ' + x[0].c + ', ' + WHERE[x[0].w]) + '">Remove</button></span>';
-      }).join(''), 'pl-span') + cell(n.toLocaleString('en-GB'), 'num pl-span', 'Count') + cell(each != null ? money(each) : '—', 'num pl-span', 'Each') +
-        cell(each != null ? money(each * n) : '—', 'num pl-top', 'Worth') + '</tr>';
-    });
-    list.innerHTML = order.length ? h + '</tbody></table>' : '<p class="note">' + (BG.rows.length ? 'Nothing matches that search.' : 'Nothing yet. Add what your characters hold above.') + '</p>';
-    if (tot) tot.innerHTML = BG.rows.length ? '<ul class="pl-tiles"><li><span class="t-num">' + esc(money(liquid)) + '</span><span class="t-lab">In bags, banks and mail</span></li>' +
-      '<li><span class="t-num">' + esc(money(onAh)) + '</span><span class="t-lab">Listed on the Auction House</span></li></ul>' +
-      '<p class="note">' + esc('Worth is what each would sell for after the Auction House’s 5% cut, at the latest read.' + (unpriced ? ' ' + plural(unpriced, 'line') + ' with no tracked price ' + (unpriced === 1 ? 'isn’t' : 'aren’t') + ' counted.' : '')) + '</p>' : '';
-  }
-  var bgItems = $('#bg-items');
-  if (bgItems) bgItems.innerHTML = Object.keys(M.NAMES).map(function (k) { return M.NAMES[k]; }).sort().map(function (n) { return '<option value="' + esc(n) + '"></option>'; }).join('');
-  function bgMsg(t) { var m = $('#bg-msg'); if (m) m.textContent = t; }
-  if ($('#bg-form')) $('#bg-form').addEventListener('submit', function (e) {
-    e.preventDefault();
-    var c = $('#bg-char').value || bgChars()[0], raw = $('#bg-item').value, id = findItem(raw), n = Math.round(+$('#bg-n').value), w = $('#bg-where').value;
-    if (!raw.trim() || !(n > 0)) { bgMsg('Give an item and how many.'); return; }
-    if (BG.chars.indexOf(c) < 0) BG.chars.push(c);
-    bgAdd(c, id, id ? null : raw.trim(), n, w);
-    bgSave(); renderBags();
-    bgMsg('Added ' + n + ' ' + (id ? nm(id) : raw.trim()) + ' to ' + c + ', ' + WHERE[w] + (id ? '.' : ': it isn’t a tracked item, so it has no price.'));
-    $('#bg-item').value = ''; $('#bg-item').focus();
+  var mapFrame = $('#map-frame'), mapFull = $('#map-full');
+  function loadMap() { if (mapFrame && !mapFrame.getAttribute('src')) mapFrame.setAttribute('src', mapFrame.getAttribute('data-src')); }
+  if (mapFull && !(document.fullscreenEnabled || document.webkitFullscreenEnabled)) mapFull.hidden = true;
+  if (mapFull) mapFull.addEventListener('click', function () {
+    var b = $('#map-box'), go = b && (b.requestFullscreen || b.webkitRequestFullscreen);
+    loadMap();
+    if (go) { try { go.call(b); return; } catch (x) {} }
+    window.open($('#map-open').href, '_blank', 'noopener');
   });
-  if ($('#bg-paste-go')) $('#bg-paste-go').addEventListener('click', function () {
-    var c = $('#bg-char').value || bgChars()[0], lines = String($('#bg-paste').value || '').split(/\n+/), added = 0, skipped = [];
-    lines.forEach(function (ln) {
-      ln = ln.trim();
-      if (!ln) return;
-      var w = 'bags', m;
-      if ((m = ln.match(/\b(bags?|bank|mail|ah|auction house)\b\s*$/i))) { var t = m[1].toLowerCase(); w = t.indexOf('bank') === 0 ? 'bank' : t === 'mail' ? 'mail' : t.indexOf('bag') === 0 ? 'bags' : 'ah'; ln = ln.slice(0, m.index).trim(); }
-      var num = ln.match(/(?:^|\s|x)(\d+)\s*$/i) || ln.match(/^(\d+)\s*x?\s+/i);
-      if (!num) { skipped.push(ln); return; }
-      var n = +num[1], name = ln.replace(num[0], ' ').replace(/\s+x\s*$/i, '').trim(), id = findItem(name);
-      if (!name || !(n > 0)) { skipped.push(ln); return; }
-      bgAdd(c, id, id ? null : name, n, w); added++;
-    });
-    if (BG.chars.indexOf(c) < 0) BG.chars.push(c);
-    bgSave(); renderBags();
-    bgMsg('Added ' + plural(added, 'line') + ' to ' + c + '.' + (skipped.length ? ' Couldn’t read: ' + skipped.slice(0, 3).join('; ') + (skipped.length > 3 ? ' and ' + (skipped.length - 3) + ' more.' : '.') : ''));
-    if (added) $('#bg-paste').value = '';
-  });
-  if ($('#bg-addchar')) $('#bg-addchar').addEventListener('click', function () {
-    var inp = $('#bg-newchar'), n = String(inp.value || '').trim();
-    if (!n) { bgMsg('Type a character name first.'); return; }
-    if (!BG.chars.length) BG.chars = bgChars();
-    if (BG.chars.indexOf(n) < 0) BG.chars.push(n);
-    bgSave(); fillBgChars(); $('#bg-char').value = n; inp.value = '';
-    bgMsg(n + ' added.');
-  });
-  if ($('#bg-list')) $('#bg-list').addEventListener('click', function (e) {
-    var b = e.target.closest ? e.target.closest('[data-del]') : null;
-    if (!b) return;
-    var i = +b.getAttribute('data-del'), r = BG.rows[i];
-    if (!r) return;
-    BG.rows.splice(i, 1); bgSave(); renderBags();
-    bgMsg('Removed ' + (r.id ? nm(r.id) : r.t) + ' from ' + r.c + ', ' + WHERE[r.w] + '.');
-    var q = $('#bg-q'); if (q) q.focus();
-  });
-  if ($('#bg-q')) $('#bg-q').addEventListener('input', renderBags);
-  if ($('#bg-export')) $('#bg-export').addEventListener('click', function () {
-    var t = JSON.stringify(BG), box = $('#bg-import');
-    try { navigator.clipboard.writeText(t).then(function () { bgMsg('Copied. Paste it into this tab on your other device.'); }, function () { box.value = t; box.select(); bgMsg('Copy the text in the box below.'); }); }
-    catch (x) { box.value = t; box.select(); bgMsg('Copy the text in the box below.'); }
-  });
-  if ($('#bg-import-go')) $('#bg-import-go').addEventListener('click', function () {
-    var v;
-    try { v = JSON.parse($('#bg-import').value); } catch (x) { v = null; }
-    if (!v || !Array.isArray(v.rows) || !Array.isArray(v.chars)) { bgMsg('That isn’t a list copied from this tab.'); return; }
-    BG = { chars: v.chars.filter(function (c) { return typeof c === 'string'; }), rows: v.rows.filter(function (r) { return r && typeof r.c === 'string' && r.n > 0 && WHERE[r.w] && (typeof r.id === 'number' || typeof r.t === 'string'); }) };
-    bgSave(); renderBags(); $('#bg-import').value = '';
-    bgMsg('Loaded ' + plural(BG.rows.length, 'line') + '.');
-  });
+  document.addEventListener('wowf:tab', function (e) { if (e && e.detail && e.detail.token === 'map') loadMap(); });
+  if ($('#panel-map') && !$('#panel-map').hidden) loadMap();
 
   /* ---------- Wiring ---------- */
-  var PANELS = ['#panel-kit', '#panel-camp', '#panel-bp', '#panel-legacy', '#panel-bags'];
+  var PANELS = ['#panel-kit', '#panel-camp', '#panel-bp', '#panel-legacy'];
   PANELS.forEach(function (p) {
     var el = $(p);
     if (el) el.addEventListener('click', function (e) {
@@ -669,7 +565,7 @@
   });
   function setSrc(id, list) { var e = document.getElementById(id); if (e) e.innerHTML = src(list); }
   setSrc('kit-src', KIT_SRC); setSrc('camp-src', CAMP_SRC); setSrc('bp-src', BP_SRC); setSrc('lg-src', LG_SRC);
-  function renderAll() { renderKit(); renderCamp(); renderBp(); renderLegacyStatus(); renderLegacy(); renderBags(); }
+  function renderAll() { renderKit(); renderCamp(); renderBp(); renderLegacyStatus(); renderLegacy(); }
   renderAll();
   document.addEventListener('wowf:prices', renderAll);
   document.addEventListener('wowf:char-changed', renderAll);
@@ -687,7 +583,7 @@
       { t: 'Crafting for tips', k: 'Blueprints', s: 'a fair tip and a trade chat line', go: go('blueprints', '#tip-rx') },
       { t: 'Legacy perks', k: 'Legacy', s: 'levelling and gathering loadouts', go: go('legacy', '#lg-trees') },
       { t: 'Bountiful Harvest', k: 'Legacy', s: 'is swapping it in worth it?', go: go('legacy', '#bh-n') },
-      { t: 'Bags, bank and alts', k: 'Bags', s: 'what your characters hold, priced', go: go('bags', '#bg-item') }
+      { t: 'World map', k: 'Map', s: 'flight paths, boats, zeppelins, dungeons and raids', go: go('map', '#map-box') }
     ];
     LEG.forEach(function (p) { out.push({ t: p[2], k: 'Legacy perk', s: p[5], go: go('legacy', '#lg-trees') }); });
     CAMP.forEach(function (c) { out.push({ t: c[2], k: 'Camp item', s: c[0] + ' ' + c[3], go: go(c[1] >= 2 ? 'blueprints' : 'camp', c[1] >= 2 ? '#bp-mine' : '#camp-items') }); });

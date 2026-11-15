@@ -543,7 +543,7 @@ input[type=range]:focus-visible{outline:3px solid var(--focus);outline-offset:2p
 .su-controls{gap:.85rem}
 .su-prof .select{width:100%;max-width:22rem}
 .mk-check{display:flex;align-items:center;gap:.65rem;min-height:2.75rem;font-weight:700;cursor:pointer}
-/* ---------- Consumables, Camp, Blueprints, Legacy and Bags (plans.js) ---------- */
+/* ---------- Consumables, Camp, Blueprints, Legacy and Map (plans.js) ---------- */
 .pl-cards{list-style:none;margin:0;padding:0;display:grid;gap:.75rem;grid-template-columns:repeat(auto-fill,minmax(min(100%,19rem),1fr))}
 .pl-card{display:grid;gap:.4rem;align-content:start;padding:.95rem 1.05rem;border-radius:var(--radius);border:1.5px solid var(--line);background:var(--surface)}
 .pl-pick{font-weight:700;font-size:1.0625rem;line-height:1.35}
@@ -571,7 +571,6 @@ input[type=range]:focus-visible{outline:3px solid var(--focus);outline-offset:2p
 .pl-form label{display:grid;gap:.3rem;font-weight:700;font-size:.9375rem}
 .pl-form .pl-wide{flex-basis:100%}
 .pl-in{font:inherit;font-family:var(--font-mono);font-size:.9375rem;width:7.5rem;min-height:2.75rem;padding:.3rem .6rem;border-radius:10px;border:1.5px solid var(--field);background:var(--surface);color:var(--ink)}
-.pl-in.pl-name{width:15rem;max-width:100%;font-family:inherit}
 .pl-in.pl-line{width:100%;font-family:inherit}
 .pl-in[aria-invalid="true"]{border-color:var(--bad)}
 .pl-table .pl-in{width:6.5rem;min-height:2.5rem}
@@ -594,15 +593,13 @@ input[type=range]:focus-visible{outline:3px solid var(--focus);outline-offset:2p
 .pl-step:hover{background:var(--sunken)}
 .pl-step[aria-disabled="true"]{opacity:.35;cursor:not-allowed;background:transparent}
 .pl-rank{font-family:var(--font-mono);font-variant-numeric:tabular-nums;min-width:2.6rem;text-align:center}
-.pl-tiles{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:.75rem}
-.pl-tiles li{display:grid;gap:.15rem;padding:.75rem 1rem;border-radius:var(--radius);border:1.5px solid var(--line);background:var(--surface);min-width:12rem}
-.pl-tiles .t-num{font-family:var(--font-mono);font-size:1.25rem;font-weight:700}
-.pl-tiles .t-lab{font-size:.875rem;color:var(--ink-soft)}
-.pl-where{display:block}
-.pl-where .linkish{font-size:.875rem;margin-left:.3rem}
 .pl-have{min-height:2.5rem}
 .pl-have-t{display:none;font-size:.875rem}
-#lg-status,#bg-tot{display:grid;gap:.5rem}
+#lg-status{display:grid;gap:.5rem}
+.pl-map-bar{display:flex;flex-wrap:wrap;gap:.5rem}
+.pl-map{position:relative;height:min(75vh,56rem);min-height:26rem;border-radius:var(--radius);border:1.5px solid var(--line);background:var(--sunken);overflow:hidden}
+.pl-map iframe{display:block;width:100%;height:100%;border:0}
+.pl-map:fullscreen{height:100%;border:0;border-radius:0}
 @media (max-width:40em){
   .pl-stack thead tr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
   .pl-stack tbody tr{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:.3rem .75rem;padding:.7rem 0;border-top:1px solid var(--line)}
@@ -823,7 +820,7 @@ ol.td-list{counter-reset:td}
       <button type="button" class="tab" role="tab" id="tab-camp" aria-controls="panel-camp" aria-selected="false" tabindex="-1" data-token="camp">Camp</button>
       <button type="button" class="tab" role="tab" id="tab-bp" aria-controls="panel-bp" aria-selected="false" tabindex="-1" data-token="blueprints">Blueprints</button>
       <button type="button" class="tab" role="tab" id="tab-legacy" aria-controls="panel-legacy" aria-selected="false" tabindex="-1" data-token="legacy">Legacy</button>
-      <button type="button" class="tab" role="tab" id="tab-bags" aria-controls="panel-bags" aria-selected="false" tabindex="-1" data-token="bags">Bags</button>
+      <button type="button" class="tab" role="tab" id="tab-map" aria-controls="panel-map" aria-selected="false" tabindex="-1" data-token="map">Map</button>
       <button type="button" class="tab" role="tab" id="tab-updates" aria-controls="panel-updates" aria-selected="false" tabindex="-1" data-token="updates">Updates</button>
     </div>
     <button type="button" class="tb-search" id="search-btn" aria-expanded="false" aria-controls="search-box" aria-label="Search the guide" title="Search the guide (press /)"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="10.5" cy="10.5" r="6.25" fill="none" stroke="currentColor" stroke-width="2.25"/><path d="M15.25 15.25 20.5 20.5" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round"/></svg></button>
@@ -1530,51 +1527,20 @@ ol.td-list{counter-reset:td}
   <p class="note pl-src" id="lg-src"></p>
 </section>
 
-<!-- BAGS -->
-<section class="panel" id="panel-bags" role="tabpanel" aria-labelledby="tab-bags" tabindex="0" hidden>
+<!-- MAP -->
+<section class="panel" id="panel-map" role="tabpanel" aria-labelledby="tab-map" tabindex="0" hidden>
   <div class="intro">
-    <h2>Bags</h2>
-    <p>One list of what all your characters hold, priced at today’s Auction House. Blizzard’s data gives your gear, professions and reputations but not your bags, bank or mail, and addons can’t send anything out of the game, so this list is what you type or paste in. It’s kept in this browser.</p>
+    <h2>Map</h2>
+    <p>Wowhead’s WoW Forever world map, set to show flight paths, boats, zeppelins, dungeons and raids. Drag to move, scroll or pinch to zoom, and use the map’s own menus to change what it shows.</p>
   </div>
-  <div class="block">
-    <h3>Add items</h3>
-    <form class="tool pl-form" id="bg-form" autocomplete="off">
-      <label for="bg-char">Character<select class="select" id="bg-char"></select></label>
-      <label for="bg-item">Item<input class="pl-in pl-name" id="bg-item" type="text" list="bg-items" spellcheck="false" placeholder="Peacebloom"></label>
-      <datalist id="bg-items"></datalist>
-      <label for="bg-n">How many<input class="pl-in" id="bg-n" type="number" min="1" max="100000" step="1" value="1" inputmode="numeric"></label>
-      <label for="bg-where">Where<select class="select" id="bg-where"><option value="bags">Bags</option><option value="bank">Bank</option><option value="mail">Mail</option><option value="ah">On the Auction House</option></select></label>
-      <button type="submit" class="btn small">Add</button>
-    </form>
-    <div class="pl-form">
-      <label for="bg-newchar">Another character<input class="pl-in pl-name" id="bg-newchar" type="text" spellcheck="false"></label>
-      <button type="button" class="btn small ghost" id="bg-addchar">Add character</button>
-    </div>
-    <details class="more">
-      <summary>Paste a list</summary>
-      <div class="more-body">
-        <label for="bg-paste">One item a line, like “Peacebloom 40” or “Earthroot 12 bank”. Lines go to the character picked above.</label>
-        <textarea class="pl-paste" id="bg-paste" rows="5" spellcheck="false"></textarea>
-        <p><button type="button" class="btn small ghost" id="bg-paste-go">Add these</button></p>
-      </div>
-    </details>
-    <p class="note" id="bg-msg" aria-live="polite"></p>
+  <div class="pl-map-bar">
+    <a class="btn small ghost" id="map-open" href="https://www.wowhead.com/forever/world-map#3/37904/22320/l=@transport,-tram,-routes-tram,flight-master,routes-flight-master,@instance/m=-landmark/f=0/c=all" target="_blank" rel="noopener">Open on Wowhead</a>
+    <button type="button" class="btn small ghost" id="map-full">Full screen</button>
   </div>
-  <div class="block">
-    <h3>Everything you hold</h3>
-    <div class="pl-form"><label for="bg-q">Search<input class="pl-in pl-name" id="bg-q" type="search" spellcheck="false"></label></div>
-    <div id="bg-tot"></div>
-    <div class="pl-scroll" id="bg-list"></div>
+  <div class="pl-map" id="map-box">
+    <iframe id="map-frame" title="Wowhead’s world map for WoW Forever" data-src="https://www.wowhead.com/forever/world-map#3/37904/22320/l=@transport,-tram,-routes-tram,flight-master,routes-flight-master,@instance/m=-landmark/f=0/c=all" allow="fullscreen" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>
   </div>
-  <details class="more">
-    <summary>Move the list to another device</summary>
-    <div class="more-body">
-      <p><button type="button" class="btn small ghost" id="bg-export">Copy the list as text</button></p>
-      <label for="bg-import">Paste a list copied from this tab</label>
-      <textarea class="pl-paste" id="bg-import" rows="4" spellcheck="false"></textarea>
-      <p><button type="button" class="btn small ghost" id="bg-import-go">Load it (replaces this list)</button></p>
-    </div>
-  </details>
+  <p class="note">The map comes from Wowhead, so it needs the internet and loads the first time you open this tab. If it stays blank, Wowhead isn’t letting other sites show it: use Open on Wowhead.</p>
 </section>
 
 <section class="panel" id="panel-updates" role="tabpanel" aria-labelledby="tab-updates" tabindex="0" hidden>
@@ -1715,7 +1681,7 @@ ol.td-list{counter-reset:td}
   var tabs = $$('[role="tab"]');
   var panels = tabs.map(function (t) { return document.getElementById(t.getAttribute('aria-controls')); });
   var tokens = tabs.map(function (t) { return t.getAttribute('data-token'); });
-  var ALIAS = { home: 'today', market: 'gold', auction: 'gold', prices: 'gold', timers: 'world', session: 'build', gear: 'build', setup: 'talents', settings: 'talents', skill: 'skillup', zones: 'herbs', kit: 'consumables', elixirs: 'consumables', greenhouse: 'camp', bp: 'blueprints', perks: 'legacy', bank: 'bags', alts: 'bags' };
+  var ALIAS = { home: 'today', market: 'gold', auction: 'gold', prices: 'gold', timers: 'world', session: 'build', gear: 'build', setup: 'talents', settings: 'talents', skill: 'skillup', zones: 'herbs', kit: 'consumables', elixirs: 'consumables', greenhouse: 'camp', bp: 'blueprints', perks: 'legacy', worldmap: 'map', flights: 'map' };
   var masthead = $('.masthead'), tablist = $('.tablist'), curTab = -1, SCR = store.get('wowf-scroll', {});
   if (!SCR || typeof SCR !== 'object') SCR = {};
   function fades() {

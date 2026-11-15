@@ -1,0 +1,44 @@
+name: Look up item names
+
+# Claude runs this by hand to check item ids and names in Blizzard's item data before the refresh tracks them.
+# It only prints to the run's log: it changes nothing in the repo.
+on:
+  workflow_dispatch:
+    inputs:
+      ids:
+        description: "Item ids, separated by spaces or commas"
+        type: string
+        default: ""
+      search:
+        description: "Names to search for, separated by semicolons"
+        type: string
+        default: ""
+      min_id:
+        description: "Show only search results from this item id up (Forever's new items start at about 246000)"
+        type: string
+        default: "0"
+      known:
+        description: "Also check every name in market.js against Blizzard's"
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+jobs:
+  names:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Look up the items
+        env:
+          BNET_ID: ${{ secrets.BNET_ID }}
+          BNET_SECRET: ${{ secrets.BNET_SECRET }}
+          IDS: ${{ inputs.ids }}
+          SEARCH: ${{ inputs.search }}
+          MIN_ID: ${{ inputs.min_id }}
+          KNOWN: ${{ inputs.known }}
+          PYTHONUNBUFFERED: "1"
+        run: python3 tools/item_names.py

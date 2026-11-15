@@ -543,6 +543,81 @@ input[type=range]:focus-visible{outline:3px solid var(--focus);outline-offset:2p
 .su-controls{gap:.85rem}
 .su-prof .select{width:100%;max-width:22rem}
 .mk-check{display:flex;align-items:center;gap:.65rem;min-height:2.75rem;font-weight:700;cursor:pointer}
+/* ---------- Consumables, Camp, Blueprints, Legacy and Bags (plans.js) ---------- */
+.pl-cards{list-style:none;margin:0;padding:0;display:grid;gap:.75rem;grid-template-columns:repeat(auto-fill,minmax(min(100%,19rem),1fr))}
+.pl-card{display:grid;gap:.4rem;align-content:start;padding:.95rem 1.05rem;border-radius:var(--radius);border:1.5px solid var(--line);background:var(--surface)}
+.pl-pick{font-weight:700;font-size:1.0625rem;line-height:1.35}
+.pl-pick .mk-item{font-weight:700}
+.pl-fx{display:block;font-weight:400;font-size:.9375rem;margin-top:.15rem}
+.pl-mix{font-size:.9375rem;font-weight:600;color:var(--good)}
+.pl-get{font-size:.9375rem}
+.pl-alt{font-size:.875rem;color:var(--ink-soft)}
+.pl-list{display:grid;gap:.5rem}
+.pl-scroll{overflow-x:auto;min-width:0;position:relative}
+.pl-table{width:100%;border-collapse:collapse;font-size:.9375rem}
+.pl-table th,.pl-table td{padding:.55rem .45rem;border-top:1px solid var(--line);text-align:left;vertical-align:baseline;font-weight:400}
+.pl-table th:first-child{padding-left:0}
+.pl-table th:last-child,.pl-table td:last-child{padding-right:0}
+.pl-table thead th{border-top:0;padding-top:0;font-family:var(--font-mono);font-size:.75rem;line-height:1.25;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-soft);font-weight:600;vertical-align:bottom}
+.pl-table tbody th{font-weight:700}
+.pl-table .num{text-align:right;font-family:var(--font-mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+.pl-table .pl-grp th{padding-top:1rem;font-family:var(--font-mono);font-size:.75rem;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-soft);font-weight:600}
+.pl-table tbody tr:first-child.pl-grp th{padding-top:.5rem}
+.pl-why{display:block;font-size:.8125rem;font-weight:400;color:var(--ink-soft);margin-top:.1rem;font-family:var(--font-body)}
+.pl-table .num .pl-why{font-family:var(--font-mono)}
+.pl-ok{color:var(--good)}
+.pl-bad{color:var(--bad)}
+.pl-form{display:flex;flex-wrap:wrap;gap:.75rem 1.1rem;align-items:flex-end}
+.pl-form label{display:grid;gap:.3rem;font-weight:700;font-size:.9375rem}
+.pl-form .pl-wide{flex-basis:100%}
+.pl-in{font:inherit;font-family:var(--font-mono);font-size:.9375rem;width:7.5rem;min-height:2.75rem;padding:.3rem .6rem;border-radius:10px;border:1.5px solid var(--field);background:var(--surface);color:var(--ink)}
+.pl-in.pl-name{width:15rem;max-width:100%;font-family:inherit}
+.pl-in.pl-line{width:100%;font-family:inherit}
+.pl-in[aria-invalid="true"]{border-color:var(--bad)}
+.pl-table .pl-in{width:6.5rem;min-height:2.5rem}
+.pl-paste{width:100%;font:inherit;font-family:var(--font-mono);font-size:.875rem;padding:.5rem .65rem;border-radius:10px;border:1.5px solid var(--field);background:var(--surface);color:var(--ink)}
+.pl-times{display:grid;gap:.4rem}
+.pl-times b{font-family:var(--font-mono);font-variant-numeric:tabular-nums;margin-right:.35rem}
+.pl-src a{color:inherit}
+.pl-seg{min-width:16rem}
+.pl-trees{display:grid;gap:1rem}
+@media (min-width:62em){.pl-trees{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.pl-tree{display:grid;align-content:start;padding:.9rem 1rem .4rem;border-radius:var(--radius);border:1.5px solid var(--line);background:var(--surface)}
+.pl-tree h4{font-size:1.0625rem;margin-bottom:.35rem}
+.pl-tree h4 .pl-why{display:inline;margin-left:.35rem;font-family:var(--font-mono)}
+.pl-perk{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:.25rem .6rem;align-items:center;padding:.6rem 0;border-top:1px solid var(--line)}
+.pl-perk-n{font-weight:700}
+.pl-perk.on .pl-perk-n{color:var(--gold)}
+.pl-perk .pl-fx{grid-column:1/-1;margin:0;font-size:.875rem;color:var(--ink-soft)}
+.pl-steps{display:inline-flex;align-items:center;gap:.3rem}
+.pl-step{appearance:none;-webkit-appearance:none;min-width:2.75rem;min-height:2.75rem;border-radius:10px;border:1.5px solid var(--ink);background:transparent;color:var(--ink);font:inherit;font-size:1.125rem;font-weight:700;cursor:pointer}
+.pl-step:hover{background:var(--sunken)}
+.pl-step[aria-disabled="true"]{opacity:.35;cursor:not-allowed;background:transparent}
+.pl-rank{font-family:var(--font-mono);font-variant-numeric:tabular-nums;min-width:2.6rem;text-align:center}
+.pl-tiles{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:.75rem}
+.pl-tiles li{display:grid;gap:.15rem;padding:.75rem 1rem;border-radius:var(--radius);border:1.5px solid var(--line);background:var(--surface);min-width:12rem}
+.pl-tiles .t-num{font-family:var(--font-mono);font-size:1.25rem;font-weight:700}
+.pl-tiles .t-lab{font-size:.875rem;color:var(--ink-soft)}
+.pl-where{display:block}
+.pl-where .linkish{font-size:.875rem;margin-left:.3rem}
+.pl-have{min-height:2.5rem}
+.pl-have-t{display:none;font-size:.875rem}
+#lg-status,#bg-tot{display:grid;gap:.5rem}
+@media (max-width:40em){
+  .pl-stack thead tr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+  .pl-stack tbody tr{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:.3rem .75rem;padding:.7rem 0;border-top:1px solid var(--line)}
+  .pl-stack tbody tr.pl-grp{display:block;padding:1rem 0 .1rem}
+  .pl-stack tbody th,.pl-stack tbody td{display:block;border:0;padding:0;text-align:left;grid-column:1}
+  .pl-stack tbody .pl-span{grid-column:1/-1}
+  .pl-stack tbody .pl-top{grid-column:2;grid-row:1;text-align:right}
+  .pl-stack tbody td.num{text-align:left}
+  .pl-stack tbody td.num.pl-top{text-align:right}
+  .pl-stack tbody .pl-nil{display:none}
+  .pl-stack tbody [data-l]::before{content:attr(data-l) ": ";font-family:var(--font-body);font-size:.8125rem;color:var(--ink-soft)}
+  .pl-stack tbody .pl-top[data-l]::before{content:none}
+  .pl-stack tbody .num .pl-why{display:inline;margin-left:.35rem}
+  .pl-stack .pl-have-t{display:inline}
+}
 .mk-check input{width:1.35rem;height:1.35rem;margin:0;accent-color:var(--gold-fill);flex:none}
 .mk-tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(9.5rem,1fr));gap:.6rem}
 .mk-tiles:empty{display:none}
@@ -744,6 +819,11 @@ ol.td-list{counter-reset:td}
       <button type="button" class="tab" role="tab" id="tab-market" aria-controls="panel-market" aria-selected="false" tabindex="-1" data-token="gold">Gold</button>
       <button type="button" class="tab" role="tab" id="tab-skillup" aria-controls="panel-skillup" aria-selected="false" tabindex="-1" data-token="skillup">Skill-up</button>
       <button type="button" class="tab" role="tab" id="tab-herbs" aria-controls="panel-herbs" aria-selected="false" tabindex="-1" data-token="herbs">Herb zones</button>
+      <button type="button" class="tab" role="tab" id="tab-kit" aria-controls="panel-kit" aria-selected="false" tabindex="-1" data-token="consumables">Consumables</button>
+      <button type="button" class="tab" role="tab" id="tab-camp" aria-controls="panel-camp" aria-selected="false" tabindex="-1" data-token="camp">Camp</button>
+      <button type="button" class="tab" role="tab" id="tab-bp" aria-controls="panel-bp" aria-selected="false" tabindex="-1" data-token="blueprints">Blueprints</button>
+      <button type="button" class="tab" role="tab" id="tab-legacy" aria-controls="panel-legacy" aria-selected="false" tabindex="-1" data-token="legacy">Legacy</button>
+      <button type="button" class="tab" role="tab" id="tab-bags" aria-controls="panel-bags" aria-selected="false" tabindex="-1" data-token="bags">Bags</button>
       <button type="button" class="tab" role="tab" id="tab-updates" aria-controls="panel-updates" aria-selected="false" tabindex="-1" data-token="updates">Updates</button>
     </div>
     <button type="button" class="tb-search" id="search-btn" aria-expanded="false" aria-controls="search-box" aria-label="Search the guide" title="Search the guide (press /)"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="10.5" cy="10.5" r="6.25" fill="none" stroke="currentColor" stroke-width="2.25"/><path d="M15.25 15.25 20.5 20.5" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round"/></svg></button>
@@ -1318,6 +1398,185 @@ ol.td-list{counter-reset:td}
 </section>
 
 <!-- UPDATES -->
+<!-- CONSUMABLES -->
+<section class="panel" id="panel-kit" role="tabpanel" aria-labelledby="tab-kit" tabindex="0" hidden>
+  <div class="intro">
+    <h2>Consumables</h2>
+    <p>The best elixirs, potions, food and camp buffs for you at your level, with today’s prices and what each costs to make. Set the most you’d pay and this tab flags anything at or under it. The raids open on 9 December for level 60s; until then this is your levelling and dungeon kit, and it moves up as you level.</p>
+  </div>
+  <div class="block">
+    <h3 id="kit-h">Your kit</h3>
+    <p class="note" id="kit-who"></p>
+    <ul class="pl-cards" id="kit-now"><li class="pl-card"><p class="note">Waiting for prices…</p></li></ul>
+  </div>
+  <div class="block">
+    <h3>Buy list</h3>
+    <p class="note" id="kit-buy-sum" aria-live="polite"></p>
+    <div class="pl-scroll" id="kit-buy"></div>
+    <p class="note">Type the most you’d pay, like 45c or 1s 20s. It’s saved in this browser, and the list checks it against each hourly read while the page is open. Herbs are listed for anything you can make yourself.</p>
+  </div>
+  <div class="block">
+    <h3>Coming up</h3>
+    <ul class="plain pl-list" id="kit-next"></ul>
+  </div>
+  <div class="block">
+    <h3>Good to know</h3>
+    <ul class="plain pl-list" id="kit-know"></ul>
+  </div>
+  <p class="note pl-src" id="kit-src"></p>
+</section>
+
+<!-- CAMP -->
+<section class="panel" id="panel-camp" role="tabpanel" aria-labelledby="tab-camp" tabindex="0" hidden>
+  <div class="intro">
+    <h2>Camp</h2>
+    <p>Light a campfire and each player can add one camp item. All your camp items share a one-hour cooldown, and a buff lasts an hour once you’ve sat by the fire for about a minute. Camp buffs are weaker versions of class buffs and don’t stack with them.</p>
+  </div>
+  <div class="block">
+    <h3>Your camp items</h3>
+    <p class="note" id="camp-note"></p>
+    <div class="pl-scroll" id="camp-items"></div>
+  </div>
+  <div class="block" id="gh-block">
+    <h3>Greenhouse</h3>
+    <div id="gh-status"></div>
+    <div class="tool pl-form">
+      <label for="gh-pick">Herbs from one pick<input class="pl-in" id="gh-pick" type="number" min="1" max="10" step="1" value="2" inputmode="numeric"></label>
+      <label for="gh-per">Greenhouses from one craft<input class="pl-in" id="gh-per" type="number" min="1" max="10" step="1" value="1" inputmode="numeric"></label>
+      <p class="note pl-wide">Nobody has published either number yet, so these are guesses: change them to what you see in game.</p>
+    </div>
+    <div class="pl-scroll" id="gh-calc"></div>
+    <p class="note" id="gh-sum" aria-live="polite"></p>
+  </div>
+  <div class="block">
+    <h3>Camp timer</h3>
+    <p class="note">Press the button when you place a camp item. The times are kept in this browser, so you can check back while you play.</p>
+    <div class="tool pl-form">
+      <label for="ct-what">What you placed<select class="select" id="ct-what"><option value="gh">A Greenhouse, with a seed</option><option value="other">Another camp item</option></select></label>
+      <label for="ct-fg">Field Guide (Legacy)<select class="select" id="ct-fg"><option value="0">None</option><option value="1">Rank 1</option><option value="2">Rank 2</option><option value="3">Rank 3</option></select></label>
+      <button type="button" class="btn small" id="ct-go">I placed it now</button>
+      <button type="button" class="linkish" id="ct-clear" hidden>Clear</button>
+    </div>
+    <ul class="plain pl-times" id="ct-out" aria-live="polite"></ul>
+  </div>
+  <p class="note pl-src" id="camp-src"></p>
+</section>
+
+<!-- BLUEPRINTS -->
+<section class="panel" id="panel-bp" role="tabpanel" aria-labelledby="tab-bp" tabindex="0" hidden>
+  <div class="intro">
+    <h2>Blueprints</h2>
+    <p>Blueprints teach the Tier 2 and Tier 3 camp items, and most drop from dungeon bosses. Tick the ones you have: the ticks stay in this browser, because Blizzard’s data doesn’t say which blueprints you know.</p>
+  </div>
+  <div class="block">
+    <h3>For your professions</h3>
+    <p class="note" id="bp-sum" aria-live="polite"></p>
+    <div class="pl-scroll" id="bp-mine"></div>
+  </div>
+  <details class="more">
+    <summary>Other professions’ blueprints</summary>
+    <div class="more-body"><p class="note">Handy when you’re grouping: a Tanning Rack, Anvil or Repair Bot at your camp helps everyone there.</p><div class="pl-scroll" id="bp-other"></div></div>
+  </details>
+  <div class="block">
+    <h3>Crafting for tips</h3>
+    <p class="note">Pick something you can make. The tab works out what the materials are worth and a fair tip, and writes a line for trade chat.</p>
+    <div class="tool pl-form">
+      <label for="tip-rx">Recipe<select class="select" id="tip-rx"></select></label>
+      <label for="tip-n">How many<input class="pl-in" id="tip-n" type="number" min="1" max="200" step="1" value="5" inputmode="numeric"></label>
+      <label for="tip-pct">Tip<select class="select" id="tip-pct"><option value="5">5% of the value</option><option value="10" selected>10% of the value</option><option value="15">15% of the value</option><option value="20">20% of the value</option></select></label>
+    </div>
+    <div id="tip-out" aria-live="polite"></div>
+  </div>
+  <p class="note pl-src" id="bp-src"></p>
+</section>
+
+<!-- LEGACY -->
+<section class="panel" id="panel-legacy" role="tabpanel" aria-labelledby="tab-legacy" tabindex="0" hidden>
+  <div class="intro">
+    <h2>Legacy</h2>
+    <p>Legacy Points are earned across your account and spent per character, up to 16 each at launch, in three trees. Plan two loadouts here, one for levelling and one for gathering, and see whether swapping pays.</p>
+  </div>
+  <div class="block">
+    <h3>When it opens for you</h3>
+    <div id="lg-status"></div>
+  </div>
+  <div class="block">
+    <h3>Loadouts</h3>
+    <div class="pl-form">
+      <fieldset class="seg compact pl-seg">
+        <legend class="vh">Loadout</legend>
+        <div class="seg-opts two">
+          <label class="seg-opt"><input class="vh" type="radio" name="lgset" value="lvl" checked><span class="seg-box">Levelling</span></label>
+          <label class="seg-opt"><input class="vh" type="radio" name="lgset" value="gath"><span class="seg-box">Gathering</span></label>
+        </div>
+      </fieldset>
+      <button type="button" class="linkish" id="lg-reset">Reset this loadout</button>
+    </div>
+    <p class="note" id="lg-used" aria-live="polite"></p>
+    <div class="pl-trees" id="lg-trees"></div>
+    <p class="note" id="lg-diff" aria-live="polite"></p>
+    <p class="note">Tiers and prerequisites follow Warcraft Wiki; nobody has published how many points each tier needs, so the planner only checks prerequisites. Guides disagree on some ranks: Warcraft Tavern gives Master Chef 5 ranks and Frequent Flier 1.</p>
+  </div>
+  <div class="block">
+    <h3>Is Bountiful Harvest worth swapping in?</h3>
+    <div class="tool pl-form">
+      <label for="bh-n">Scarce finds in an hour of picking<input class="pl-in" id="bh-n" type="number" min="0" max="100" step="1" value="4" inputmode="numeric"></label>
+      <label for="bh-cost">One Legacy respec costs<input class="pl-in" id="bh-cost" type="text" value="10g" inputmode="decimal"></label>
+      <p class="note pl-wide">The finds an hour is a guess: count yours over an evening of picking.</p>
+    </div>
+    <div class="pl-scroll" id="bh-out"></div>
+    <p class="note" id="bh-sum"></p>
+  </div>
+  <p class="note pl-src" id="lg-src"></p>
+</section>
+
+<!-- BAGS -->
+<section class="panel" id="panel-bags" role="tabpanel" aria-labelledby="tab-bags" tabindex="0" hidden>
+  <div class="intro">
+    <h2>Bags</h2>
+    <p>One list of what all your characters hold, priced at today’s Auction House. Blizzard’s data gives your gear, professions and reputations but not your bags, bank or mail, and addons can’t send anything out of the game, so this list is what you type or paste in. It’s kept in this browser.</p>
+  </div>
+  <div class="block">
+    <h3>Add items</h3>
+    <form class="tool pl-form" id="bg-form" autocomplete="off">
+      <label for="bg-char">Character<select class="select" id="bg-char"></select></label>
+      <label for="bg-item">Item<input class="pl-in pl-name" id="bg-item" type="text" list="bg-items" spellcheck="false" placeholder="Peacebloom"></label>
+      <datalist id="bg-items"></datalist>
+      <label for="bg-n">How many<input class="pl-in" id="bg-n" type="number" min="1" max="100000" step="1" value="1" inputmode="numeric"></label>
+      <label for="bg-where">Where<select class="select" id="bg-where"><option value="bags">Bags</option><option value="bank">Bank</option><option value="mail">Mail</option><option value="ah">On the Auction House</option></select></label>
+      <button type="submit" class="btn small">Add</button>
+    </form>
+    <div class="pl-form">
+      <label for="bg-newchar">Another character<input class="pl-in pl-name" id="bg-newchar" type="text" spellcheck="false"></label>
+      <button type="button" class="btn small ghost" id="bg-addchar">Add character</button>
+    </div>
+    <details class="more">
+      <summary>Paste a list</summary>
+      <div class="more-body">
+        <label for="bg-paste">One item a line, like “Peacebloom 40” or “Earthroot 12 bank”. Lines go to the character picked above.</label>
+        <textarea class="pl-paste" id="bg-paste" rows="5" spellcheck="false"></textarea>
+        <p><button type="button" class="btn small ghost" id="bg-paste-go">Add these</button></p>
+      </div>
+    </details>
+    <p class="note" id="bg-msg" aria-live="polite"></p>
+  </div>
+  <div class="block">
+    <h3>Everything you hold</h3>
+    <div class="pl-form"><label for="bg-q">Search<input class="pl-in pl-name" id="bg-q" type="search" spellcheck="false"></label></div>
+    <div id="bg-tot"></div>
+    <div class="pl-scroll" id="bg-list"></div>
+  </div>
+  <details class="more">
+    <summary>Move the list to another device</summary>
+    <div class="more-body">
+      <p><button type="button" class="btn small ghost" id="bg-export">Copy the list as text</button></p>
+      <label for="bg-import">Paste a list copied from this tab</label>
+      <textarea class="pl-paste" id="bg-import" rows="4" spellcheck="false"></textarea>
+      <p><button type="button" class="btn small ghost" id="bg-import-go">Load it (replaces this list)</button></p>
+    </div>
+  </details>
+</section>
+
 <section class="panel" id="panel-updates" role="tabpanel" aria-labelledby="tab-updates" tabindex="0" hidden>
   <div class="intro">
     <h2>Patch notes and hotfixes</h2>
@@ -1456,7 +1715,7 @@ ol.td-list{counter-reset:td}
   var tabs = $$('[role="tab"]');
   var panels = tabs.map(function (t) { return document.getElementById(t.getAttribute('aria-controls')); });
   var tokens = tabs.map(function (t) { return t.getAttribute('data-token'); });
-  var ALIAS = { home: 'today', market: 'gold', auction: 'gold', prices: 'gold', timers: 'world', session: 'build', gear: 'build', setup: 'talents', settings: 'talents', skill: 'skillup', zones: 'herbs' };
+  var ALIAS = { home: 'today', market: 'gold', auction: 'gold', prices: 'gold', timers: 'world', session: 'build', gear: 'build', setup: 'talents', settings: 'talents', skill: 'skillup', zones: 'herbs', kit: 'consumables', elixirs: 'consumables', greenhouse: 'camp', bp: 'blueprints', perks: 'legacy', bank: 'bags', alts: 'bags' };
   var masthead = $('.masthead'), tablist = $('.tablist'), curTab = -1, SCR = store.get('wowf-scroll', {});
   if (!SCR || typeof SCR !== 'object') SCR = {};
   function fades() {
@@ -3222,5 +3481,6 @@ ol.td-list{counter-reset:td}
 })();
 </script>
 <script src="market.js"></script>
+<script src="plans.js"></script>
 
 </body></html>

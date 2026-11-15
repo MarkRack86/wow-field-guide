@@ -684,7 +684,10 @@
     });
     craftsEl.innerHTML = h;
   }
-  function renderPrices() { renderStatus(); renderAlerts(); renderDeals(); renderCraftList(); renderSell(); renderGlance(); renderHerb(); renderMats(); renderCrafts(); drawChart(); }
+  function renderPrices() {
+    renderStatus(); renderAlerts(); renderDeals(); renderCraftList(); renderSell(); renderGlance(); renderHerb(); renderMats(); renderCrafts(); drawChart();
+    try { document.dispatchEvent(new CustomEvent('wowf:prices')); } catch (e) {}
+  }
   function renderGold() { renderAlerts(); renderSell(); renderGlance(); renderHerb(); }
 
   /* ---------- Chart: up to six items, as prices or rebased to 100 on each item's first day ---------- */
@@ -1756,6 +1759,12 @@
     skprof = k; store.set('wowf-skprof', skprof); fillSkillProfs(); suProf.value = k; suCur.value = String(curFor(skprof)); renderSkill();
     if (window.wowfGo) window.wowfGo('skillup', suProf);
   }
+  /* For plans.js (the Consumables, Camp, Blueprints, Legacy and Bags tabs): the prices, tables and helpers they share. */
+  window.WOWF_M = {
+    NAMES: NAMES, RX: RX, HERB: HERB, now: now, nm: nm, money: money, parseMoney: parseMoney, esc: esc, plural: plural, store: store,
+    sellNet: sellNet, buyCost: buyCost, rxState: rxState, rxEval: rxEval, profSkill: profSkill, herbSkill: herbSkill, charLevel: charLevel,
+    choose: choose, latest: latest, ch: function () { return CH; }
+  };
   window.WOWF_SEARCH = window.WOWF_SEARCH || [];
   window.WOWF_SEARCH.push(function () {
     var out = [], enemy = charFaction() === 'Horde' ? 'A' : 'H';

@@ -20,11 +20,12 @@ def read(name):
         return f.read()
 
 
-html, js, data = read("index.html"), read("market.js"), read("data/latest.json").strip()
+html, js, plans, data = read("index.html"), read("market.js"), read("plans.js"), read("data/latest.json").strip()
 updates = json.dumps(json.loads(read("data/updates.json")), separators=(",", ":"), ensure_ascii=False)
 built = datetime.datetime.fromisoformat(json.loads(data)["built"].replace("Z", "+00:00")).astimezone(ZoneInfo("Europe/London"))
 tag = '<script src="market.js"></script>'
-if html.count(tag) != 1 or html.count("</head>") != 1 or "</script" in js.lower():
+tag2 = '<script src="plans.js"></script>'
+if html.count(tag) != 1 or html.count(tag2) != 1 or html.count("</head>") != 1 or "</script" in js.lower() or "</script" in plans.lower():
     sys.exit("index.html or market.js isn't in the expected shape; nothing written.")
 banner = ('<div role="note" style="background:#3a2c17;color:#fff8e6;font:600 13px/1.45 system-ui,sans-serif;'
           'padding:7px 12px;text-align:center">Offline copy, data from ' + built.strftime("%a %-d %b %Y at %H:%M") +
@@ -32,7 +33,8 @@ banner = ('<div role="note" style="background:#3a2c17;color:#fff8e6;font:600 13p
 # The Updates notes must come before the page's main script, which reads them; the data can wait until market.js.
 notes = '<script type="application/json" id="wowf-updates">' + updates.replace("</", "<\\/") + "</script>"
 page = html.replace("</head>", "</head>" + banner + notes, 1).replace(
-    tag, '<script type="application/json" id="wowf-data">' + data.replace("</", "<\\/") + "</script>\n<script>\n" + js + "\n</script>", 1)
+    tag, '<script type="application/json" id="wowf-data">' + data.replace("</", "<\\/") + "</script>\n<script>\n" + js + "\n</script>", 1).replace(
+    tag2, "<script>\n" + plans + "\n</script>", 1)
 out = os.path.join(root, "offline", "wow-field-guide-offline.html")
 os.makedirs(os.path.dirname(out), exist_ok=True)
 with open(out, "w", encoding="utf-8") as f:

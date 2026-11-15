@@ -1,17 +1,48 @@
 {
-  "checked": "2026-11-14T05:12:25Z",
+  "checked": "2026-11-15T05:05:38Z",
   "entries": [
+    {
+      "date": "2026-11-15",
+      "label": "Sun 15 Nov",
+      "chips": ["Hotfix"],
+      "state": "new",
+      "title": "Dungeon XP rule eased: the cut-off is now a gap of more than 12 levels",
+      "blocks": [
+        {
+          "heading": "Dungeons",
+          "items": [
+            "Blizzard has eased Friday's dungeon XP rule. A kill now gives the group no XP only if someone in the group is more than 12 levels above that monster.",
+            "Under Friday's rule, a kill gave no XP if the monster was grey to anyone in the group. Blizzard says that missed the mark in dungeons where the monsters span a wide range of levels.",
+            "The change went live at about 1am UK time on Sun 15 Nov. Dungeon runs that had already started by then keep the old rule."
+          ]
+        },
+        {
+          "heading": "The 9 Nov outage",
+          "items": [
+            "If you paid a trainer between 9:17pm and 10:17pm UK time on Mon 9 Nov and lost that training in the outage, check your mail. Blizzard has sent you the gold it cost.",
+            "Blizzard posted this on Fri 13 Nov. The mail has already gone out."
+          ]
+        },
+        {
+          "heading": "Also",
+          "items": [
+            "The Auction House and mail changes are still due with the weekly maintenance on Wed 18 Nov in Europe, and on Tue 17 Nov in the Americas. Until then the smallest deposit is 1 silver for each listing.",
+            "Still no word on the proper fix for boats and zeppelins, on other progress lost in the 9 Nov outage, or on when Item Restoration will be switched back on."
+          ]
+        }
+      ]
+    },
     {
       "date": "2026-11-13",
       "label": "Fri 13 Nov",
       "chips": ["Hotfixes"],
-      "state": "new",
+      "state": "",
       "title": "No dungeon XP if a monster is grey to anyone in your group, plus spawn and quest fixes",
       "blocks": [
         {
           "heading": "Dungeons",
           "items": [
-            "In dungeons, nobody in the group gets XP for a kill if the monster is grey (too low to give XP) to any member. So you get no XP from runs with a much higher-level player in the group.",
+            "In dungeons, nobody in the group gets XP for a kill if the monster is grey (too low to give XP) to any member. So you get no XP from runs with a much higher-level player in the group. Blizzard eased this on Sun 15 Nov: see above.",
             "The Drowned City: monsters other than bosses now respawn after 2 hours, up from 1 hour.",
             "The Deadmines: Sneed now jumps out of Sneed's Shredder properly, even if it is stunned when it dies.",
             "Pix Xizzix's weekly dungeon quests now leave your quest log at the weekly reset, as they should."
@@ -484,6 +515,14 @@
     }
   ],
   "sources": [
+    {
+      "title": "Blizzard forums: the dungeon XP rule eased, 15 Nov",
+      "url": "https://us.forums.blizzard.com/en/wow/t/player-level-dungeon-xp-adjustment-november-14/2416343"
+    },
+    {
+      "title": "Exwind: Blizzard's post on gold for training lost on 9 Nov (13 Nov)",
+      "url": "https://exwind.net/enUS/post/blue/178/"
+    },
     {
       "title": "Blizzard forums: WoW: Forever Hotfixes, 13 Nov 2026",
       "url": "https://us.forums.blizzard.com/en/wow/t/wow-forever-hotfixes-november-13-2026/2403040/10"

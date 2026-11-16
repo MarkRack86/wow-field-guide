@@ -1,6 +1,34 @@
 {
-  "checked": "2026-11-15T05:12:45Z",
+  "checked": "2026-11-16T05:03:39Z",
   "notes": [
+    {
+      "ids": [7076],
+      "date": "2026-11-16",
+      "text": "It drops at about 2 to 3% from earth elementals of level 55 to 59, in Silithus and the Burning Steppes. Forever added 20 new recipes that use it, such as Tailoring’s Earthenweave set, which takes 13 in all. No hotfix has changed it.",
+      "source": "Timesaver",
+      "url": "https://timesaver.gg/blog/wow-forever-essence-of-air-and-earth-farm"
+    },
+    {
+      "ids": [250943],
+      "date": "2026-11-16",
+      "text": "New in Forever. Its recipe needs Alchemy 290 and costs 240 Merchant’s Favor. No hotfix has changed it.",
+      "source": "wow.gg",
+      "url": "https://wow.gg/professions/forever/alchemy"
+    },
+    {
+      "ids": [255723],
+      "date": "2026-11-16",
+      "text": "In Forever, First Aid makes healing potions instead of Alchemy, so any player can learn this recipe. Greater Healing Potion needed First Aid 155 in the beta. No hotfix has changed it.",
+      "source": "Blizzard Watch",
+      "url": "https://blizzardwatch.com/2026/10/16/first-aid-getting-new-recipes-updates-world-warcraft-forever/"
+    },
+    {
+      "ids": [2934, 4603, 13476, 13457, 250370, 13447, 14344, 14343, 12804, 7078, 13452, 13422, 7070],
+      "date": "2026-11-16",
+      "text": "No hotfix has changed it. Blizzard’s hotfix list, up to its 13 Nov notes, doesn’t mention it, and nor does any Blizzard post since.",
+      "source": "Blizzard",
+      "url": "https://news.blizzard.com/en-us/article/24315281/wow-forever-hotfixes-november-13-2026"
+    },
     {
       "ids": [249726],
       "date": "2026-11-15",

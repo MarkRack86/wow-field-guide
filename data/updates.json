@@ -1,11 +1,11 @@
 {
-  "checked": "2026-11-15T05:05:38Z",
+  "checked": "2026-11-16T04:59:07Z",
   "entries": [
     {
       "date": "2026-11-15",
       "label": "Sun 15 Nov",
       "chips": ["Hotfix"],
-      "state": "new",
+      "state": "",
       "title": "Dungeon XP rule eased: the cut-off is now a gap of more than 12 levels",
       "blocks": [
         {

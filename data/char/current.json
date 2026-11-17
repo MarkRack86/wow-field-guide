@@ -1,5 +1,5 @@
 {
-  "at": "2026-11-17T10:55:02Z",
+  "at": "2026-11-17T11:55:02Z",
   "cls": "Shaman",
   "faction": "Horde",
   "gear": {
@@ -10,8 +10,8 @@
         "cur": [],
         "up": [
           [14368,"Mystic's Shoulder Pads","C",17,350,0.5,"26 armor"],
-          [4251,"Hillman's Shoulders","U",21,900,3.4,"+5 Sta, +3 Spi, 65 armor"],
-          [4252,"Dark Leather Shoulders","U",23,2590,4.9,"+7 Agi, 68 armor"]
+          [4251,"Hillman's Shoulders","U",21,849,3.4,"+5 Sta, +3 Spi, 65 armor"],
+          [4252,"Dark Leather Shoulders","U",23,2598,4.9,"+7 Agi, 68 armor"]
         ]
       },
       "BACK": {
@@ -26,7 +26,7 @@
         "cur": [[15453,"Savannah Bracers","U",18,1.7]],
         "up": [
           [4795,"Bear Bracers","U",20,1489,0.8,"+5 Sta, 37 armor"],
-          [4794,"Wolf Bracers","U",20,5499,1.7,"+4 Agi, +2 Sta, 37 armor"]
+          [4794,"Wolf Bracers","U",20,5500,1.7,"+4 Agi, +2 Sta, 37 armor"]
         ]
       },
       "HANDS": {
@@ -39,7 +39,7 @@
       "WAIST": {
         "cur": [[5275,"Binding Girdle","U",15,1.2]],
         "up": [
-          [4246,"Fine Leather Belt","U",11,200,1.3,"+2 Agi, +2 Sta, 40 armor"],
+          [4246,"Fine Leather Belt","U",11,230,1.3,"+2 Agi, +2 Sta, 40 armor"],
           [4249,"Dark Leather Belt","U",20,702,3.2,"+4 Agi, +4 Sta, 48 armor"],
           [6468,"Deviate Scale Belt","R",18,11000,7.4,"+3 Str, +5 Agi, +6 Sta, 51 armor"]
         ]
@@ -47,14 +47,14 @@
       "LEGS": {"cur":[[5327,"Greasy Tinker's Pants","U",18,5.8]],"up":[]},
       "FEET": {
         "cur": [[5311,"Buckled Boots","U",21,2.9]],
-        "up": [[2315,"Gray Leather Boots","U",15,307,0.7,"+5 Agi, 53 armor"]]
+        "up": [[2315,"Gray Leather Boots","U",15,305,0.7,"+5 Agi, 53 armor"]]
       },
       "FINGER": {"cur":[[281268,"Depleted Ritual Band","C",9,0.0]],"up":[]},
       "MAIN_HAND": {
         "cur": [[276887,"Big Bad Basher","U",24,86.1]],
         "up": [
           [7956,"Bronze Warhammer","U",20,1553,6.5,"16.9 DPS, +6 Str, +6 Sta"],
-          [7958,"Bronze Battle Axe","U",22,5245,15.4,"18.3 DPS, +10 Str"]
+          [7958,"Bronze Battle Axe","U",22,4545,15.4,"18.3 DPS, +10 Str"]
         ]
       },
       "RANGED": {"cur":[[263412,"Totem of Charged Flames","U",10,0]],"up":[]}
@@ -63,7 +63,7 @@
   "guild": null,
   "ilvl": 11,
   "level": 21,
-  "login": 1794897096000,
+  "login": 1794915059000,
   "name": "Brakka",
   "profs": [
     [
@@ -101,7 +101,7 @@
         54211
       ]
     ],
-    ["Herbalism",165,225,[1419,2041,54116,52642]],
+    ["Herbalism",168,225,[1419,2041,54116,52642]],
     [
       "Cooking",
       110,
@@ -217,6 +217,7 @@
     "This Fruit Could Bite Back",
     "Threat from Below",
     "Thwarting Kolkar Aggression",
+    "Time To Strike",
     "Tribes at War",
     "Vanquish the Betrayers",
     "Vile Familiars",
@@ -261,15 +262,15 @@
   "race": "Orc",
   "reps": [
     ["Everlook","Neutral",1809,3000],
-    ["Thunder Bluff","Friendly",1636,6000],
+    ["Thunder Bluff","Friendly",1648,6000],
     ["Ratchet","Friendly",518,6000],
-    ["Orgrimmar","Honored",2503,12000],
-    ["Darkspear Trolls","Friendly",5378,6000],
+    ["Orgrimmar","Honored",2516,12000],
+    ["Darkspear Trolls","Friendly",5391,6000],
     ["Booty Bay","Neutral",1809,3000],
     ["Warsong Outriders","Neutral",285,3000],
     ["Durotar Supply and Logistics","Neutral",2000,3000],
     ["Gadgetzan","Neutral",1809,3000],
-    ["Undercity","Neutral",1777,3000],
+    ["Undercity","Neutral",1827,3000],
     ["Powderfuse","Neutral",1809,3000]
   ],
   "ruleset": "Normal",
@@ -286,5 +287,5 @@
       ]
     ]
   ],
-  "xp": 10469
+  "xp": 15471
 }

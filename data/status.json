@@ -1,22 +1,22 @@
 {
  "refresh": {
-  "at": "2026-11-17T03:55:08Z",
+  "at": "2026-11-17T04:55:07Z",
   "ok": true,
   "date": "2026-11-17",
-  "snapshot": "2026-11-17T03:18:55Z",
+  "snapshot": "2026-11-17T04:18:54Z",
   "new": true,
-  "items": 428,
+  "items": 429,
   "of": 463,
-  "alerts": 9,
+  "alerts": 13,
   "character": "synced",
   "level": 21,
   "notes": []
  },
  "speed": {
-  "at": "2026-11-17T03:55:08Z",
+  "at": "2026-11-17T04:55:07Z",
   "ok": true,
-  "id": "2026-11-17T03",
-  "units": 46395,
+  "id": "2026-11-17T04",
+  "units": 45977,
   "minutes": 60
  }
 }

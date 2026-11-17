@@ -1,6 +1,75 @@
 {
-  "checked": "2026-11-16T04:59:07Z",
+  "checked": "2026-11-17T05:07:09Z",
   "entries": [
+    {
+      "date": "2026-11-16",
+      "label": "Mon 16 Nov",
+      "chips": ["Hotfixes"],
+      "state": "new",
+      "title": "Windfury Totem fixes, a better Fishing Rack, and dungeon and quest fixes",
+      "blocks": [
+        {
+          "heading": "Camping",
+          "items": [
+            "The Fishing Rack now gives lures to everyone.",
+            "Bloated Fish from the Fishing Rack now turn up more often. Blizzard has adjusted what they contain to match."
+          ]
+        },
+        {
+          "heading": "Classes",
+          "items": [
+            "Shaman: Windfury Totem's extra attacks are now reduced by armour, and there is now a cooldown between procs. Before, they ignored armour and had no cooldown.",
+            "Shaman: Windfury Totem's extra attacks now generate Rage.",
+            "Shaman: Mutilate and Execute no longer get an extra chance to trigger Windfury Totem. Shield Slam, Shield Bash and Shieldworn-empowered Holy Strikes can no longer trigger it at all.",
+            "Shaman: For Enhancement, the same Maelstrom Weapon stacks can no longer speed up two spells.",
+            "Shaman: For Enhancement, Thundering Strikes no longer needs a weapon equipped to give its critical strike chance.",
+            "Druid: Every rank of Wild Growth now goes on cooldown, as it should.",
+            "Druid: For Balance, the Genesis talent now raises the damage of Pounce's bleed.",
+            "Priest: Dark Inspiration no longer stacks when a group has more than one Shadow Priest.",
+            "Priest: Vampiric Embrace changes with the weekly maintenance. It will heal your group for 10% of your Shadow damage, down from 20%. You get twice that, so nothing changes when you play solo.",
+            "Rogue: Poisons can no longer go above their highest rank.",
+            "Rogue: Shank no longer wipes your combo points on other targets when you use it on a target without them. This happened even without the Boot Knife talent.",
+            "Warrior: The Revered Champion now offers Legacy of Valor to Warriors who qualify.",
+            "Warrior: For Fury, Cleave and Heroic Strike now trigger Unbridled Wrath and Reckless Swings, and no longer use up Flurry stacks. Reckless Swings has also been adjusted so the cooldown manager can track it."
+          ]
+        },
+        {
+          "heading": "Dungeons",
+          "items": [
+            "The Drowned City: Captain Dreadrise can now be stunned. The Abyssal Bubble he summons can no longer block, dodge or parry.",
+            "The Drowned City: the rare \"Pyromancer\" Braxton now reacts to combat instead of ignoring it.",
+            "Sunken Temple: the Atal'alarion serpent statues in the Pit of Refuse no longer stop working if you use them in the wrong order."
+          ]
+        },
+        {
+          "heading": "Quests",
+          "items": [
+            "The drop rate for \"Blood Red Bandanas\" is higher.",
+            "Rogue: On \"The Talisman of Kazdor\", Witch Doctor Zum'rah now spawns properly.",
+            "Twilight's Shroud: freeing the scout prisoners now counts for \"No Soldier Left Behind\" for your whole group.",
+            "Isle of Dread: for \"Screecher Spirits\", the Vale Screamers have moved to the coast.",
+            "\"Water Pouch Bounty\", a repeatable quest, no longer gives XP.",
+            "Theramore: a bug that could stop you finishing \"The Return of the King?\" is fixed."
+          ]
+        },
+        {
+          "heading": "Items",
+          "items": [
+            "Formula: Enchant Boots - Speed, a reputation reward, is now bind on pickup, as intended.",
+            "Outrider's Gloves now work properly.",
+            "The Violet Tragan no longer breaks crowd control effects."
+          ]
+        },
+        {
+          "heading": "Also",
+          "items": [
+            "Blizzard posted these fixes at 2:17am UK time on Tue 17 Nov.",
+            "The Auction House and mail changes are still due with the weekly maintenance on Wed 18 Nov in Europe, and on Tue 17 Nov in the Americas. Until then the smallest deposit is 1 silver for each listing.",
+            "Still no word on the proper fix for boats and zeppelins, on other progress lost in the 9 Nov outage, or on when Item Restoration will be switched back on."
+          ]
+        }
+      ]
+    },
     {
       "date": "2026-11-15",
       "label": "Sun 15 Nov",
@@ -515,6 +584,14 @@
     }
   ],
   "sources": [
+    {
+      "title": "Blizzard forums: WoW: Forever Hotfixes, 16 Nov 2026",
+      "url": "https://us.forums.blizzard.com/en/wow/t/wow-forever-hotfixes-november-16-2026/2403040/11"
+    },
+    {
+      "title": "Blizzard: WoW: Forever Hotfixes, 16 Nov 2026",
+      "url": "https://news.blizzard.com/en-us/article/24315281/wow-forever-hotfixes-november-16-2026"
+    },
     {
       "title": "Blizzard forums: the dungeon XP rule eased, 15 Nov",
       "url": "https://us.forums.blizzard.com/en/wow/t/player-level-dungeon-xp-adjustment-november-14/2416343"

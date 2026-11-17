@@ -1,6 +1,48 @@
 {
-  "checked": "2026-11-16T05:03:39Z",
+  "checked": "2026-11-17T05:12:01Z",
   "notes": [
+    {
+      "ids": [21547],
+      "date": "2026-11-17",
+      "text": "Blizzard renamed it Recipe: Elixir of Holy Power on 10 Nov, to match the elixir it teaches, whose buff is now called Holy Power. No hotfix since has changed its drop or use.",
+      "source": "Blizzard",
+      "url": "https://news.blizzard.com/en-us/article/24315281/wow-forever-hotfixes-november-16-2026"
+    },
+    {
+      "ids": [250328],
+      "date": "2026-11-17",
+      "text": "New in Forever: 25 Agility and Intellect for 30 minutes, from level 55. Its recipe needs Alchemy 275 and costs 180 Merchant’s Favor at Honored, from Apothecary Durelle in the Barrens or Nina Surefire in Redridge. No hotfix has changed it.",
+      "source": "warcraft.wiki.gg",
+      "url": "https://warcraft.wiki.gg/wiki/Elixir_of_Cunning"
+    },
+    {
+      "ids": [251291],
+      "date": "2026-11-17",
+      "text": "New in Forever. It is smelted from Heavy Thorium Ore at skill 300, at a camp or at special forges in dungeons. The wiki lists 37 Blacksmithing recipes that use it, and 3 Engineering ones. No hotfix has changed it.",
+      "source": "warcraft.wiki.gg",
+      "url": "https://warcraft.wiki.gg/wiki/Heavy_Thorium_Bar"
+    },
+    {
+      "ids": [248822],
+      "date": "2026-11-17",
+      "text": "New in Forever. A guide based on the beta says it can come from any herb in Mount Hyjal, but only if your gloves have the Lotus Claw enchant. No hotfix has changed it.",
+      "source": "wow-professions.com",
+      "url": "https://www.wow-professions.com/forever/herbalism-changes"
+    },
+    {
+      "ids": [250988],
+      "date": "2026-11-17",
+      "text": "It drops from Gnarlpine Mystics in Teldrassil. It teaches Minor Mender’s Potion at Alchemy 30, made from 2 Mageroyal, 1 Bruiseweed and an Empty Vial. No hotfix has changed it.",
+      "source": "wow.gg",
+      "url": "https://wow.gg/professions/forever/alchemy"
+    },
+    {
+      "ids": [13494, 250942, 250368, 10561, 3831, 16204, 6371],
+      "date": "2026-11-17",
+      "text": "No hotfix has changed it. Blizzard’s hotfix list, up to its 16 Nov notes, doesn’t mention it.",
+      "source": "Blizzard",
+      "url": "https://news.blizzard.com/en-us/article/24315281/wow-forever-hotfixes-november-16-2026"
+    },
     {
       "ids": [7076],
       "date": "2026-11-16",

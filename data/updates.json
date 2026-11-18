@@ -1,11 +1,129 @@
 {
-  "checked": "2026-11-17T05:07:09Z",
+  "checked": "2026-11-18T05:06:50Z",
   "entries": [
+    {
+      "date": "2026-11-18",
+      "label": "Wed 18 Nov",
+      "chips": ["Due today"],
+      "state": "due",
+      "title": "Auction House and mail changes due with today's maintenance in Europe",
+      "blocks": [
+        {
+          "items": [
+            "Blizzard said its Auction House and mail changes would go live with this week's maintenance: Tue 17 Nov in the Americas and Wed 18 Nov in Europe.",
+            "The smallest deposit should then drop from 1 silver to 1 copper for each listing.",
+            "Blizzard said it would list the changes in its hotfix notes once they are live. The 17 Nov notes don't mention them yet.",
+            "Priest: the Vampiric Embrace change from the 16 Nov notes also comes with this maintenance. It makes no difference when you play solo."
+          ]
+        }
+      ]
+    },
+    {
+      "date": "2026-11-17",
+      "label": "Tue 17 Nov",
+      "chips": ["Hotfixes"],
+      "state": "new",
+      "title": "Upper Blackrock Spire back to full difficulty, plus camping, profession and quest fixes",
+      "blocks": [
+        {
+          "heading": "Camping",
+          "items": [
+            "The Cozy Sleeping Bag now gives a Resting aura that shows when you are inside its area.",
+            "The Cozy Sleeping Bag can now be placed in specific spots, like hunter traps.",
+            "You can no longer sleep on the Cozy Sleeping Bag while mounted."
+          ]
+        },
+        {
+          "heading": "Classes",
+          "items": [
+            "Might of Stormwind and Warchief's Blessing now always end when you die, as they should. They are no longer given to non-players.",
+            "Shaman: Flurry no longer wrongly loses stacks when Windfury Totem attacks land."
+          ]
+        },
+        {
+          "heading": "Dungeons",
+          "items": [
+            "Upper Blackrock Spire: its monsters had far less health and did far less damage than intended. That is fixed. Blizzard says it once again needs a full group of careful players."
+          ]
+        },
+        {
+          "heading": "Monsters and spawns",
+          "items": [
+            "Thousand Needles: Pesterhide Snarlers and Needles Cougars no longer spawn inside rocks, and Gravelsnout Diggers and Surveyors no longer walk into them."
+          ]
+        },
+        {
+          "heading": "Items",
+          "items": [
+            "Whiteout Staff and Crackling Staff now have the same stats: 25 Stamina, 25 Intellect and 74 spell power from weapon damage.",
+            "Escape Plan now has the right range and damage.",
+            "Paladin: Soulforge Armor, the upgraded dungeon set for tanks, now gives spell power instead of Strength. Blizzard says Paladin tanks will lean further on spell power as their main damage stat.",
+            "Priest: Shadow Priests can now hold a Night Watchman's Torch."
+          ]
+        },
+        {
+          "heading": "Legacy",
+          "items": [
+            "Reagent Economy should no longer stop working at random."
+          ]
+        },
+        {
+          "heading": "Professions",
+          "items": [
+            "Some Waylaid Crate conversions gave an old turn-in item that is no longer used. If that happened to you, you can now hand those crates in for the right reward.",
+            "Blacksmithing: \"The Old Ways\" now gives the Orcish War Leggings recipe as an item. If you never got it, or lost it, Sumi in the nearby blacksmithing hut has a replacement once you have done the quest.",
+            "Blacksmithing: Bronze Mace is now bind on equip, so it can go in your transmog collection. Before, it never bound.",
+            "Blacksmithing: Craftsman's Writ: Golden Scale Gauntlets now tells you who to hand it in to.",
+            "Blacksmithing: a display bug with Master Swordsmith, Master Axesmith and Master Hammersmith is fixed.",
+            "Herbalism: Cultivation now works properly on Mageroyal.",
+            "Herbalism: the wildflowers for \"Her World\" no longer show on Find Herb unless you are on the quest.",
+            "Skinning: you can no longer skin a few creatures that are not meant to be skinnable.",
+            "Rogue: Paletusks can no longer be pickpocketed."
+          ]
+        },
+        {
+          "heading": "Quests",
+          "items": [
+            "Rogue: a bin of lost mail has turned up in the SI:7 quarters. Mathias Shaw can now give you the letter you need for \"The Manor, Ravenholdt\".",
+            "\"Show Them How It's Done\" now shows on your map.",
+            "Wetlands: there are more Fen Creepers for \"Blisters on the Land\".",
+            "\"Step One: Rock\": while you are on the quest, its rock piles now show with Find Minerals instead of Find Treasure.",
+            "\"A New Ore Sample\": there are more Gravelsnout Diggers and Surveyors. Blizzard's advice: take the ore sample, but do not take the candle.",
+            "The Battle for Alterac Valley quests now need level 58 to pick up."
+          ]
+        },
+        {
+          "heading": "Shen'dralas",
+          "items": [
+            "\"Powering the Pylons\": repairing a pylon now counts for nearby group members.",
+            "\"Heart of Crystal\": the Depleted Crystal Heart now drops for everyone in your group.",
+            "\"Going Home\": Rokren, the Gelkis you escort, now escapes more slowly.",
+            "Miners can now track Spectral Iron Ore, and it spawns more often.",
+            "Bristleback Skullcrushers and Decrepit Pylon Protectors use their abilities less often.",
+            "Summon Undead Ravager, cast by various necromancers, can now be interrupted.",
+            "\"Agamaggan's Blood\" is no longer a dungeon quest. You can now finish it in the elite area outside Razorfen Downs."
+          ]
+        },
+        {
+          "heading": "Interface",
+          "items": [
+            "Your ignore list now stays after you log out."
+          ]
+        },
+        {
+          "heading": "Also",
+          "items": [
+            "Blizzard posted these fixes early on Wed 18 Nov, UK time.",
+            "Still no word on the proper fix for boats and zeppelins, on other progress lost in the 9 Nov outage, or on when Item Restoration will be switched back on."
+          ]
+        }
+      ]
+    },
     {
       "date": "2026-11-16",
       "label": "Mon 16 Nov",
       "chips": ["Hotfixes"],
-      "state": "new",
+      "state": "",
       "title": "Windfury Totem fixes, a better Fishing Rack, and dungeon and quest fixes",
       "blocks": [
         {
@@ -584,6 +702,14 @@
     }
   ],
   "sources": [
+    {
+      "title": "Blizzard EU forums: WoW: Forever Hotfixes, 17 Nov 2026",
+      "url": "https://eu.forums.blizzard.com/en/wow/t/wow-forever-hotfixes-november-17-2026/639885"
+    },
+    {
+      "title": "Blizzard: WoW: Forever Hotfixes, 17 Nov 2026",
+      "url": "https://news.blizzard.com/en-us/article/24315281/wow-forever-hotfixes-november-17-2026"
+    },
     {
       "title": "Blizzard forums: WoW: Forever Hotfixes, 16 Nov 2026",
       "url": "https://us.forums.blizzard.com/en/wow/t/wow-forever-hotfixes-november-16-2026/2403040/11"

@@ -1,6 +1,41 @@
 {
-  "checked": "2026-11-17T05:12:01Z",
+  "checked": "2026-11-18T05:10:47Z",
   "notes": [
+    {
+      "ids": [14342, 250992, 250949, 250338, 250350, 250937, 250348, 250329, 13453, 9224, 248823, 250983, 250989, 250947, 2555, 250389, 5637, 2458, 279970, 250939, 2454, 279956],
+      "date": "2026-11-18",
+      "text": "No hotfix has changed it. Blizzard’s hotfix list, up to its 17 Nov notes, doesn’t mention it.",
+      "source": "Blizzard",
+      "url": "https://news.blizzard.com/en-us/article/24315281/wow-forever-hotfixes-november-17-2026"
+    },
+    {
+      "ids": [7082],
+      "date": "2026-11-18",
+      "text": "Dust Stormers and Cyclone Warriors in Silithus, levels 55 to 59, drop it about 4 to 5% of the time, and Alchemists can transmute it from Essence of Water. Forever added recipes that use it, such as Champion’s Legplates, which take 10. No hotfix has changed it.",
+      "source": "Timesaver",
+      "url": "https://timesaver.gg/blog/wow-forever-essence-of-air-and-earth-farm"
+    },
+    {
+      "ids": [785],
+      "date": "2026-11-18",
+      "text": "Blizzard’s 17 Nov hotfixes fixed a bug that stopped Cultivation, the Tauren racial, working properly on Mageroyal. No other hotfix has changed it.",
+      "source": "Blizzard",
+      "url": "https://news.blizzard.com/en-us/article/24315281/wow-forever-hotfixes-november-17-2026"
+    },
+    {
+      "ids": [248686],
+      "date": "2026-11-18",
+      "text": "Waylaid Crates are world drops you fill with materials and hand in for Merchant’s Favor, the currency for Forever’s new recipes, so their price follows demand for Favor. This one takes 10 each of Stranglekelp, Bruiseweed, Wild Steelbloom, Grave Moss and Kingsblood. Blizzard’s 17 Nov hotfixes fixed some crate conversions that gave an obsolete turn-in item.",
+      "source": "Method",
+      "url": "https://www.method.gg/wow-forever/how-to-get-waylaid-crates-and-merchants-favor-in-wow-forever"
+    },
+    {
+      "ids": [248682, 248683, 248684, 248685, 248702, 248703, 248704, 248687, 248688, 248689, 248705, 248706, 248707, 248690, 248691, 248692, 248693, 248694, 248708, 248709, 248710],
+      "date": "2026-11-18",
+      "text": "Waylaid Crates are world drops you fill with materials and hand in for Merchant’s Favor, the currency for Forever’s new recipes, so their price follows demand for Favor and the cost of filling them. Blizzard’s 17 Nov hotfixes fixed some crate conversions that gave an obsolete turn-in item.",
+      "source": "Method",
+      "url": "https://www.method.gg/wow-forever/how-to-get-waylaid-crates-and-merchants-favor-in-wow-forever"
+    },
     {
       "ids": [21547],
       "date": "2026-11-17",
@@ -112,20 +147,6 @@
       "text": "No hotfix or news explains the jump. Forever’s new Leatherworking crafts use it in bulk: the Living Crown takes 20.",
       "source": "Timesaver",
       "url": "https://timesaver.gg/blog/wow-forever-living-essence-and-essence-of-undeath-farm"
-    },
-    {
-      "ids": [248686],
-      "date": "2026-11-13",
-      "text": "Waylaid Crates are world drops you fill with materials and hand in for Merchant’s Favor, the currency for Forever’s new recipes, so their price follows demand for Favor. This one takes 10 each of Stranglekelp, Bruiseweed, Wild Steelbloom, Grave Moss and Kingsblood. No hotfix has changed them.",
-      "source": "Method",
-      "url": "https://www.method.gg/wow-forever/how-to-get-waylaid-crates-and-merchants-favor-in-wow-forever"
-    },
-    {
-      "ids": [248682, 248683, 248684, 248685, 248702, 248703, 248704, 248687, 248688, 248689, 248705, 248706, 248707, 248690, 248691, 248692, 248693, 248694, 248708, 248709, 248710],
-      "date": "2026-11-13",
-      "text": "Waylaid Crates are world drops you fill with materials and hand in for Merchant’s Favor, the currency for Forever’s new recipes, so their price follows demand for Favor and the cost of filling them. No hotfix has changed them.",
-      "source": "Method",
-      "url": "https://www.method.gg/wow-forever/how-to-get-waylaid-crates-and-merchants-favor-in-wow-forever"
     },
     {
       "ids": [268415, 268416, 268417, 268418],

@@ -1,5 +1,5 @@
 {
-  "at": "2026-11-18T03:55:03Z",
+  "at": "2026-11-18T04:55:03Z",
   "cls": "Shaman",
   "faction": "Horde",
   "gear": {
@@ -8,14 +8,14 @@
     "slots": {
       "HEAD": {
         "cur": [],
-        "up": [[7048,"Azure Silk Hood","U",24,888,3.5,"+8 Sta, +10 frost damage, 34 armor"]]
+        "up": [[7048,"Azure Silk Hood","U",24,989,3.5,"+8 Sta, +10 frost damage, 34 armor"]]
       },
       "SHOULDER": {
         "cur": [],
         "up": [
           [14368,"Mystic's Shoulder Pads","C",17,345,0.5,"26 armor"],
-          [4251,"Hillman's Shoulders","U",21,886,3.4,"+5 Sta, +3 Spi, 65 armor"],
-          [4252,"Dark Leather Shoulders","U",23,2399,4.9,"+7 Agi, 68 armor"]
+          [4251,"Hillman's Shoulders","U",21,980,3.4,"+5 Sta, +3 Spi, 65 armor"],
+          [4252,"Dark Leather Shoulders","U",23,3099,4.9,"+7 Agi, 68 armor"]
         ]
       },
       "BACK": {
@@ -25,7 +25,7 @@
       "CHEST": {
         "cur": [[15304,"Grizzly Jerkin of Strength","U",16,5.4]],
         "up": [
-          [6263,"Blue Overalls","U",15,2210,0.7,"+4 Str, +4 Sta, 34 armor"],
+          [6263,"Blue Overalls","U",15,2205,0.7,"+4 Str, +4 Sta, 34 armor"],
           [5781,"Murloc Scale Breastplate","U",14,4070,2.6,"+5 Str, +3 Agi, 76 armor"]
         ]
       },
@@ -46,7 +46,7 @@
       "WAIST": {
         "cur": [[5275,"Binding Girdle","U",15,1.2]],
         "up": [
-          [4246,"Fine Leather Belt","U",11,225,1.3,"+2 Agi, +2 Sta, 40 armor"],
+          [4246,"Fine Leather Belt","U",11,210,1.3,"+2 Agi, +2 Sta, 40 armor"],
           [4249,"Dark Leather Belt","U",20,703,3.2,"+4 Agi, +4 Sta, 48 armor"],
           [6468,"Deviate Scale Belt","R",18,10449,7.4,"+3 Str, +5 Agi, +6 Sta, 51 armor"]
         ]
@@ -61,7 +61,7 @@
         "cur": [[276887,"Big Bad Basher","U",24,86.1]],
         "up": [
           [7956,"Bronze Warhammer","U",20,1549,6.5,"16.9 DPS, +6 Str, +6 Sta"],
-          [7958,"Bronze Battle Axe","U",22,4800,15.4,"18.3 DPS, +10 Str"]
+          [7958,"Bronze Battle Axe","U",22,4500,15.4,"18.3 DPS, +10 Str"]
         ]
       },
       "RANGED": {"cur":[[263412,"Totem of Charged Flames","U",10,0]],"up":[]}

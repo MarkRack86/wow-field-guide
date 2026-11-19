@@ -1,19 +1,35 @@
 {
-  "checked": "2026-11-18T05:06:50Z",
+  "checked": "2026-11-19T05:14:00Z",
   "entries": [
     {
       "date": "2026-11-18",
       "label": "Wed 18 Nov",
-      "chips": ["Due today"],
-      "state": "due",
-      "title": "Auction House and mail changes due with today's maintenance in Europe",
+      "chips": ["Auction House", "Blue post"],
+      "state": "new",
+      "title": "Auction House deposits now start at 1 copper, and Blizzard takes back exploit gold",
       "blocks": [
         {
+          "heading": "Auction House",
           "items": [
-            "Blizzard said its Auction House and mail changes would go live with this week's maintenance: Tue 17 Nov in the Americas and Wed 18 Nov in Europe.",
-            "The smallest deposit should then drop from 1 silver to 1 copper for each listing.",
-            "Blizzard said it would list the changes in its hotfix notes once they are live. The 17 Nov notes don't mention them yet.",
-            "Priest: the Vampiric Embrace change from the 16 Nov notes also comes with this maintenance. It makes no difference when you play solo."
+            "Wowhead says the smallest deposit for a listing is now 1 copper, down from 1 silver. It came with this week's maintenance: Tue 17 Nov in the Americas and Wed 18 Nov in Europe.",
+            "The deposit still depends on the item's vendor price, how many you list and for how long. Listings that came to under 1 silver now cost less, mostly cheap items and short listings. The rest cost the same as before.",
+            "Blizzard has not put the change in its hotfix notes yet, though it said it would once the change was live.",
+            "Two mail fixes were due at the same time. Some mail has been arriving in about 2 minutes instead of the intended hour, and unread mail has shown \"Stormwind Auction House\" as the sender. Wowhead doesn't mention them, and Blizzard hasn't confirmed them yet."
+          ]
+        },
+        {
+          "heading": "Gold",
+          "items": [
+            "Blackmaw Hold: a room of non-elite monsters there was dropping full dungeon loot, as elites do. Blizzard fixed it early on Mon 16 Nov.",
+            "On Tue 17 Nov Blizzard said a couple of hundred players had farmed that room on purpose. It put an economy lock on their accounts, is taking back the gold they made, and is suspending the worst offenders.",
+            "If you ran the dungeon a few times and got extra loot, Blizzard says you did nothing wrong."
+          ]
+        },
+        {
+          "heading": "Also",
+          "items": [
+            "Blizzard has posted no new hotfix notes since the 17 Nov list.",
+            "Still no word on the proper fix for boats and zeppelins, on other progress lost in the 9 Nov outage, or on when Item Restoration will be switched back on."
           ]
         }
       ]
@@ -22,7 +38,7 @@
       "date": "2026-11-17",
       "label": "Tue 17 Nov",
       "chips": ["Hotfixes"],
-      "state": "new",
+      "state": "",
       "title": "Upper Blackrock Spire back to full difficulty, plus camping, profession and quest fixes",
       "blocks": [
         {
@@ -702,6 +718,22 @@
     }
   ],
   "sources": [
+    {
+      "title": "Wowhead: the Auction House minimum deposit is now 1 copper (18 Nov)",
+      "url": "https://www.wowhead.com/forever/news/auction-house-minimum-deposit-reduced-to-1-copper-in-wow-forever-383917"
+    },
+    {
+      "title": "Blizzard forums: Actions for Blackmaw Hold abuse, 17 Nov",
+      "url": "https://us.forums.blizzard.com/en/wow/t/actions-for-blackmaw-hold-abuse-november-17/2419757/1"
+    },
+    {
+      "title": "PC Gamer: Blizzard takes back gold from the Blackmaw Hold farm (17 Nov)",
+      "url": "https://www.pcgamer.com/games/world-of-warcraft/wow-forevers-economy-has-a-problem-as-a-now-hotfixed-grind-rakes-in-thousands-of-gold-for-the-people-who-got-in-early/"
+    },
+    {
+      "title": "Patchbot: copy of Blizzard's 10 Nov notes, with the Auction House and mail fixes",
+      "url": "https://patchbot.io/games/world-of-warcraft-forever/articles/2204-hotfixes-november-10-2026"
+    },
     {
       "title": "Blizzard EU forums: WoW: Forever Hotfixes, 17 Nov 2026",
       "url": "https://eu.forums.blizzard.com/en/wow/t/wow-forever-hotfixes-november-17-2026/639885"

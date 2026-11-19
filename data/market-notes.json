@@ -1,6 +1,27 @@
 {
-  "checked": "2026-11-18T05:10:47Z",
+  "checked": "2026-11-19T05:18:17Z",
   "notes": [
+    {
+      "ids": [6359],
+      "date": "2026-11-19",
+      "text": "The smallest Auction House deposit fell from 1 silver to 1 copper with the maintenance on Wed 18 Nov, Wowhead reports. This fish sells to vendors for 5 copper, so every listing of it used to pay the 1 silver minimum, and now costs less. No hotfix has changed the fish itself.",
+      "source": "Wowhead",
+      "url": "https://www.wowhead.com/forever/news/auction-house-minimum-deposit-reduced-to-1-copper-in-wow-forever-383917"
+    },
+    {
+      "ids": [13512, 13511, 9210, 250336, 246948, 250986, 16203, 250950, 250951, 10559, 3395, 7069, 9298, 249409, 765, 2447, 2449, 2452, 2455, 3369, 3382, 3388, 5634, 250954, 7910, 13446, 8827, 9036, 9187, 11084, 9293, 4623, 3830, 2450, 249399, 8839, 3577, 9155, 8925],
+      "date": "2026-11-19",
+      "text": "No hotfix has changed it. Blizzard’s hotfix list, up to its 17 Nov notes, doesn’t mention it.",
+      "source": "Blizzard",
+      "url": "https://news.blizzard.com/en-us/article/24315281/wow-forever-hotfixes-november-17-2026"
+    },
+    {
+      "ids": [247754],
+      "date": "2026-11-19",
+      "text": "Blizzard cut what vendors pay for it to 5 copper, from 25, on 10 Nov. No hotfix since has changed it.",
+      "source": "Blizzard",
+      "url": "https://news.blizzard.com/en-us/article/24315281/wow-forever-hotfixes-november-17-2026"
+    },
     {
       "ids": [14342, 250992, 250949, 250338, 250350, 250937, 250348, 250329, 13453, 9224, 248823, 250983, 250989, 250947, 2555, 250389, 5637, 2458, 279970, 250939, 2454, 279956],
       "date": "2026-11-18",

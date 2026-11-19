@@ -1,73 +1,70 @@
 {
-  "at": "2026-11-19T21:55:04Z",
+  "at": "2026-11-19T22:55:03Z",
   "cls": "Shaman",
   "faction": "Horde",
   "gear": {
     "spec": "str",
-    "lvl": 22,
+    "lvl": 23,
     "slots": {
       "HEAD": {
         "cur": [],
-        "up": [[7048,"Azure Silk Hood","U",24,940,3.5,"+8 Sta, +10 frost damage, 34 armor"]]
+        "up": [[7048,"Azure Silk Hood","U",24,1033,3.5,"+8 Sta, +10 frost damage, 34 armor"]]
       },
       "SHOULDER": {
         "cur": [],
         "up": [
           [14170,"Buccaneer's Mantle","C",17,369,0.5,"26 armor"],
-          [4251,"Hillman's Shoulders","U",21,948,3.4,"+5 Sta, +3 Spi, 65 armor"],
-          [4252,"Dark Leather Shoulders","U",23,3845,4.9,"+7 Agi, 68 armor"]
+          [4251,"Hillman's Shoulders","U",21,960,3.4,"+5 Sta, +3 Spi, 65 armor"],
+          [4252,"Dark Leather Shoulders","U",23,3798,4.9,"+7 Agi, 68 armor"]
         ]
       },
       "BACK": {
         "cur": [[15501,"Outrunner's Cloak of Power","U",17,3.0]],
-        "up": [[2316,"Dark Leather Cloak","U",17,415,0.9,"+2 Str, +3 Agi, 18 armor"]]
+        "up": [[2316,"Dark Leather Cloak","U",17,420,0.9,"+2 Str, +3 Agi, 18 armor"]]
       },
       "CHEST": {
         "cur": [[15304,"Grizzly Jerkin of Strength","U",16,5.4]],
-        "up": [[5781,"Murloc Scale Breastplate","U",14,2510,2.6,"+5 Str, +3 Agi, 76 armor"]]
+        "up": [[5781,"Murloc Scale Breastplate","U",14,2535,2.6,"+5 Str, +3 Agi, 76 armor"]]
       },
       "WRIST": {
         "cur": [[15453,"Savannah Bracers","U",18,1.7]],
         "up": [
           [4795,"Bear Bracers","U",20,4000,0.8,"+5 Sta, 37 armor"],
-          [4794,"Wolf Bracers","U",20,6000,1.7,"+4 Agi, +2 Sta, 37 armor"]
+          [4794,"Wolf Bracers","U",20,5999,1.7,"+4 Agi, +2 Sta, 37 armor"]
         ]
       },
       "HANDS": {
         "cur": [[14117,"Aboriginal Gloves of the Eagle","U",16,1.4]],
         "up": [
           [7285,"Nimble Leather Gloves","U",19,585,3.0,"+4 Agi, +4 Sta, 52 armor"],
-          [7348,"Fletcher's Gloves","U",20,889,16.5,"1.4% crit, 53 armor"]
+          [7348,"Fletcher's Gloves","U",20,789,16.5,"1.4% crit, 53 armor"]
         ]
       },
       "WAIST": {
         "cur": [[5275,"Binding Girdle","U",15,1.2]],
         "up": [
-          [4246,"Fine Leather Belt","U",11,220,1.3,"+2 Agi, +2 Sta, 40 armor"],
-          [4249,"Dark Leather Belt","U",20,699,3.2,"+4 Agi, +4 Sta, 48 armor"],
-          [6468,"Deviate Scale Belt","R",18,11595,7.4,"+3 Str, +5 Agi, +6 Sta, 51 armor"]
+          [4246,"Fine Leather Belt","U",11,235,1.3,"+2 Agi, +2 Sta, 40 armor"],
+          [4249,"Dark Leather Belt","U",20,698,3.2,"+4 Agi, +4 Sta, 48 armor"],
+          [6468,"Deviate Scale Belt","R",18,11589,7.4,"+3 Str, +5 Agi, +6 Sta, 51 armor"]
         ]
       },
       "LEGS": {"cur":[[5327,"Greasy Tinker's Pants","U",18,5.8]],"up":[]},
       "FEET": {
         "cur": [[5311,"Buckled Boots","U",21,2.9]],
-        "up": [[2315,"Gray Leather Boots","U",15,304,0.7,"+5 Agi, 53 armor"]]
+        "up": [[2315,"Gray Leather Boots","U",15,303,0.7,"+5 Agi, 53 armor"]]
       },
       "FINGER": {"cur":[[281268,"Depleted Ritual Band","C",9,0.0]],"up":[]},
       "MAIN_HAND": {
-        "cur": [[276887,"Big Bad Basher","U",24,86.1]],
-        "up": [
-          [7956,"Bronze Warhammer","U",20,1544,6.5,"16.9 DPS, +6 Str, +6 Sta"],
-          [7958,"Bronze Battle Axe","U",22,3990,15.4,"18.3 DPS, +10 Str"]
-        ]
+        "cur": [[5322,"Demolition Hammer","U",26,97.0]],
+        "up": [[7958,"Bronze Battle Axe","U",22,3990,4.5,"18.3 DPS, +10 Str"]]
       },
       "RANGED": {"cur":[[263412,"Totem of Charged Flames","U",10,0]],"up":[]}
     }
   },
   "guild": null,
   "ilvl": 11,
-  "level": 22,
-  "login": 1795123033000,
+  "level": 23,
+  "login": 1795128275000,
   "name": "Brakka",
   "profs": [
     [
@@ -105,15 +102,15 @@
         54211
       ]
     ],
-    ["Herbalism",181,225,[1419,2041,54116,52642]],
+    ["Herbalism",187,225,[1419,2041,54116,52642]],
     [
       "Cooking",
-      110,
+      116,
       150,
       [13344,1535,1536,1537,1538,1543,1545,3927,3930,3932,4354,4355,4359,4391,3964,4786,52640]
     ],
     ["Fishing",136,225,[4346,52639]],
-    ["First Aid",119,150,[4417,1838,1839,1840,1841,52641,54191,54192,54193,55747]]
+    ["First Aid",128,150,[4417,1838,1839,1840,1841,52641,54191,54192,54193,55747]]
   ],
   "qdone": [
     "A Missing Hand",
@@ -124,6 +121,7 @@
     "Altered Beings",
     "Apothecary Zamah",
     "Battle of Warsong Gulch",
+    "Betrayal from Within",
     "Blood Shards of Agamaggan",
     "Bloodtalon Matriarch",
     "Break a Few Eggs",
@@ -148,6 +146,7 @@
     "Doras the Wind Rider Master",
     "Echeyakee",
     "Encroachment",
+    "Enraged Thunder Lizards",
     "Favorite Food",
     "For Honor",
     "Forgotten Loa Idols",
@@ -161,6 +160,7 @@
     "Her Name Is Olgra",
     "Hidden Enemies",
     "Ignition",
+    "Ishamuhale",
     "Jorn Skyseer",
     "Lazy Peons",
     "Legging It",
@@ -235,6 +235,7 @@
     "Vrang's Game",
     "WANTED: Baron Longshore",
     "Wayward Weapons",
+    "Weapons of Choice",
     "Wenikee Boltbucket",
     "Wharfmaster Dizzywig",
     "Whuut's the Rush",
@@ -250,15 +251,13 @@
     "Avenge My Village",
     "Betrayal from Within",
     "Between a Rock and a Thistlefur",
+    "Cry of the Thunderhawk",
     "Deepmoss Spider Eggs",
     "Egg Hunt",
     "Goblin Invaders",
-    "Ishamuhale",
     "Leaders of the Fang",
     "Letter to Jin'Zil",
-    "Miner's Fortune",
     "Naga at the Zoram Strand",
-    "Samophlange Manual",
     "Satyr Horns",
     "Serpentbloom",
     "Smart Drinks",
@@ -267,21 +266,20 @@
     "The Essence of Aku'Mai",
     "Troll Charm",
     "Trouble at the Docks",
-    "Weapons of Choice",
     "Ziz Fizziks"
   ],
   "race": "Orc",
   "reps": [
     ["Everlook","Neutral",1829,3000],
-    ["Thunder Bluff","Friendly",1761,6000],
+    ["Thunder Bluff","Friendly",2105,6000],
     ["Ratchet","Friendly",558,6000],
-    ["Orgrimmar","Honored",2928,12000],
-    ["Darkspear Trolls","Friendly",5496,6000],
+    ["Orgrimmar","Honored",3178,12000],
+    ["Darkspear Trolls","Friendly",5615,6000],
     ["Booty Bay","Neutral",1829,3000],
     ["Warsong Outriders","Neutral",285,3000],
     ["Durotar Supply and Logistics","Neutral",2000,3000],
     ["Gadgetzan","Neutral",1829,3000],
-    ["Undercity","Neutral",1932,3000],
+    ["Undercity","Neutral",2051,3000],
     ["Powderfuse","Neutral",1829,3000]
   ],
   "ruleset": "Normal",
@@ -289,14 +287,15 @@
   "talents": [
     [
       "Enhancement",
-      13,
+      14,
       [
         ["Thundering Strikes",5],
         ["Mental Dexterity",3],
         ["Improved Lightning Shield",2],
-        ["Elemental Weapons",3]
+        ["Elemental Weapons",3],
+        ["Shamanistic Focus",1]
       ]
     ]
   ],
-  "xp": 13530
+  "xp": 8471
 }

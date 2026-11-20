@@ -1,11 +1,79 @@
 {
-  "checked": "2026-11-19T05:14:00Z",
+  "checked": "2026-11-20T05:01:00Z",
   "entries": [
+    {
+      "date": "2026-11-19",
+      "label": "Thu 19 Nov",
+      "chips": ["Hotfixes"],
+      "state": "new",
+      "title": "The Seed Hybridizer is back, with a chance to fail, plus Cultivation and quest fixes",
+      "blocks": [
+        {
+          "heading": "Camping",
+          "items": [
+            "Herbalism: the Seed Hybridizer works again.",
+            "Combining seeds in it now has adjusted values and a chance to fail. Blizzard hasn't given the numbers.",
+            "Scarce Herb Seeds can no longer go in the Seed Hybridizer."
+          ]
+        },
+        {
+          "heading": "Classes",
+          "items": [
+            "Paladin: Two-Handed Weapon Specialization (Retribution) now correctly raises all the Holy damage you deal while you hold a two-handed weapon."
+          ]
+        },
+        {
+          "heading": "Races",
+          "items": [
+            "Tauren: Cultivation should now work more reliably on herbs you have the Herbalism skill for.",
+            "Tauren: Cultivation now works properly on Purple Lotus.",
+            "Skyborne: the 10% Honored discount now applies to Apprentice and Journeyman Riding from Genn Fairweather on Zephras Isle."
+          ]
+        },
+        {
+          "heading": "Dungeons",
+          "items": [
+            "City of Dalaran: the Shade of the Archmage no longer vanishes as soon as the fight starts. The Camp tab lists it as the source of the Arcane Salvager blueprint for enchanters.",
+            "The Shaper's Terrace: Vitrix's Poison Shock now does less damage."
+          ]
+        },
+        {
+          "heading": "Monsters and spawns",
+          "items": [
+            "Shimmering Flats: a Silithid Hive Drone near the Rustmaul Dig Site no longer gets stuck under the ground.",
+            "Riverglades: a bug stopped Mosh'gra's from ever dropping rare loot. That is fixed."
+          ]
+        },
+        {
+          "heading": "Items",
+          "items": [
+            "Motes of Unstable Magic are now soulbound, so they can no longer be traded or sold on the Auction House.",
+            "You can now delete a Squall-breaker's Potion."
+          ]
+        },
+        {
+          "heading": "Quests",
+          "items": [
+            "Booty Bay: after \"Rift Away\", Rix Xizzix no longer wrongly gives you access to a strange tome.",
+            "Alterac Mountains: on \"Stormpike's Deciphering\", you can now get a new Ensorcelled Parchment if you destroyed the first one.",
+            "\"Hunting for Ectoplasm\": the quest used the wrong type of creature for gathering ectoplasm. That is fixed."
+          ]
+        },
+        {
+          "heading": "Also",
+          "items": [
+            "Blizzard posted these fixes early on Fri 20 Nov, UK time.",
+            "The list still doesn't mention the 1 copper Auction House deposit or the two mail fixes.",
+            "Still no word on the proper fix for boats and zeppelins, on other progress lost in the 9 Nov outage, or on when Item Restoration will be switched back on."
+          ]
+        }
+      ]
+    },
     {
       "date": "2026-11-18",
       "label": "Wed 18 Nov",
       "chips": ["Auction House", "Blue post"],
-      "state": "new",
+      "state": "",
       "title": "Auction House deposits now start at 1 copper, and Blizzard takes back exploit gold",
       "blocks": [
         {
@@ -718,6 +786,18 @@
     }
   ],
   "sources": [
+    {
+      "title": "Blizzard forums: WoW: Forever Hotfixes, 19 Nov 2026",
+      "url": "https://us.forums.blizzard.com/en/wow/t/wow-forever-hotfixes-november-19-2026/2403040"
+    },
+    {
+      "title": "Blizzard EU forums: WoW: Forever Hotfixes, 19 Nov 2026",
+      "url": "https://eu.forums.blizzard.com/en/wow/t/wow-forever-hotfixes-november-19-2026/639885"
+    },
+    {
+      "title": "Blue Tracker: copy of Blizzard's 19 Nov 2026 hotfixes",
+      "url": "https://www.bluetracker.gg/wow/topic/us-en/24315281-wow-forever-hotfixes-november-19-2026/"
+    },
     {
       "title": "Wowhead: the Auction House minimum deposit is now 1 copper (18 Nov)",
       "url": "https://www.wowhead.com/forever/news/auction-house-minimum-deposit-reduced-to-1-copper-in-wow-forever-383917"

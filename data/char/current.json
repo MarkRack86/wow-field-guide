@@ -1,5 +1,5 @@
 {
-  "at": "2026-11-20T22:55:04Z",
+  "at": "2026-11-20T23:55:03Z",
   "cls": "Shaman",
   "faction": "Horde",
   "gear": {
@@ -8,23 +8,23 @@
     "slots": {
       "HEAD": {
         "cur": [],
-        "up": [[7048,"Azure Silk Hood","U",24,990,3.5,"+8 Sta, +10 frost damage, 34 armor"]]
+        "up": [[7048,"Azure Silk Hood","U",24,899,3.5,"+8 Sta, +10 frost damage, 34 armor"]]
       },
       "SHOULDER": {
         "cur": [],
         "up": [
           [14368,"Mystic's Shoulder Pads","C",17,349,0.5,"26 armor"],
-          [4251,"Hillman's Shoulders","U",21,899,3.4,"+5 Sta, +3 Spi, 65 armor"],
+          [4251,"Hillman's Shoulders","U",21,972,3.4,"+5 Sta, +3 Spi, 65 armor"],
           [4252,"Dark Leather Shoulders","U",23,2200,4.9,"+7 Agi, 68 armor"]
         ]
       },
       "BACK": {
         "cur": [[15501,"Outrunner's Cloak of Power","U",17,3.0]],
-        "up": [[2316,"Dark Leather Cloak","U",17,419,0.9,"+2 Str, +3 Agi, 18 armor"]]
+        "up": [[2316,"Dark Leather Cloak","U",17,429,0.9,"+2 Str, +3 Agi, 18 armor"]]
       },
       "CHEST": {
-        "cur": [[15304,"Grizzly Jerkin of Strength","U",16,5.4]],
-        "up": [[5781,"Murloc Scale Breastplate","U",14,1599,2.6,"+5 Str, +3 Agi, 76 armor"]]
+        "cur": [[5317,"Dry Moss Tunic","U",25,5.5]],
+        "up": [[5781,"Murloc Scale Breastplate","U",14,1598,2.5,"+5 Str, +3 Agi, 76 armor"]]
       },
       "WRIST": {
         "cur": [[15453,"Savannah Bracers","U",18,1.7]],
@@ -34,42 +34,42 @@
         ]
       },
       "HANDS": {
-        "cur": [[14117,"Aboriginal Gloves of the Eagle","U",16,1.4]],
+        "cur": [[5299,"Gloves of the Moon","U",20,3.5]],
         "up": [
-          [7285,"Nimble Leather Gloves","U",19,585,3.0,"+4 Agi, +4 Sta, 52 armor"],
-          [7348,"Fletcher's Gloves","U",20,689,16.5,"1.4% crit, 53 armor"]
+          [7285,"Nimble Leather Gloves","U",19,582,0.9,"+4 Agi, +4 Sta, 52 armor"],
+          [7348,"Fletcher's Gloves","U",20,689,14.4,"1.4% crit, 53 armor"]
         ]
       },
       "WAIST": {
         "cur": [[5275,"Binding Girdle","U",15,1.2]],
         "up": [
           [4246,"Fine Leather Belt","U",11,228,1.3,"+2 Agi, +2 Sta, 40 armor"],
-          [4249,"Dark Leather Belt","U",20,700,3.2,"+4 Agi, +4 Sta, 48 armor"],
-          [6468,"Deviate Scale Belt","R",18,10000,7.4,"+3 Str, +5 Agi, +6 Sta, 51 armor"]
+          [4249,"Dark Leather Belt","U",20,699,3.2,"+4 Agi, +4 Sta, 48 armor"],
+          [6468,"Deviate Scale Belt","R",18,9999,7.4,"+3 Str, +5 Agi, +6 Sta, 51 armor"]
         ]
       },
       "LEGS": {"cur":[[5327,"Greasy Tinker's Pants","U",18,5.8]],"up":[]},
       "FEET": {
         "cur": [[5311,"Buckled Boots","U",21,2.9]],
-        "up": [[2315,"Gray Leather Boots","U",15,305,0.7,"+5 Agi, 53 armor"]]
+        "up": [[2315,"Gray Leather Boots","U",15,300,0.7,"+5 Agi, 53 armor"]]
       },
       "FINGER": {"cur":[[281268,"Depleted Ritual Band","C",9,0.0]],"up":[]},
       "MAIN_HAND": {
         "cur": [[5322,"Demolition Hammer","U",26,97.0]],
-        "up": [[7958,"Bronze Battle Axe","U",22,5549,4.5,"18.3 DPS, +10 Str"]]
+        "up": [[7958,"Bronze Battle Axe","U",22,4942,4.5,"18.3 DPS, +10 Str"]]
       },
       "RANGED": {"cur":[[263412,"Totem of Charged Flames","U",10,0]],"up":[]}
     }
   },
   "guild": null,
-  "ilvl": 11,
+  "ilvl": 12,
   "level": 23,
-  "login": 1795128275000,
+  "login": 1795215940000,
   "name": "Brakka",
   "profs": [
     [
       "Alchemy",
-      176,
+      194,
       225,
       [
         4570,
@@ -79,10 +79,14 @@
         1820,
         1832,
         1833,
+        1931,
+        1933,
+        1935,
         1378,
         1379,
         1380,
         1382,
+        5997,
         4393,
         4394,
         4395,
@@ -102,15 +106,34 @@
         54211
       ]
     ],
-    ["Herbalism",187,225,[1419,2041,54116,52642]],
+    ["Herbalism",188,225,[1419,2041,54116,52642]],
     [
       "Cooking",
-      116,
-      150,
-      [13344,1535,1536,1537,1538,1543,1545,3927,3930,3932,4354,4355,4359,4391,3964,4786,52640]
+      125,
+      225,
+      [
+        13344,
+        1535,
+        1536,
+        1537,
+        1538,
+        1543,
+        1545,
+        3927,
+        3930,
+        3932,
+        4354,
+        4355,
+        4359,
+        4391,
+        3963,
+        3964,
+        4786,
+        52640
+      ]
     ],
-    ["Fishing",136,225,[4346,52639]],
-    ["First Aid",128,150,[4417,1838,1839,1840,1841,52641,54191,54192,54193,55747]]
+    ["Fishing",147,225,[4346,52639]],
+    ["First Aid",128,150,[4417,1838,1839,1840,1841,52641,54191,54192,54193,55743,55747]]
   ],
   "qdone": [
     "A Missing Hand",
@@ -140,11 +163,13 @@
     "Conscript of the Horde",
     "Consumed by Hatred",
     "Crossroads Conscription",
+    "Cry of the Thunderhawk",
     "Cutting Teeth",
     "Dark Storms",
     "Disrupt the Attacks",
     "Doras the Wind Rider Master",
     "Echeyakee",
+    "Egg Hunt",
     "Encroachment",
     "Enraged Thunder Lizards",
     "Favorite Food",
@@ -165,6 +190,7 @@
     "Lazy Peons",
     "Legging It",
     "Lost in Battle",
+    "Mahren Skyseer",
     "Margoz",
     "Meal Appeal",
     "Meats to Orgrimmar",
@@ -246,15 +272,19 @@
   ],
   "qnow": [
     "Amongst the Ruins",
-    "Arachnophobia",
     "Ashenvale Outrunners",
     "Avenge My Village",
-    "Betrayal from Within",
     "Between a Rock and a Thistlefur",
-    "Cry of the Thunderhawk",
+    "Bloodfury Trinkets",
+    "Boulderslide Ravine",
+    "Calling in the Reserves",
+    "Cenarius' Legacy",
+    "Cycle of Rebirth",
     "Deepmoss Spider Eggs",
-    "Egg Hunt",
+    "Elemental War",
     "Goblin Invaders",
+    "Harpies Threaten",
+    "Isha Awak",
     "Leaders of the Fang",
     "Letter to Jin'Zil",
     "Naga at the Zoram Strand",
@@ -271,15 +301,15 @@
   "race": "Orc",
   "reps": [
     ["Everlook","Neutral",1829,3000],
-    ["Thunder Bluff","Friendly",2105,6000],
+    ["Thunder Bluff","Friendly",2355,6000],
     ["Ratchet","Friendly",558,6000],
-    ["Orgrimmar","Honored",3178,12000],
-    ["Darkspear Trolls","Friendly",5615,6000],
+    ["Orgrimmar","Honored",3447,12000],
+    ["Darkspear Trolls","Friendly",5808,6000],
     ["Booty Bay","Neutral",1829,3000],
     ["Warsong Outriders","Neutral",285,3000],
     ["Durotar Supply and Logistics","Neutral",2000,3000],
     ["Gadgetzan","Neutral",1829,3000],
-    ["Undercity","Neutral",2051,3000],
+    ["Undercity","Neutral",2170,3000],
     ["Powderfuse","Neutral",1829,3000]
   ],
   "ruleset": "Normal",
@@ -297,5 +327,5 @@
       ]
     ]
   ],
-  "xp": 8471
+  "xp": 17173
 }

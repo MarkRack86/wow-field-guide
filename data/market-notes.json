@@ -1,6 +1,48 @@
 {
-  "checked": "2026-11-19T05:18:17Z",
+  "checked": "2026-11-20T05:07:57Z",
   "notes": [
+    {
+      "ids": [268415, 268416, 268417, 268418],
+      "date": "2026-11-20",
+      "text": "Herb Seeds are a bonus from picking herbs, and grow herbs in a Greenhouse at a camp. Blizzard’s 19 Nov hotfixes switched the Seed Hybridizer, which combines seeds, back on: combining now has adjusted values and can fail, and Scarce Herb Seeds can no longer go in.",
+      "source": "Blizzard",
+      "url": "https://us.forums.blizzard.com/en/wow/t/wow-forever-hotfixes-november-19-2026/2403040"
+    },
+    {
+      "ids": [11128],
+      "date": "2026-11-20",
+      "text": "Since Blizzard’s 10 Nov hotfixes, enchanters need a Runed Golden Rod, made from a Golden Rod, as the tool for crafting the Arcane Salvager camp object. Before, it took a Runed Truesilver Rod. On 19 Nov Blizzard also stopped the Shade of the Archmage vanishing as soon as you fight him; the Camp tab lists him as the source of the Salvager’s blueprint.",
+      "source": "Blizzard",
+      "url": "https://us.forums.blizzard.com/en/wow/t/wow-forever-hotfixes-november-19-2026/2403040"
+    },
+    {
+      "ids": [785],
+      "date": "2026-11-20",
+      "text": "Blizzard’s 17 Nov hotfixes made Cultivation, the Tauren racial, work properly on Mageroyal, and its 19 Nov hotfixes made Cultivation more reliable on herbs you have the Herbalism skill for. No hotfix has changed the herb itself.",
+      "source": "Blizzard",
+      "url": "https://us.forums.blizzard.com/en/wow/t/wow-forever-hotfixes-november-19-2026/2403040"
+    },
+    {
+      "ids": [250982],
+      "date": "2026-11-20",
+      "text": "A rare drop from Windfury Wind Witches in Mulgore (0.07%) and Bloodfeather Harpies in Teldrassil (0.03%). It teaches Minor Frenzy Potion at Alchemy 40, from Earthroot, Silverleaf and an Empty Vial. No hotfix has changed it.",
+      "source": "wow.gg",
+      "url": "https://wow.gg/guides/wow-forever-new-recipes-alchemy"
+    },
+    {
+      "ids": [250366],
+      "date": "2026-11-20",
+      "text": "A rare drop from Vile Fin Attackers in Tirisfal Glades (0.62%) and Murloc Foragers in Elwynn Forest (0.03%). It teaches Minor Cleric’s Elixir at Alchemy 45, from 2 Mageroyal, a Bruiseweed and an Empty Vial. No hotfix has changed it.",
+      "source": "wow.gg",
+      "url": "https://wow.gg/guides/wow-forever-new-recipes-alchemy"
+    },
+    {
+      "ids": [13497, 13454, 18253, 250955, 5642, 10286, 2553, 12803, 5640, 250948, 18255, 250338, 3396, 9233, 9260, 8956, 7067, 2325],
+      "date": "2026-11-20",
+      "text": "No hotfix has changed it. Blizzard’s hotfix list, up to its 19 Nov notes, doesn’t mention it.",
+      "source": "Blizzard",
+      "url": "https://us.forums.blizzard.com/en/wow/t/wow-forever-hotfixes-november-19-2026/2403040"
+    },
     {
       "ids": [6359],
       "date": "2026-11-19",
@@ -35,13 +77,6 @@
       "text": "Dust Stormers and Cyclone Warriors in Silithus, levels 55 to 59, drop it about 4 to 5% of the time, and Alchemists can transmute it from Essence of Water. Forever added recipes that use it, such as Champion’s Legplates, which take 10. No hotfix has changed it.",
       "source": "Timesaver",
       "url": "https://timesaver.gg/blog/wow-forever-essence-of-air-and-earth-farm"
-    },
-    {
-      "ids": [785],
-      "date": "2026-11-18",
-      "text": "Blizzard’s 17 Nov hotfixes fixed a bug that stopped Cultivation, the Tauren racial, working properly on Mageroyal. No other hotfix has changed it.",
-      "source": "Blizzard",
-      "url": "https://news.blizzard.com/en-us/article/24315281/wow-forever-hotfixes-november-17-2026"
     },
     {
       "ids": [248686],
@@ -168,13 +203,6 @@
       "text": "No hotfix or news explains the jump. Forever’s new Leatherworking crafts use it in bulk: the Living Crown takes 20.",
       "source": "Timesaver",
       "url": "https://timesaver.gg/blog/wow-forever-living-essence-and-essence-of-undeath-farm"
-    },
-    {
-      "ids": [268415, 268416, 268417, 268418],
-      "date": "2026-11-13",
-      "text": "Herb Seeds are a bonus from picking herbs, and grow herbs in a Greenhouse that Herbalists can place at a camp. No hotfix has changed them.",
-      "source": "Icy Veins",
-      "url": "https://www.icy-veins.com/wow-forever/news/greenhouse-blueprint-found-how-herbalism-seeds-work-in-wow-forever/"
     },
     {
       "ids": [3832],

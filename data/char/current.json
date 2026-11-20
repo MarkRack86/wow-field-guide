@@ -1,5 +1,5 @@
 {
-  "at": "2026-11-20T04:55:04Z",
+  "at": "2026-11-20T05:55:03Z",
   "cls": "Shaman",
   "faction": "Horde",
   "gear": {
@@ -14,8 +14,8 @@
         "cur": [],
         "up": [
           [14368,"Mystic's Shoulder Pads","C",17,349,0.5,"26 armor"],
-          [4251,"Hillman's Shoulders","U",21,900,3.4,"+5 Sta, +3 Spi, 65 armor"],
-          [4252,"Dark Leather Shoulders","U",23,3300,4.9,"+7 Agi, 68 armor"]
+          [4251,"Hillman's Shoulders","U",21,899,3.4,"+5 Sta, +3 Spi, 65 armor"],
+          [4252,"Dark Leather Shoulders","U",23,3495,4.9,"+7 Agi, 68 armor"]
         ]
       },
       "BACK": {
@@ -34,7 +34,7 @@
         "cur": [[14117,"Aboriginal Gloves of the Eagle","U",16,1.4]],
         "up": [
           [7285,"Nimble Leather Gloves","U",19,585,3.0,"+4 Agi, +4 Sta, 52 armor"],
-          [7348,"Fletcher's Gloves","U",20,745,16.5,"1.4% crit, 53 armor"]
+          [7348,"Fletcher's Gloves","U",20,743,16.5,"1.4% crit, 53 armor"]
         ]
       },
       "WAIST": {
@@ -48,7 +48,7 @@
       "LEGS": {"cur":[[5327,"Greasy Tinker's Pants","U",18,5.8]],"up":[]},
       "FEET": {
         "cur": [[5311,"Buckled Boots","U",21,2.9]],
-        "up": [[2315,"Gray Leather Boots","U",15,305,0.7,"+5 Agi, 53 armor"]]
+        "up": [[2315,"Gray Leather Boots","U",15,306,0.7,"+5 Agi, 53 armor"]]
       },
       "FINGER": {"cur":[[281268,"Depleted Ritual Band","C",9,0.0]],"up":[]},
       "MAIN_HAND": {

@@ -1,11 +1,69 @@
 {
-  "checked": "2026-11-20T05:01:00Z",
+  "checked": "2026-11-21T05:05:20Z",
   "entries": [
+    {
+      "date": "2026-11-20",
+      "label": "Fri 20 Nov",
+      "chips": ["Hotfixes"],
+      "state": "new",
+      "title": "Dungeon resets cut to 5 an hour, plus group finder and quest fixes",
+      "blocks": [
+        {
+          "heading": "Classes",
+          "items": [
+            "Rogue: Blade Flurry (Combat) now correctly makes Shank's damage hit one more target.",
+            "Warlock: Demonic Aegis (Demonology) could be locked into Demon Armor or Demon Skin and kept after you unlearned it. Unlearning your talents now removes it."
+          ]
+        },
+        {
+          "heading": "Dungeons",
+          "items": [
+            "You can now reset and enter each dungeon at most 5 times an hour, down from 10.",
+            "Blackrock Spire: a stone pillar should no longer trap players."
+          ]
+        },
+        {
+          "heading": "Items",
+          "items": [
+            "Stormshroud Armor: the 3-piece bonus now has a 3% chance on melee attacks to restore 18 Energy. It was a 4% chance to restore 30."
+          ]
+        },
+        {
+          "heading": "Professions",
+          "items": [
+            "Summit of Eternity: Toron Rockhoof has repaired his forge and anvil. You can now use them for Blacksmithing and smelting."
+          ]
+        },
+        {
+          "heading": "Quests",
+          "items": [
+            "The Hinterlands: Witch Doctor Ti'ik now drops more than one copy of his head when a group on \"Witch Doctor Ti'ik\" kills him.",
+            "Feralas: Perfect Yeti Hide no longer drops again while you are on the quest it starts.",
+            "Tanaris: Gor'marok now respawns faster for \"The Dunemaul Compound\".",
+            "Riverglades: Dunston Willis no longer runs off partway through \"Dunston Checks Out\"."
+          ]
+        },
+        {
+          "heading": "Interface",
+          "items": [
+            "Group finder: some players saw fewer groups than intended when looking for a group. That is fixed."
+          ]
+        },
+        {
+          "heading": "Also",
+          "items": [
+            "Blizzard posted these fixes around midnight UK time, at the end of Fri 20 Nov.",
+            "The list still doesn't mention the 1 copper Auction House deposit or the two mail fixes.",
+            "Still no word on the proper fix for boats and zeppelins, on other progress lost in the 9 Nov outage, or on when Item Restoration will be switched back on."
+          ]
+        }
+      ]
+    },
     {
       "date": "2026-11-19",
       "label": "Thu 19 Nov",
       "chips": ["Hotfixes"],
-      "state": "new",
+      "state": "",
       "title": "The Seed Hybridizer is back, with a chance to fail, plus Cultivation and quest fixes",
       "blocks": [
         {
@@ -786,6 +844,22 @@
     }
   ],
   "sources": [
+    {
+      "title": "Blizzard: WoW: Forever Hotfixes, 20 Nov 2026",
+      "url": "https://news.blizzard.com/en-us/article/24315281/wow-forever-hotfixes-november-20-2026"
+    },
+    {
+      "title": "Blizzard forums: WoW: Forever Hotfixes, 20 Nov 2026",
+      "url": "https://us.forums.blizzard.com/en/wow/t/wow-forever-hotfixes-november-20-2026/2403040"
+    },
+    {
+      "title": "Blizzard EU forums: WoW: Forever Hotfixes, 20 Nov 2026",
+      "url": "https://eu.forums.blizzard.com/en/wow/t/wow-forever-hotfixes-november-20-2026/639885"
+    },
+    {
+      "title": "Wowhead: the group finder fix and the rest of the 20 Nov hotfixes",
+      "url": "https://www.wowhead.com/forever/news/lfg-bug-fix-causes-players-to-see-more-groups-wow-forever-hotfixes-for-november-383949"
+    },
     {
       "title": "Blizzard forums: WoW: Forever Hotfixes, 19 Nov 2026",
       "url": "https://us.forums.blizzard.com/en/wow/t/wow-forever-hotfixes-november-19-2026/2403040"

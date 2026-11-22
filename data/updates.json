@@ -1,11 +1,11 @@
 {
-  "checked": "2026-11-21T05:05:20Z",
+  "checked": "2026-11-22T05:02:00Z",
   "entries": [
     {
       "date": "2026-11-20",
       "label": "Fri 20 Nov",
       "chips": ["Hotfixes"],
-      "state": "new",
+      "state": "",
       "title": "Dungeon resets cut to 5 an hour, plus group finder and quest fixes",
       "blocks": [
         {

@@ -1,6 +1,57 @@
 {
-  "checked": "2026-11-22T05:02:00Z",
+  "checked": "2026-11-23T05:08:00Z",
   "entries": [
+    {
+      "date": "2026-11-23",
+      "label": "Mon 23 Nov",
+      "chips": ["Known issue", "Due today"],
+      "state": "due",
+      "title": "World buffs vanish at loading screens, and Blizzard says the fix is due today",
+      "blocks": [
+        {
+          "heading": "World buffs",
+          "items": [
+            "Since about Sat 21 Nov, world buffs disappear at any loading screen. That means a hearthstone, a portal, logging out, entering a dungeon, or a boat or zeppelin to the other continent.",
+            "It hits Warchief's Blessing, which Horde players in Orgrimmar, the Crossroads and Razor Hill get when someone hands in Rend Blackhand's head. Might of Stormwind and the Dire Maul tribute buffs go the same way.",
+            "Blizzard's Aidan Moon said just before 11pm UK time on Sun 22 Nov that this is a bug, and that it would be fixed the next day.",
+            "He said it came from fixing another bug. A Battle Shout from the Diamond Flask quest was cast again each time you changed zone, so it kept spreading from player to player.",
+            "After the fix, world buffs should last into dungeons and onto the other continent again. They still won't work in raids.",
+            "Until then, players say a flight that stays on the same continent keeps the buff."
+          ]
+        }
+      ]
+    },
+    {
+      "date": "2026-11-22",
+      "label": "Sun 22 Nov",
+      "chips": ["Unlisted hotfixes"],
+      "state": "new",
+      "title": "Lockboxes now open straight into your bags, and an Uldaman boss stops dropping its blues",
+      "blocks": [
+        {
+          "heading": "Items",
+          "items": [
+            "Lockboxes, junkboxes, sacks of gems and a few other containers now put what's inside straight into your bags when you open them. You can no longer look inside first.",
+            "Wowhead says this stops an exploit. What was inside a lockbox could change when it was mailed, so Rogues looked inside and mailed it on until it held something good."
+          ]
+        },
+        {
+          "heading": "Dungeons",
+          "items": [
+            "Uldaman: since about Thu 19 Nov, the Obsidian Sentinel no longer drops its blue items. Players had been farming it for gold.",
+            "Wowhead says that also stops you getting the Pendulum of Doom, a levelling axe that needs the Sentinel's Axe of Lingering Dread. Blizzard hasn't said whether the change is on purpose."
+          ]
+        },
+        {
+          "heading": "Also",
+          "items": [
+            "Blizzard hasn't put these changes in its hotfix notes. Its newest list is still the one for Fri 20 Nov.",
+            "The list still doesn't mention the 1 copper Auction House deposit or the two mail fixes.",
+            "Still no word on the proper fix for boats and zeppelins, on other progress lost in the 9 Nov outage, or on when Item Restoration will be switched back on."
+          ]
+        }
+      ]
+    },
     {
       "date": "2026-11-20",
       "label": "Fri 20 Nov",
@@ -844,6 +895,38 @@
     }
   ],
   "sources": [
+    {
+      "title": "Aidan Moon on X: world buffs lost at loading screens are a bug, with a fix due the next day (22 Nov)",
+      "url": "https://x.com/Zirene/status/2124637371132236185"
+    },
+    {
+      "title": "Wowhead: Aidan Moon says the world buff loss is a bug (22 Nov)",
+      "url": "https://www.wowhead.com/forever/news/aidan-moon-announces-that-world-buffs-dropping-on-loading-screen-is-bug-383959"
+    },
+    {
+      "title": "Wowhead: world buffs removed at any loading screen (22 Nov)",
+      "url": "https://www.wowhead.com/forever/news/world-buffs-removed-on-any-loading-screen-in-wow-forever-383954"
+    },
+    {
+      "title": "Endgame Tools: which world buffs are lost, and where (23 Nov)",
+      "url": "https://endgametools.com/en/wow-forever/news/wow-forever-world-buffs-bug"
+    },
+    {
+      "title": "Wowhead: you can no longer look inside lockboxes (22 Nov)",
+      "url": "https://www.wowhead.com/forever/news/players-can-no-longer-peek-inside-lockboxes-due-to-reroll-exploit-383956"
+    },
+    {
+      "title": "ForeverChanges: unlisted hotfixes seen on 22 Nov, including containers",
+      "url": "https://foreverchanges.pro/patch-notes"
+    },
+    {
+      "title": "Wowhead: Uldaman's Obsidian Sentinel no longer drops its loot (22 Nov)",
+      "url": "https://www.wowhead.com/forever/news/uldaman-boss-no-longer-drops-loot-nerf-targets-gold-farming-strategy-383955"
+    },
+    {
+      "title": "Blizzard forums: players report the Obsidian Sentinel's missing loot (20 Nov)",
+      "url": "https://us.forums.blizzard.com/en/wow/t/uldaman-obsidian-sentinel-doesnt-drop-any-loot-anymore/2423480"
+    },
     {
       "title": "Blizzard: WoW: Forever Hotfixes, 20 Nov 2026",
       "url": "https://news.blizzard.com/en-us/article/24315281/wow-forever-hotfixes-november-20-2026"

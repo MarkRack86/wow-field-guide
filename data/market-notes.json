@@ -1,6 +1,13 @@
 {
-  "checked": "2026-11-22T05:06:00Z",
+  "checked": "2026-11-23T05:09:00Z",
   "notes": [
+    {
+      "ids": [13519, 13442, 9295, 14256, 13760, 9262, 5635, 4387, 6663, 5633, 4382, 5631, 3357, 3818, 249430, 250345, 4375, 4371, 247241, 250380, 730, 4361, 6149, 3391, 250344, 118, 818, 250933, 6217],
+      "date": "2026-11-23",
+      "text": "No hotfix has changed it. Blizzard’s hotfix list, up to its 20 Nov notes, doesn’t mention it, and nor do the unlisted fixes reported since.",
+      "source": "Blizzard",
+      "url": "https://news.blizzard.com/en-us/article/24315281/wow-forever-hotfixes-november-20-2026"
+    },
     {
       "ids": [13506, 3824, 13477, 13461, 250349, 9206, 5643, 250327, 6261, 250940, 3829, 5500, 13466, 8153, 765],
       "date": "2026-11-22",

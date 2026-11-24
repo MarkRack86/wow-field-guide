@@ -1,22 +1,78 @@
 {
-  "checked": "2026-11-23T05:08:00Z",
+  "checked": "2026-11-24T05:13:00Z",
   "entries": [
     {
       "date": "2026-11-23",
       "label": "Mon 23 Nov",
-      "chips": ["Known issue", "Due today"],
-      "state": "due",
-      "title": "World buffs vanish at loading screens, and Blizzard says the fix is due today",
+      "chips": ["Hotfixes"],
+      "state": "new",
+      "title": "World buffs last through loading screens again, plus class, cooking and quest fixes",
       "blocks": [
         {
           "heading": "World buffs",
           "items": [
-            "Since about Sat 21 Nov, world buffs disappear at any loading screen. That means a hearthstone, a portal, logging out, entering a dungeon, or a boat or zeppelin to the other continent.",
-            "It hits Warchief's Blessing, which Horde players in Orgrimmar, the Crossroads and Razor Hill get when someone hands in Rend Blackhand's head. Might of Stormwind and the Dire Maul tribute buffs go the same way.",
-            "Blizzard's Aidan Moon said just before 11pm UK time on Sun 22 Nov that this is a bug, and that it would be fixed the next day.",
-            "He said it came from fixing another bug. A Battle Shout from the Diamond Flask quest was cast again each time you changed zone, so it kept spreading from player to player.",
-            "After the fix, world buffs should last into dungeons and onto the other continent again. They still won't work in raids.",
-            "Until then, players say a flight that stays on the same continent keeps the buff."
+            "World buffs no longer fall off when you change area. Since about Sat 21 Nov, they had vanished at every loading screen, such as after a hearthstone, a portal or a boat.",
+            "So Warchief's Blessing, Might of Stormwind and the Dire Maul buffs last into dungeons and onto the other continent again. They still end when you enter a raid.",
+            "Fengus' Ferocity, one of the Dire Maul buffs, gave twice the spell power intended. That is fixed.",
+            "Darkmoon Faire buffs gave twice the power intended. That is fixed too."
+          ]
+        },
+        {
+          "heading": "Classes",
+          "items": [
+            "Druid: the 4-piece Feralheart set bonus now gives 4 Energy every second for 5 seconds, as it should.",
+            "Priest: Mind Vision no longer sets off other effects.",
+            "Priest: for Shadow, Dark Inspiration now gives the right Spirit bonus when Mind Flay sets it off. Chastise now works in Shadowform.",
+            "Warlock: for Destruction, Intensity now works on Incinerate.",
+            "Warrior: some Warriors had Mortal Strike in their spellbook without the talent, and could use it. It stays in the spellbook, but now only works once you have spent the talent point.",
+            "A few spells and abilities set off weapon effects more often than intended. That is fixed."
+          ]
+        },
+        {
+          "heading": "Dungeons",
+          "items": [
+            "Uldaman: the Obsidian Sentinel drops its loot again, as intended. It had dropped no blue items since about Thu 19 Nov.",
+            "ForeverChanges, a fan site, says those blue items now sell to vendors for half as much as before. Blizzard hasn't listed that change."
+          ]
+        },
+        {
+          "heading": "Items",
+          "items": [
+            "The Filcher's Cowl no longer has a level requirement."
+          ]
+        },
+        {
+          "heading": "Professions",
+          "items": [
+            "Cooking: Boiled Clams, Clam Chowder, Goblin Deviled Clams, Giant Clam Scorcho, Undermine Clam Chowder and Clam Linguine now give the right Well Fed bonus. They are now listed under Stamina Food.",
+            "Cooking: Murloc Fin Soup now restores more and gives a bigger Well Fed bonus, the same as the next tier of food.",
+            "Engineering: the Goblin and Gnome Engineer's Renewal Gifts no longer show as broken question marks in your bags.",
+            "Engineering: learning Goblin Mortar now teaches you The Mortar: Reloaded too, as it should.",
+            "Leatherworking: Pattern: Centaur Hoofwarmers can now be learned."
+          ]
+        },
+        {
+          "heading": "Quests",
+          "items": [
+            "Riverglades: on \"Dunston Checks Out\", Dunston Willis runs near the end of the escort again, as he should.",
+            "Wetlands: \"For Further Study\" now has rewards.",
+            "Wetlands: \"Uncovering the Past\" and \"Gleaning Our Future\" now give Ironforge reputation."
+          ]
+        },
+        {
+          "heading": "Lockboxes",
+          "items": [
+            "Blizzard says lockboxes opening straight into your bags is only for now. That change went in at about 6pm UK time on Sun 22 Nov.",
+            "A proper fix will let you look inside a lockbox and take only some of what's inside again. Blizzard hasn't said when.",
+            "Blizzard's Kaivax said this on the forums on Mon 23 Nov."
+          ]
+        },
+        {
+          "heading": "Also",
+          "items": [
+            "The fixes are dated Mon 23 Nov. Blizzard posted them at about 2am UK time on Tue 24 Nov.",
+            "The list still doesn't mention the 1 copper Auction House deposit or the two mail fixes.",
+            "Still no word on the proper fix for boats and zeppelins, on other progress lost in the 9 Nov outage, or on when Item Restoration will be switched back on."
           ]
         }
       ]
@@ -25,21 +81,22 @@
       "date": "2026-11-22",
       "label": "Sun 22 Nov",
       "chips": ["Unlisted hotfixes"],
-      "state": "new",
-      "title": "Lockboxes now open straight into your bags, and an Uldaman boss stops dropping its blues",
+      "state": "",
+      "title": "Lockboxes now open straight into your bags, and an Uldaman boss stopped dropping its blues",
       "blocks": [
         {
           "heading": "Items",
           "items": [
             "Lockboxes, junkboxes, sacks of gems and a few other containers now put what's inside straight into your bags when you open them. You can no longer look inside first.",
-            "Wowhead says this stops an exploit. What was inside a lockbox could change when it was mailed, so Rogues looked inside and mailed it on until it held something good."
+            "Wowhead says this stops an exploit. What was inside a lockbox could change when it was mailed, so Rogues looked inside and mailed it on until it held something good.",
+            "Blizzard said on Mon 23 Nov that this is only for now: see above."
           ]
         },
         {
           "heading": "Dungeons",
           "items": [
-            "Uldaman: since about Thu 19 Nov, the Obsidian Sentinel no longer drops its blue items. Players had been farming it for gold.",
-            "Wowhead says that also stops you getting the Pendulum of Doom, a levelling axe that needs the Sentinel's Axe of Lingering Dread. Blizzard hasn't said whether the change is on purpose."
+            "Uldaman: from about Thu 19 Nov, the Obsidian Sentinel stopped dropping its blue items. Players had been farming it for gold. Blizzard fixed it on Mon 23 Nov: see above.",
+            "Wowhead said that also stopped you getting the Pendulum of Doom, a levelling axe that needs the Sentinel's Axe of Lingering Dread."
           ]
         },
         {
@@ -895,6 +952,30 @@
     }
   ],
   "sources": [
+    {
+      "title": "Wowhead: world buffs, Uldaman and the rest of the 23 Nov hotfixes",
+      "url": "https://www.wowhead.com/forever/news/class-and-profession-bug-fixes-wow-forever-hotfixes-for-november-23-2026-383972"
+    },
+    {
+      "title": "Blizzard: WoW: Forever Hotfixes, 23 Nov 2026",
+      "url": "https://news.blizzard.com/en-us/article/24315281/wow-forever-hotfixes-november-23-2026"
+    },
+    {
+      "title": "Blizzard forums: WoW: Forever Hotfixes, 23 Nov 2026",
+      "url": "https://us.forums.blizzard.com/en/wow/t/wow-forever-hotfixes-november-23-2026/2403040/15"
+    },
+    {
+      "title": "Blizzard EU forums: WoW: Forever Hotfixes, 23 Nov 2026",
+      "url": "https://eu.forums.blizzard.com/en/wow/t/wow-forever-hotfixes-november-23-2026/639885"
+    },
+    {
+      "title": "ForeverChanges: unlisted changes seen on 23 Nov, including Obsidian Sentinel vendor prices",
+      "url": "https://foreverchanges.pro/patch-notes"
+    },
+    {
+      "title": "Blizzard forums: Kaivax says the lockbox change is only for now (23 Nov)",
+      "url": "https://us.forums.blizzard.com/en/wow/t/lockbox-exploit-and-economy-hold-heuristic/2426335/4"
+    },
     {
       "title": "Aidan Moon on X: world buffs lost at loading screens are a bug, with a fix due the next day (22 Nov)",
       "url": "https://x.com/Zirene/status/2124637371132236185"

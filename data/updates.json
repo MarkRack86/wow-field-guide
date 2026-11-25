@@ -1,11 +1,38 @@
 {
-  "checked": "2026-11-24T05:13:00Z",
+  "checked": "2026-11-25T05:03:00Z",
   "entries": [
+    {
+      "date": "2026-11-24",
+      "label": "Tue 24 Nov",
+      "chips": ["Unlisted hotfixes"],
+      "state": "new",
+      "title": "Paladin and Warlock epic mounts now teach Journeyman Riding, and Rogue poisons can no longer be sold",
+      "blocks": [
+        {
+          "heading": "Classes",
+          "items": [
+            "Paladin: learning Summon Charger, or Summon Forsaken Charger, now also teaches you Journeyman Riding. Until now the quest didn't give it, so you couldn't ride other fast mounts.",
+            "Warlock: learning Summon Dreadsteed now also teaches you Journeyman Riding. It had the same bug.",
+            "Rogue: poisons and Blinding Powder now bind to you, so you can't trade them or sell them on the Auction House. Vendors no longer buy them either. Before, they showed a vendor price, but vendors wouldn't take them."
+          ]
+        },
+        {
+          "heading": "Also",
+          "items": [
+            "Blizzard hasn't put these changes in its hotfix notes. Its newest list is still the one for Mon 23 Nov. ForeverChanges, a fan site, first saw them at about 8:30pm UK time on Tue 24 Nov.",
+            "Blizzard's Kaivax said on Mon 23 Nov that the riding bug hit both Paladins and Warlocks, and that the fix would take a day or two.",
+            "The weekly maintenance was on Tue 24 Nov in the Americas and early on Wed 25 Nov in Europe. Blizzard Watch says nothing new is due to go live this week.",
+            "The list still doesn't mention the 1 copper Auction House deposit or the two mail fixes.",
+            "Still no word on the proper fix for boats and zeppelins, on other progress lost in the 9 Nov outage, on when Item Restoration will be switched back on, or on when you can look inside lockboxes again."
+          ]
+        }
+      ]
+    },
     {
       "date": "2026-11-23",
       "label": "Mon 23 Nov",
       "chips": ["Hotfixes"],
-      "state": "new",
+      "state": "",
       "title": "World buffs last through loading screens again, plus class, cooking and quest fixes",
       "blocks": [
         {
@@ -952,6 +979,26 @@
     }
   ],
   "sources": [
+    {
+      "title": "ForeverChanges: unlisted changes seen on 24 Nov, including riding and Rogue poisons",
+      "url": "https://foreverchanges.pro/patch-notes"
+    },
+    {
+      "title": "Blizzard Watch: the 24 Nov maintenance, with nothing new due this week",
+      "url": "https://blizzardwatch.com/2026/11/24/another-quick-world-of-warcraft-maintenance-day/"
+    },
+    {
+      "title": "Blizzard forums: Rogue poisons have a vendor price but cannot be sold",
+      "url": "https://us.forums.blizzard.com/en/wow/t/rogue-poisons-have-a-vendor-price-but-cannot-be-sold/2424501"
+    },
+    {
+      "title": "Blue Tracker: Kaivax on the Paladin and Warlock riding bug (23 Nov)",
+      "url": "https://www.bluetracker.gg/wow/topic/eu-en/642667-epic-mount-bug-riding-skill/"
+    },
+    {
+      "title": "Wowhead: Blizzard working on a fix for Paladin and Warlock epic riding (23 Nov)",
+      "url": "https://www.wowhead.com/forever/news/blizzard-working-on-a-fix-for-paladin-and-warlocks-not-getting-epic-riding-383965"
+    },
     {
       "title": "Wowhead: world buffs, Uldaman and the rest of the 23 Nov hotfixes",
       "url": "https://www.wowhead.com/forever/news/class-and-profession-bug-fixes-wow-forever-hotfixes-for-november-23-2026-383972"

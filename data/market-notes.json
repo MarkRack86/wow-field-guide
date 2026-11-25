@@ -1,6 +1,27 @@
 {
-  "checked": "2026-11-24T05:15:00Z",
+  "checked": "2026-11-25T05:15:00Z",
   "notes": [
+    {
+      "ids": [5504],
+      "date": "2026-11-25",
+      "text": "Goblin Deviled Clams are cooked from Tangy Clam Meat and Hot Spices, at Cooking 125. Blizzard’s 23 Nov hotfixes gave them the right Well Fed bonus and listed them under Stamina Food, with the other clam dishes.",
+      "source": "Blizzard",
+      "url": "https://news.blizzard.com/en-us/article/24315281/wow-forever-hotfixes-november-23-2026"
+    },
+    {
+      "ids": [21546],
+      "date": "2026-11-25",
+      "text": "Blizzard’s 10 Nov hotfixes renamed its buff Holy Power, and renamed its recipe, once called Elixir of Greater Firepower, to match. No hotfix since has changed it.",
+      "source": "Blizzard",
+      "url": "https://news.blizzard.com/en-us/article/24315281/wow-forever-hotfixes-november-23-2026"
+    },
+    {
+      "ids": [6048, 6211, 5051, 3390, 10592, 7071, 3393, 3385, 3827, 2459, 3383, 3355, 3820],
+      "date": "2026-11-25",
+      "text": "No hotfix has changed it. Blizzard’s hotfix list, up to its 23 Nov notes, doesn’t mention it, and nor do the unlisted changes reported up to 24 Nov.",
+      "source": "Blizzard",
+      "url": "https://news.blizzard.com/en-us/article/24315281/wow-forever-hotfixes-november-23-2026"
+    },
     {
       "ids": [13495, 250341, 7971, 13458, 250953, 10560, 4624, 12190, 3819, 13445, 6338, 11138, 250339, 9144, 2880, 10978, 1288, 6662, 250382, 4231, 6522, 783, 247755, 3384, 6358, 2453],
       "date": "2026-11-24",

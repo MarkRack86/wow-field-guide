@@ -1,5 +1,5 @@
 {
-  "at": "2026-11-26T02:55:04Z",
+  "at": "2026-11-26T03:55:04Z",
   "cls": "Shaman",
   "faction": "Horde",
   "gear": {
@@ -8,13 +8,13 @@
     "slots": {
       "HEAD": {
         "cur": [],
-        "up": [[7048,"Azure Silk Hood","U",24,1097,3.5,"+8 Sta, +10 frost damage, 34 armor"]]
+        "up": [[7048,"Azure Silk Hood","U",24,1100,3.5,"+8 Sta, +10 frost damage, 34 armor"]]
       },
       "SHOULDER": {
         "cur": [],
         "up": [
           [14170,"Buccaneer's Mantle","C",17,345,0.5,"26 armor"],
-          [4251,"Hillman's Shoulders","U",21,1080,3.4,"+5 Sta, +3 Spi, 65 armor"],
+          [4251,"Hillman's Shoulders","U",21,998,3.4,"+5 Sta, +3 Spi, 65 armor"],
           [4252,"Dark Leather Shoulders","U",23,2895,4.9,"+7 Agi, 68 armor"]
         ]
       },
@@ -25,7 +25,7 @@
       "CHEST": {
         "cur": [[5317,"Dry Moss Tunic","U",null,5.5]],
         "up": [
-          [6263,"Blue Overalls","U",15,2440,0.6,"+4 Str, +4 Sta, 34 armor"],
+          [6263,"Blue Overalls","U",15,2439,0.6,"+4 Str, +4 Sta, 34 armor"],
           [5781,"Murloc Scale Breastplate","U",14,2990,2.5,"+5 Str, +3 Agi, 76 armor"]
         ]
       },
@@ -39,8 +39,8 @@
       "HANDS": {
         "cur": [[5299,"Gloves of the Moon","U",null,3.5]],
         "up": [
-          [7285,"Nimble Leather Gloves","U",19,586,0.9,"+4 Agi, +4 Sta, 52 armor"],
-          [7348,"Fletcher's Gloves","U",20,2085,14.4,"1.4% crit, 53 armor"]
+          [7285,"Nimble Leather Gloves","U",19,580,0.9,"+4 Agi, +4 Sta, 52 armor"],
+          [7348,"Fletcher's Gloves","U",20,2083,14.4,"1.4% crit, 53 armor"]
         ]
       },
       "WAIST": {
@@ -60,7 +60,7 @@
       "MAIN_HAND": {
         "cur": [[5322,"Demolition Hammer","U",null,97.0]],
         "up": [
-          [7958,"Bronze Battle Axe","U",22,6800,4.5,"18.3 DPS, +10 Str"],
+          [7958,"Bronze Battle Axe","U",22,6798,4.5,"18.3 DPS, +10 Str"],
           [12249,"Merciless Axe","U",26,39595,20.5,"21.1 DPS, +12 Str"]
         ]
       },

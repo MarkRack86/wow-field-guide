@@ -1,26 +1,129 @@
 {
-  "checked": "2026-11-25T05:03:00Z",
+  "checked": "2026-11-26T05:07:00Z",
   "entries": [
+    {
+      "date": "2026-11-25",
+      "label": "Wed 25 Nov",
+      "chips": ["Hotfixes"],
+      "state": "new",
+      "title": "Balance Druid talents reworked, riding fixed for Paladins and Warlocks, plus pet and quest fixes",
+      "blocks": [
+        {
+          "heading": "Classes",
+          "items": [
+            "Druid: Balance talents have changed. If you had 3 or more points in Improved Starfire, all your talent points have been reset, so spend them again before you play.",
+            "Druid: Improved Wrath is now Starlight Wrath. It also cuts Starfire's cast time by up to 0.5 seconds.",
+            "Druid: Improved Moonfire is now Moon and Stars. It also gives Starfire a 50 or 100% chance not to lose cast time when you're hit.",
+            "Druid: Improved Starfire now has 2 points, not 5, with an 8 or 15% chance to stun.",
+            "Druid: Eclipse now also raises Wrath's critical strike chance by 7, 13 or 20% at all times.",
+            "Druid: Moonfury is gone. Its replacement, Dreamstate, gives you 20 to 100% of Innervate's benefit when you cast Innervate on someone else.",
+            "Druid: Moonkin Form now also raises your Arcane and Nature damage by 10%.",
+            "Druid: Genesis now raises Hurricane's damage and Tranquility's healing, as it should. Hurricane's last hit now lands too.",
+            "Hunter: pets can now land critical strikes with their melee attacks. Until now they had no chance at all.",
+            "Hunter: for Beast Mastery, summoned Hawks now attack your target even when your pet is on Passive. They leave when you use Dismiss Pet, or when you right-click their icon under your portrait. They had about 5% less critical strike chance than intended. That is fixed.",
+            "Paladin: Exorcism can now land critical strikes. Judgements on enemies now refresh from your attacks once they drop below 20 seconds.",
+            "Paladin: the Libram of Law now adds to Judgement of Command's damage, as it should. For Holy, Oath of Light now lasts 60 minutes.",
+            "Rogue: Blizzard says poisons and Blinding Powder bind to you only for now, while it fixes a bug. That change went in on Tue 24 Nov: see below.",
+            "Rogue: Poised now ends when you use Sap or Distract in Stealth.",
+            "Shaman: Chain Lightning now uses up Clearcasting when you also have 5 stacks of Maelstrom Weapon.",
+            "Warlock: pets can now land critical strikes with their melee attacks. The Succubus and Incubus had 5% more critical strike chance than intended. That is fixed."
+          ]
+        },
+        {
+          "heading": "Riding",
+          "items": [
+            "Paladin: \"Justice and Retribution\" (Forsaken) and \"Judgment and Redemption\" (Dwarf and Human) now teach you Journeyman Riding when you finish them.",
+            "Warlock: \"Dreadsteed of Xoroth\" now teaches you Journeyman Riding when you finish it.",
+            "Already finished the quest? Talk to one of these to learn Journeyman Riding for free: Danitha Morr in Bandarion Keep (Forsaken Paladins), Lord Grayson Shadowbreaker in Stormwind Cathedral (Alliance Paladins), Zevrost in the Cleft of Shadow in Orgrimmar (Horde Warlocks) or Ursula Deline in the Slaughtered Lamb in Stormwind (Alliance Warlocks).",
+            "This is the fix Blizzard promised on Mon 23 Nov. It first went in, without notes, on Tue 24 Nov: see below."
+          ]
+        },
+        {
+          "heading": "Dungeons",
+          "items": [
+            "Blackfathom Deeps: the Altar of the Deeps can be used again 3 seconds after someone uses it, and gives the Blessing of Blackfathom properly.",
+            "Sunken Temple: the Avatar of Hakkar no longer fails to appear."
+          ]
+        },
+        {
+          "heading": "Monsters and spawns",
+          "items": [
+            "Desolace: the centaurs in Magram Village respawn faster.",
+            "Duskwood: the Lost Knight no longer sometimes appears inside a tree.",
+            "Riverglades: Clubtoe in Sunnyglade no longer flags you for PvP."
+          ]
+        },
+        {
+          "heading": "Quests",
+          "items": [
+            "Mount Hyjal: on \"Blind Vengeance\", the Explosive Runeshard no longer makes the Felguard Sentinel's Mortal Strike hit far harder.",
+            "Searing Gorge: there are more Dark Iron Steamsmiths for \"STOLEN: Smithing Tuyere and Lookout's Spyglass\".",
+            "Silithus: Encrypted Twilight Texts drop again for \"Secret Communication\", \"True Believers\" and \"Still Believing\".",
+            "Silithus: Blizzard says the repeatable Encrypted Twilight Texts quest for Cenarion Circle reputation is switched off on purpose. \"Still Believing\" still gives a chance of recipes, in a reward that comes by mail later.",
+            "Western Plaguelands: the Scarlet Illusion from \"Scarlet Subterfuge\" now lasts an hour, up from 30 minutes.",
+            "Hunter: the Horde version of \"Saving the Best for Last\" can now be finished."
+          ]
+        },
+        {
+          "heading": "Items",
+          "items": [
+            "The Night Watchman's Torch works while you're mounted or casting again. Blizzard says another fix had stopped that by mistake.",
+            "Unerring Purpose now sells to vendors for more than 2 copper.",
+            "The Blackblade of Shahram's haste buff now works, and only for the person wielding it.",
+            "Blackhand's Breadth can no longer be resisted, and Chained Essence of Eranikus no longer gets through immunities.",
+            "The Totem of the Storm is now called the Totem of the Maelstrom."
+          ]
+        },
+        {
+          "heading": "Legacy",
+          "items": [
+            "Finishing \"Lord Valthalak Laid to Rest\" now gives Legacy credit.",
+            "Reinforce now cuts the durability you lose by 8, 16, 24, 32 or 40%, as it should.",
+            "The Quick and the Dead now makes Shadowform, Moonkin Form, Travel Form and Trueshot Aura free too, as it should."
+          ]
+        },
+        {
+          "heading": "Professions",
+          "items": [
+            "Enchanting: the Revelation weapon enchant now rolls its chance once per wave of an area spell, not once for every target hit. Its bonus also no longer lasts for the whole of a channelled spell."
+          ]
+        },
+        {
+          "heading": "Not in Blizzard's list",
+          "items": [
+            "Priest: ForeverChanges, a fan site, says Shadow Focus now also makes Mana Burn and Vampiric Embrace more likely to hit.",
+            "Rogue: ForeverChanges says the Legacy talent Reagent Economy now covers poisons and Vanish too, so they need no reagents from vendors. It first saw this at about 8:30pm UK time on Tue 24 Nov."
+          ]
+        },
+        {
+          "heading": "Also",
+          "items": [
+            "The fixes are dated Wed 25 Nov. Blizzard posted them at about 11:25pm UK time that day.",
+            "The list still doesn't mention the 1 copper Auction House deposit or the two mail fixes.",
+            "Still no word on the proper fix for boats and zeppelins, on other progress lost in the 9 Nov outage, on when Item Restoration will be switched back on, or on when you can look inside lockboxes again."
+          ]
+        }
+      ]
+    },
     {
       "date": "2026-11-24",
       "label": "Tue 24 Nov",
       "chips": ["Unlisted hotfixes"],
-      "state": "new",
+      "state": "",
       "title": "Paladin and Warlock epic mounts now teach Journeyman Riding, and Rogue poisons can no longer be sold",
       "blocks": [
         {
           "heading": "Classes",
           "items": [
-            "Paladin: learning Summon Charger, or Summon Forsaken Charger, now also teaches you Journeyman Riding. Until now the quest didn't give it, so you couldn't ride other fast mounts.",
-            "Warlock: learning Summon Dreadsteed now also teaches you Journeyman Riding. It had the same bug.",
-            "Rogue: poisons and Blinding Powder now bind to you, so you can't trade them or sell them on the Auction House. Vendors no longer buy them either. Before, they showed a vendor price, but vendors wouldn't take them."
+            "Paladin: learning Summon Charger, or Summon Forsaken Charger, now also teaches you Journeyman Riding. Until now the quest didn't give it, so you couldn't ride other fast mounts. Blizzard listed the fix on Wed 25 Nov, with a free way to learn it if you'd already done the quest: see above.",
+            "Warlock: learning Summon Dreadsteed now also teaches you Journeyman Riding. It had the same bug, and gets the same free fix: see above.",
+            "Rogue: poisons and Blinding Powder now bind to you, so you can't trade them or sell them on the Auction House. Vendors no longer buy them either. Before, they showed a vendor price, but vendors wouldn't take them. Blizzard said on Wed 25 Nov that this is only for now, while it fixes a bug: see above."
           ]
         },
         {
           "heading": "Also",
           "items": [
             "Blizzard hasn't put these changes in its hotfix notes. Its newest list is still the one for Mon 23 Nov. ForeverChanges, a fan site, first saw them at about 8:30pm UK time on Tue 24 Nov.",
-            "Blizzard's Kaivax said on Mon 23 Nov that the riding bug hit both Paladins and Warlocks, and that the fix would take a day or two.",
             "The weekly maintenance was on Tue 24 Nov in the Americas and early on Wed 25 Nov in Europe. Blizzard Watch says nothing new is due to go live this week.",
             "The list still doesn't mention the 1 copper Auction House deposit or the two mail fixes.",
             "Still no word on the proper fix for boats and zeppelins, on other progress lost in the 9 Nov outage, on when Item Restoration will be switched back on, or on when you can look inside lockboxes again."
@@ -979,6 +1082,26 @@
     }
   ],
   "sources": [
+    {
+      "title": "Blizzard: WoW: Forever Hotfixes, 25 Nov 2026",
+      "url": "https://news.blizzard.com/en-us/article/24315281/wow-forever-hotfixes-november-25-2026"
+    },
+    {
+      "title": "Blizzard forums: WoW: Forever Hotfixes, 25 Nov 2026",
+      "url": "https://us.forums.blizzard.com/en/wow/t/wow-forever-hotfixes-november-25-2026/2403040/16"
+    },
+    {
+      "title": "Blizzard EU forums: WoW: Forever Hotfixes, 25 Nov 2026",
+      "url": "https://eu.forums.blizzard.com/en/wow/t/wow-forever-hotfixes-november-25-2026/639885/15"
+    },
+    {
+      "title": "Blue Tracker: WoW: Forever Hotfixes, 25 Nov 2026",
+      "url": "https://www.bluetracker.gg/wow/topic/us-en/24315281-wow-forever-hotfixes-november-25-2026/"
+    },
+    {
+      "title": "ForeverChanges: changes seen on 24 and 25 Nov that Blizzard hasn't listed, including Shadow Focus and Reagent Economy",
+      "url": "https://foreverchanges.pro/patch-notes"
+    },
     {
       "title": "ForeverChanges: unlisted changes seen on 24 Nov, including riding and Rogue poisons",
       "url": "https://foreverchanges.pro/patch-notes"

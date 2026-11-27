@@ -1,6 +1,20 @@
 {
-  "checked": "2026-11-26T05:10:00Z",
+  "checked": "2026-11-27T05:16:00Z",
   "notes": [
+    {
+      "ids": [11144],
+      "date": "2026-11-27",
+      "text": "Enchanters make it into the Runed Truesilver Rod. Blizzard’s 10 Nov hotfixes made one Enchanting recipe, Arcane Salvager, use the Runed Golden Rod instead of that rod. No hotfix since has changed it.",
+      "source": "Blizzard",
+      "url": "https://news.blizzard.com/en-us/article/24315281/wow-forever-hotfixes-november-25-2026"
+    },
+    {
+      "ids": [250337, 13464, 247242, 247239, 2321, 4289],
+      "date": "2026-11-27",
+      "text": "No hotfix has changed it. Blizzard’s hotfix list, up to its 25 Nov notes, doesn’t mention it, and nor do the unlisted changes reported up to 26 Nov.",
+      "source": "Blizzard",
+      "url": "https://news.blizzard.com/en-us/article/24315281/wow-forever-hotfixes-november-25-2026"
+    },
     {
       "ids": [13496, 9264, 250976, 7068, 8845, 7075, 8836, 250946, 4342, 4291, 250932, 10558, 250330, 3825, 3713, 250945, 3828, 250938, 2836, 2457],
       "date": "2026-11-26",

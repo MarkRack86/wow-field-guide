@@ -1,11 +1,47 @@
 {
-  "checked": "2026-11-26T05:07:00Z",
+  "checked": "2026-11-27T05:07:00Z",
   "entries": [
+    {
+      "date": "2026-11-26",
+      "label": "Thu 26 Nov",
+      "chips": ["Unlisted hotfixes"],
+      "state": "new",
+      "title": "Don Rodrigo's Band and Magician's Cord open to more classes, plus Cooking and Engineering recipe changes",
+      "blocks": [
+        {
+          "heading": "Items",
+          "items": [
+            "Magician's Cord can now be used by Priests and Warlocks as well as Mages.",
+            "Don Rodrigo's Band can now be used by all classes, not only Mages, Priests and Warlocks.",
+            "Don Julio's Band and Don Rodrigo's Band are no longer Unique, so you can carry more than one. But you can now wear only one of these rings at a time.",
+            "Unforged Rune Covered Breastplate now binds to you as a quest item."
+          ]
+        },
+        {
+          "heading": "Professions",
+          "items": [
+            "Cooking: Skywall Souffle now needs 1 Small Egg, not 2, and Mild Spices instead of Simple Flour.",
+            "Cooking: Pincer Bites now need Mild Spices instead of Simple Flour.",
+            "Engineering: SAF-T Tabs and the SAF-T Copper Bomb now need Linen Cloth instead of a Linen Cloak."
+          ]
+        },
+        {
+          "heading": "Also",
+          "items": [
+            "Blizzard's own list doesn't mention these changes. ForeverChanges, a fan site that reads the game files, files them with the fixes for Wed 25 Nov. Playfulls, another such site, found the four item changes on Thu 26 Nov. Only ForeverChanges reports the recipe changes.",
+            "Blizzard has posted no new fixes since Wed 25 Nov. Thu 26 Nov was Thanksgiving in the US.",
+            "Rogue: poisons and Blinding Powder still bind to you. Blizzard hasn't said when that will end.",
+            "The list still doesn't mention the 1 copper Auction House deposit or the two mail fixes.",
+            "Still no word on the proper fix for boats and zeppelins, on other progress lost in the 9 Nov outage, on when Item Restoration will be switched back on, or on when you can look inside lockboxes again."
+          ]
+        }
+      ]
+    },
     {
       "date": "2026-11-25",
       "label": "Wed 25 Nov",
       "chips": ["Hotfixes"],
-      "state": "new",
+      "state": "",
       "title": "Balance Druid talents reworked, riding fixed for Paladins and Warlocks, plus pet and quest fixes",
       "blocks": [
         {
@@ -1082,6 +1118,14 @@
     }
   ],
   "sources": [
+    {
+      "title": "ForeverChanges: item and recipe changes filed with the 25 Nov fixes that Blizzard hasn't listed",
+      "url": "https://foreverchanges.pro/patch-notes"
+    },
+    {
+      "title": "Playfulls: item changes found in the game files on 26 Nov",
+      "url": "https://playfulls.com/patch-notes/2026-11-26-hotfixes"
+    },
     {
       "title": "Blizzard: WoW: Forever Hotfixes, 25 Nov 2026",
       "url": "https://news.blizzard.com/en-us/article/24315281/wow-forever-hotfixes-november-25-2026"

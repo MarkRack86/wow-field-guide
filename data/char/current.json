@@ -1,5 +1,5 @@
 {
-  "at": "2026-11-28T08:55:03Z",
+  "at": "2026-11-28T09:55:03Z",
   "cls": "Shaman",
   "faction": "Horde",
   "gear": {
@@ -8,23 +8,24 @@
     "slots": {
       "HEAD": {
         "cur": [],
-        "up": [[7048,"Azure Silk Hood","U",24,1141,3.5,"+8 Sta, +10 frost damage, 34 armor"]]
+        "up": [[7048,"Azure Silk Hood","U",24,999,3.5,"+8 Sta, +10 frost damage, 34 armor"]]
       },
       "SHOULDER": {
         "cur": [],
         "up": [
           [14368,"Mystic's Shoulder Pads","C",17,350,0.5,"26 armor"],
-          [4251,"Hillman's Shoulders","U",21,1049,3.4,"+5 Sta, +3 Spi, 65 armor"],
-          [4252,"Dark Leather Shoulders","U",23,6000,4.9,"+7 Agi, 68 armor"]
+          [4251,"Hillman's Shoulders","U",21,977,3.4,"+5 Sta, +3 Spi, 65 armor"],
+          [4252,"Dark Leather Shoulders","U",23,5999,4.9,"+7 Agi, 68 armor"]
         ]
       },
       "BACK": {
         "cur": [[15501,"Outrunner's Cloak of Power","U",null,3.0]],
-        "up": [[2316,"Dark Leather Cloak","U",17,477,0.9,"+2 Str, +3 Agi, 18 armor"]]
+        "up": [[2316,"Dark Leather Cloak","U",17,475,0.9,"+2 Str, +3 Agi, 18 armor"]]
       },
       "CHEST": {
         "cur": [[5317,"Dry Moss Tunic","U",null,5.5]],
         "up": [
+          [6263,"Blue Overalls","U",15,3089,0.6,"+4 Str, +4 Sta, 34 armor"],
           [4255,"Green Leather Armor","U",26,3699,1.6,"+8 Agi, +8 Int, 95 armor"],
           [5781,"Murloc Scale Breastplate","U",14,4999,2.5,"+5 Str, +3 Agi, 76 armor"]
         ]
@@ -32,8 +33,8 @@
       "WRIST": {
         "cur": [[15453,"Savannah Bracers","U",null,1.7]],
         "up": [
-          [4795,"Bear Bracers","U",20,3598,0.8,"+5 Sta, 37 armor"],
-          [4794,"Wolf Bracers","U",20,6988,1.7,"+4 Agi, +2 Sta, 37 armor"]
+          [4795,"Bear Bracers","U",20,3597,0.8,"+5 Sta, 37 armor"],
+          [4794,"Wolf Bracers","U",20,5940,1.7,"+4 Agi, +2 Sta, 37 armor"]
         ]
       },
       "HANDS": {
@@ -46,20 +47,20 @@
       "WAIST": {
         "cur": [[5275,"Binding Girdle","U",null,1.2]],
         "up": [
-          [4246,"Fine Leather Belt","U",11,290,1.3,"+2 Agi, +2 Sta, 40 armor"],
+          [4246,"Fine Leather Belt","U",11,275,1.3,"+2 Agi, +2 Sta, 40 armor"],
           [4249,"Dark Leather Belt","U",20,700,3.2,"+4 Agi, +4 Sta, 48 armor"],
-          [6468,"Deviate Scale Belt","R",18,11480,7.4,"+3 Str, +5 Agi, +6 Sta, 51 armor"]
+          [6468,"Deviate Scale Belt","R",18,11500,7.4,"+3 Str, +5 Agi, +6 Sta, 51 armor"]
         ]
       },
       "LEGS": {"cur":[[5327,"Greasy Tinker's Pants","U",null,5.8]],"up":[]},
       "FEET": {
         "cur": [[5311,"Buckled Boots","U",null,2.9]],
-        "up": [[2315,"Gray Leather Boots","U",15,304,0.7,"+5 Agi, 53 armor"]]
+        "up": [[2315,"Gray Leather Boots","U",15,308,0.7,"+5 Agi, 53 armor"]]
       },
       "FINGER": {"cur":[[281268,"Depleted Ritual Band","C",null,0.0]],"up":[]},
       "MAIN_HAND": {
         "cur": [[5322,"Demolition Hammer","U",null,97.0]],
-        "up": [[7958,"Bronze Battle Axe","U",22,5297,4.5,"18.3 DPS, +10 Str"]]
+        "up": [[7958,"Bronze Battle Axe","U",22,5498,4.5,"18.3 DPS, +10 Str"]]
       },
       "RANGED": {"cur":[[263412,"Totem of Charged Flames","U",null,0]],"up":[]}
     }
